@@ -1,6 +1,4 @@
 import Link from "next/link";
-import GoogleSigninButton from "../GoogleSigninButton";
-import SigninWithPassword from "../SigninWithPassword";
 import SignUproot from "../Signuproot";
 
 export default function Signup() {

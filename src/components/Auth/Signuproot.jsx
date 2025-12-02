@@ -1,9 +1,8 @@
 "use client";
 import { EmailIcon, PasswordIcon } from "@/assets/icons";
-import Link from "next/link";
 import React, { useId, useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
-import { Checkbox } from "../FormElements/checkbox";
+import axios from "axios";
 
 export default function SignUproot() {
   const [data, setData] = useState({
@@ -11,10 +10,9 @@ export default function SignUproot() {
     first_name: "",
     last_name: "",
     phone: "",
-    cfm_password: "",
-    email: process.env.NEXT_PUBLIC_DEMO_USER_MAIL || "",
-    password: process.env.NEXT_PUBLIC_DEMO_USER_PASS || "",
-    remember: false,
+    email: "",
+    password: "",
+    cfm_password: ""
   });
 
   const [loading, setLoading] = useState(false);
@@ -26,10 +24,18 @@ export default function SignUproot() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => setLoading(false), 1000);
+
+    try {
+      const res = await axios.post('/api/auth/register', data);
+      console.log("Success:", res.data);
+    } catch (error) {
+      console.error("Register error:", error.response?.data || error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const id = useId();
@@ -46,7 +52,6 @@ export default function SignUproot() {
           value={data.username}
         />
 
-      {/* --- GRID 2 KOLOM --- */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <InputGroup
           type="text"
@@ -111,7 +116,6 @@ export default function SignUproot() {
         />
       </div>
 
-      {/* Button */}
       <div className="mt-10 mb-4.5">
         <button
           type="submit"

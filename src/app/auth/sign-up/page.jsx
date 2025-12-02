@@ -11,17 +11,13 @@ export default function Register() {
     <div className="flex min-h-screen w-screen bg-gray-100 dark:bg-gray-900">
       <div className="flex w-full flex-col xl:flex-row">
 
-        {/* Kolom Signup */}
         <div className="flex w-full xl:w-1/2 items-center justify-center p-8 sm:p-12.5 xl:p-15">
           <Signup />
         </div>
 
-        {/* Kolom ilustrasi & teks */}
         <div className="hidden xl:flex w-full xl:w-1/2">
-          {/* Gunakan flex-col & h-full untuk menyesuaikan tinggi konten */}
           <div className="flex flex-col justify-between w-full h-full overflow-hidden px-12.5 pt-12.5 pb-8 custom-gradient-1 dark:!bg-dark-2 dark:bg-none">
 
-            {/* Logo */}
             <Link className="mb-6 inline-block" href="/">
               <Image
                 className="hidden dark:block"
@@ -52,7 +48,6 @@ export default function Register() {
               </p>
             </div>
 
-            {/* Ilustrasi */}
             <div className="mt-8">
               <Image
                 src={"/images/grids/grid-02.svg"}
