@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 01, 2025 at 08:52 PM
+-- Generation Time: Dec 07, 2025 at 03:29 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -445,13 +445,13 @@ CREATE TABLE `telegram_users` (
 -- (See below for the actual view)
 --
 CREATE TABLE `telegram_user_permissions` (
-`category` varchar(50)
-,`chat_id` varchar(255)
+`chat_id` varchar(255)
+,`username` varchar(255)
+,`role` enum('admin','operator','viewer')
 ,`is_active` tinyint(1)
 ,`permission_key` varchar(100)
 ,`permission_name` varchar(255)
-,`role` enum('admin','operator','viewer')
-,`username` varchar(255)
+,`category` varchar(50)
 );
 
 -- --------------------------------------------------------
@@ -497,7 +497,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `phone`, `email`, `password`, `status`, `role_id`, `image`, `created_at`, `updated_at`) VALUES
-('1', 'user', 'User', '-', NULL, 'user@email.com', '$2y$12$KK8uA4gbevAlLyy.4COlWuM9OaRz9Cgw/PE17RDlYscL45E/Jxyxm', 1, 1, 'default.png', '2025-11-22 11:44:45', '2025-11-30 13:54:27');
+('1', 'user', 'User', '-', NULL, 'user@email.com', '$2y$12$KK8uA4gbevAlLyy.4COlWuM9OaRz9Cgw/PE17RDlYscL45E/Jxyxm', 1, 1, 'default.png', '2025-11-22 11:44:45', '2025-11-30 13:54:27'),
+('1be06acd-6d8b-47cf-a2b2-41db67746260', 'fullo', 'M Taufik', 'Saefulloh', '08123456789', 'fullo@email.com', '$2b$12$3s5IFy6qs3joQii9BH41NORy6Jq3WnVRmEwjeO0.q/t8o286NFI3i', 1, 2, 'default.png', '2025-12-05 14:34:40', '2025-12-07 03:23:05');
 
 -- --------------------------------------------------------
 

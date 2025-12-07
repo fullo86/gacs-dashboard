@@ -1,4 +1,3 @@
-// src/app/api/auth/register/route.js
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import connectDB from "@/lib/db";
@@ -11,13 +10,9 @@ export async function POST(request) {
   const transaction = await connectDB.transaction();
 
   try {
-    // Ambil body request
     const body = await request.json();
-
-    // Validasi dengan Zod
     const parsed = userRegisterSchema.parse(body);
 
-    // Cek email
     const emailUser = await User.findOne({
       where: { email: parsed.email },
       transaction,
@@ -31,7 +26,6 @@ export async function POST(request) {
       );
     }
 
-    // Cek username
     const userName = await User.findOne({
       where: { username: parsed.username },
       transaction,
@@ -45,7 +39,6 @@ export async function POST(request) {
       );
     }
 
-    // Cek password & konfirmasi
     if (parsed.password !== parsed.cfm_password) {
       await transaction.rollback();
       return NextResponse.json(
@@ -54,10 +47,8 @@ export async function POST(request) {
       );
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(parsed.password, 12);
 
-    // Buat user baru dengan UUID
     const user = await User.create(
       {
         id: uuidv4(),
@@ -74,10 +65,7 @@ export async function POST(request) {
       { transaction }
     );
 
-    // Commit transaction
     await transaction.commit();
-
-    // Return response sukses
     return NextResponse.json(
       {
         statusCode: 201,
@@ -98,30 +86,27 @@ export async function POST(request) {
       { status: 201 }
     );
   } catch (error) {
-    // Rollback jika ada error
     await transaction.rollback();
 
-    // Tangani error validasi Zod
-    if (error instanceof ZodError) {
-    return NextResponse.json(
-        {
-        statusCode: 400,
-        success: false,
-        message: "Validation failed",
-errors: JSON.parse(JSON.stringify(error.errors)),
-        },
-        { status: 400 }
-    );
-    }
+//     if (error instanceof ZodError) {
+//     return NextResponse.json(
+//         {
+//         statusCode: 400,
+//         success: false,
+//         message: "Validation failed",
+// errors: JSON.parse(JSON.stringify(error.errors)),
+//         },
+//         { status: 400 }
+//     );
+//     }
 
-    // Error lainnya
     console.error("Register error:", error);
     return NextResponse.json(
       {
         statusCode: 500,
         success: false,
         message: "Internal Server Error",
-        error: error.message, // optional, bisa dihapus di production
+        error: error.message,
       },
       { status: 500 }
     );

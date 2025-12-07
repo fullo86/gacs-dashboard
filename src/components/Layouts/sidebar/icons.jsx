@@ -182,3 +182,71 @@ export function ArrowLeftIcon(props) {
     </svg>
   );
 }
+
+export const SwitchIcon = ({ className = "w-6 h-6" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 64 64"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <rect x="4" y="12" width="56" height="40" rx="4" ry="4" fill="#e5e7eb" stroke="#000"/>
+
+    {[8, 20, 32, 44, 8, 20, 32, 44].map((x, i) => (
+      <rect
+        key={i}
+        x={x}
+        y={14 + (i < 4 ? 0 : 20)}
+        width="6"
+        height="6"
+        fill="#000"
+      />
+    ))}
+
+    <circle cx="56" cy="18" r="2" fill="green" />
+    <circle cx="56" cy="28" r="2" fill="red" />
+  </svg>
+);
+
+
+export const ServerIcon = ({ className = "w-5 h-5" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={2}
+    stroke="currentColor"
+    className={className}
+  >
+    <rect x="3" y="3" width="18" height="6" rx="1" stroke="currentColor" />
+    <rect x="3" y="11" width="18" height="6" rx="1" stroke="currentColor" />
+    <rect x="3" y="19" width="18" height="2" rx="1" stroke="currentColor" />
+    
+    <circle cx="19" cy="6" r="1" fill="currentColor" />
+    <circle cx="19" cy="14" r="1" fill="currentColor" />
+    <circle cx="19" cy="20" r="0.5" fill="currentColor" />
+  </svg>
+);
+
+// src/assets/icons/Icons.js
+export const MapIcon = ({ className = "w-6 h-6" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <polygon points="3,6 9,3 15,6 21,3 21,18 15,21 9,18 3,21" fill="#e5e7eb" stroke="currentColor" />
+    
+    <path d="M12 11c1.104 0 2-0.896 2-2s-0.896-2-2-2-2 0.896-2 2 0.896 2 2 2z" fill="red" />
+    <path d="M12 2C8 6 8 9 12 22c4-13 4-16 0-20z" fill="none" stroke="currentColor" />
+  </svg>
+);
