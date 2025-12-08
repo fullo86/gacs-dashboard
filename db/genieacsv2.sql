@@ -274,7 +274,7 @@ CREATE TABLE `telegram_callback_cache` (
   `cache_data` text NOT NULL COMMENT 'Serialized or JSON data',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `expires_at` timestamp NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Stores pagination and button state for inline keyboards';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Stores pagination and button state for inline keyboards';
 
 -- --------------------------------------------------------
 
@@ -304,7 +304,7 @@ CREATE TABLE `telegram_permissions` (
   `permission_name` varchar(255) NOT NULL,
   `description` text,
   `category` varchar(50) DEFAULT NULL COMMENT 'device, report, notification, map, admin'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Available permissions for role-based access control';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Available permissions for role-based access control';
 
 --
 -- Dumping data for table `telegram_permissions`
@@ -343,7 +343,7 @@ CREATE TABLE `telegram_report_logs` (
   `offline_24h_count` int NOT NULL DEFAULT '0' COMMENT 'Devices offline > 24 hours',
   `poor_signal_count` int NOT NULL DEFAULT '0' COMMENT 'Devices with poor signal (<-25 dBm)',
   `report_data` text COMMENT 'JSON data with detailed statistics'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='History of all sent reports for analytics';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='History of all sent reports for analytics';
 
 -- --------------------------------------------------------
 
@@ -360,7 +360,7 @@ CREATE TABLE `telegram_report_schedules` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `last_sent_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='User preferences for automated daily/weekly reports';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='User preferences for automated daily/weekly reports';
 
 -- --------------------------------------------------------
 
@@ -372,7 +372,7 @@ CREATE TABLE `telegram_role_permissions` (
   `id` int NOT NULL,
   `role` enum('admin','operator','viewer') NOT NULL,
   `permission_key` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Maps permissions to roles for access control';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Maps permissions to roles for access control';
 
 --
 -- Dumping data for table `telegram_role_permissions`
@@ -417,7 +417,7 @@ CREATE TABLE `telegram_subscriptions` (
   `device_serial` varchar(255) DEFAULT NULL,
   `subscribed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_active` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='User subscriptions for device status notifications';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='User subscriptions for device status notifications';
 
 -- --------------------------------------------------------
 
@@ -436,7 +436,7 @@ CREATE TABLE `telegram_users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `last_activity` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Telegram bot users with role-based access control';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Telegram bot users with role-based access control';
 
 -- --------------------------------------------------------
 
@@ -469,7 +469,7 @@ CREATE TABLE `telegram_user_sessions` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `expires_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Stores multi-step wizard sessions (WiFi edit, etc)';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Stores multi-step wizard sessions (WiFi edit, etc)';
 
 -- --------------------------------------------------------
 
