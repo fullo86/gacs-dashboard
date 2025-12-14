@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 14, 2025 at 02:54 PM
+-- Generation Time: Dec 07, 2025 at 03:29 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -28,9 +28,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `configurations` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `config_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `config_value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `config_key` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `config_value` text COLLATE utf8mb4_general_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Generic key-value configuration storage';
@@ -42,9 +42,9 @@ CREATE TABLE `configurations` (
 --
 
 CREATE TABLE `device_monitoring` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `device_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `status` enum('online','offline') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `device_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `status` enum('online','offline') COLLATE utf8mb4_general_ci NOT NULL,
   `notified` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Device status change history for monitoring and notifications';
@@ -56,25 +56,17 @@ CREATE TABLE `device_monitoring` (
 --
 
 CREATE TABLE `genieacs_credentials` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `user_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
-  `host` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `host` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `port` int DEFAULT '7557',
-  `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `role` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `username` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `role` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `is_connected` tinyint(1) DEFAULT '0',
   `last_test` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='GenieACS TR-069 ACS connection settings (single active config only)';
-
---
--- Dumping data for table `genieacs_credentials`
---
-
-INSERT INTO `genieacs_credentials` (`id`, `user_id`, `host`, `port`, `username`, `password`, `role`, `is_connected`, `last_test`, `created_at`, `updated_at`) VALUES
-('0ee8f065-9d0b-44f8-907d-d7d5da759a4b', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'genieacs.mljnet.id', 7557, '', '', 'user', 1, NULL, '2025-12-12 22:25:25', '2025-12-14 00:25:37');
 
 -- --------------------------------------------------------
 
@@ -83,8 +75,8 @@ INSERT INTO `genieacs_credentials` (`id`, `user_id`, `host`, `port`, `username`,
 --
 
 CREATE TABLE `mac_vendor_cache` (
-  `oui` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'First 6 characters of MAC address (OUI)',
-  `vendor_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `oui` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'First 6 characters of MAC address (OUI)',
+  `vendor_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cached_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Cache for MAC address vendor lookups to reduce API calls';
 
@@ -95,14 +87,14 @@ CREATE TABLE `mac_vendor_cache` (
 --
 
 CREATE TABLE `map_connections` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `from_item_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `to_item_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `connection_type` enum('online','offline') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'online',
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `from_item_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `to_item_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `connection_type` enum('online','offline') COLLATE utf8mb4_general_ci DEFAULT 'online',
   `path_coordinates` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -111,18 +103,18 @@ CREATE TABLE `map_connections` (
 --
 
 CREATE TABLE `map_items` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `item_type` enum('server','isp','mikrotik','olt','odc','odp','onu') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `parent_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `item_type` enum('server','isp','mikrotik','olt','odc','odp','onu') COLLATE utf8mb4_general_ci NOT NULL,
+  `parent_id` char(36) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `latitude` decimal(10,8) NOT NULL,
   `longitude` decimal(11,8) NOT NULL,
-  `genieacs_device_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `status` enum('online','offline','unknown') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'unknown',
+  `genieacs_device_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `status` enum('online','offline','unknown') COLLATE utf8mb4_general_ci DEFAULT 'unknown',
   `properties` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -131,11 +123,11 @@ CREATE TABLE `map_items` (
 --
 
 CREATE TABLE `mikrotik_credentials` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `host` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `host` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `port` int DEFAULT '8728',
-  `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `is_connected` tinyint(1) DEFAULT '0',
   `last_test` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -149,8 +141,8 @@ CREATE TABLE `mikrotik_credentials` (
 --
 
 CREATE TABLE `odc_config` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `map_item_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `map_item_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
   `olt_pon_port_id` int DEFAULT NULL,
   `server_id` int DEFAULT NULL COMMENT 'Reference to parent Server for child ODCs',
   `server_pon_port` int DEFAULT NULL,
@@ -168,23 +160,23 @@ CREATE TABLE `odc_config` (
 --
 
 CREATE TABLE `odp_config` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `map_item_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `map_item_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
   `odc_port` int DEFAULT NULL,
   `input_power` decimal(5,2) DEFAULT NULL,
-  `parent_odp_port` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'For cascading ODPs: port from parent ODP (e.g., "20%", "80%")',
+  `parent_odp_port` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'For cascading ODPs: port from parent ODP (e.g., "20%", "80%")',
   `port_count` int NOT NULL,
   `use_splitter` tinyint(1) DEFAULT '0',
   `use_secondary_splitter` tinyint(1) DEFAULT '0' COMMENT 'Enable secondary/cascading splitter',
-  `secondary_splitter_ratio` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Secondary splitter ratio (e.g., "1:2", "1:8")',
-  `custom_secondary_ratio_output_port` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'For custom secondary ratios: which port user selected',
-  `splitter_ratio` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'e.g., "1:2", "1:8", "20:80", "30:70", "50:50"',
-  `custom_ratio_output_port` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'For custom ratios (20:80, 30:70, 50:50): which port user selected for output',
+  `secondary_splitter_ratio` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Secondary splitter ratio (e.g., "1:2", "1:8")',
+  `custom_secondary_ratio_output_port` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'For custom secondary ratios: which port user selected',
+  `splitter_ratio` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'e.g., "1:2", "1:8", "20:80", "30:70", "50:50"',
+  `custom_ratio_output_port` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'For custom ratios (20:80, 30:70, 50:50): which port user selected for output',
   `calculated_power` decimal(5,2) DEFAULT NULL COMMENT 'Power AFTER splitter (user-facing value)',
   `port_rx_power` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ;
 
 -- --------------------------------------------------------
 
@@ -193,12 +185,12 @@ CREATE TABLE `odp_config` (
 --
 
 CREATE TABLE `olt_config` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `map_item_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `map_item_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
   `output_power` decimal(5,2) DEFAULT '2.00',
   `pon_count` int DEFAULT '1',
   `attenuation_db` decimal(5,2) DEFAULT '0.00',
-  `olt_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `olt_link` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='OLT configuration with PON ports';
@@ -210,8 +202,8 @@ CREATE TABLE `olt_config` (
 --
 
 CREATE TABLE `olt_pon_ports` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `olt_item_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `olt_item_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
   `pon_number` int NOT NULL,
   `output_power` decimal(5,2) DEFAULT '9.00',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -225,11 +217,11 @@ CREATE TABLE `olt_pon_ports` (
 --
 
 CREATE TABLE `onu_config` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `map_item_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `map_item_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
   `odp_port` int DEFAULT NULL,
-  `customer_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `genieacs_device_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `customer_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `genieacs_device_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='ONU/ONT customer premises equipment configuration';
@@ -242,7 +234,7 @@ CREATE TABLE `onu_config` (
 
 CREATE TABLE `roles` (
   `id` bigint NOT NULL,
-  `role_name` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role_name` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -262,8 +254,8 @@ INSERT INTO `roles` (`id`, `role_name`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `server_pon_ports` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `map_item_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `map_item_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
   `port_number` int NOT NULL,
   `output_power` decimal(5,2) DEFAULT '2.00',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -277,9 +269,9 @@ CREATE TABLE `server_pon_ports` (
 --
 
 CREATE TABLE `telegram_callback_cache` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `cache_key` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `cache_data` text COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Serialized or JSON data',
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `cache_key` varchar(255) NOT NULL,
+  `cache_data` text NOT NULL COMMENT 'Serialized or JSON data',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `expires_at` timestamp NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Stores pagination and button state for inline keyboards';
@@ -291,9 +283,9 @@ CREATE TABLE `telegram_callback_cache` (
 --
 
 CREATE TABLE `telegram_config` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `bot_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `chat_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `bot_token` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `chat_id` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `is_connected` tinyint(1) DEFAULT '0',
   `last_test` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -307,11 +299,11 @@ CREATE TABLE `telegram_config` (
 --
 
 CREATE TABLE `telegram_permissions` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `permission_key` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Unique permission identifier',
-  `permission_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
-  `category` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'device, report, notification, map, admin'
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `permission_key` varchar(100) NOT NULL COMMENT 'Unique permission identifier',
+  `permission_name` varchar(255) NOT NULL,
+  `description` text,
+  `category` varchar(50) DEFAULT NULL COMMENT 'device, report, notification, map, admin'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Available permissions for role-based access control';
 
 --
@@ -319,17 +311,17 @@ CREATE TABLE `telegram_permissions` (
 --
 
 INSERT INTO `telegram_permissions` (`id`, `permission_key`, `permission_name`, `description`, `category`) VALUES
-('07h9ie30-6i1d-4f7g-4h8e-3d4i2j7k9l0m', 'report.view', 'View Reports', 'Generate on-demand reports', 'report'),
-('18i0jf41-7j2e-4g8h-5i9f-4e5j3k8l0m1n', 'report.schedule', 'Schedule Reports', 'Create and manage report schedules', 'report'),
-('29j1kg52-8k3f-4h9i-6j0g-5f6k4l9m1n2o', 'map.view', 'View Map', 'View device locations and GPS', 'map'),
-('30k2lh63-9l4g-4i0j-7k1h-6g7l5m0n2o3p', 'admin.user_manage', 'Manage Users', 'Add, edit, remove users and roles', 'admin'),
-('41l3mi74-0m5h-4j1k-8l2i-7h8m6n1o3p4q', 'admin.config', 'System Configuration', 'Access system configuration', 'admin'),
 ('a1f3b8e4-9c4f-4c1a-8b2d-7f8e6d1a2c3b', 'device.view', 'View Devices', 'View device list and details', 'device'),
 ('b2c4d9f5-1d6e-4a2b-9c3f-8e9f7d2b4d5e', 'device.summon', 'Summon Devices', 'Trigger device connection request', 'device'),
 ('c3d5eaf6-2e7f-4b3c-0d4a-9f0e8c3f5e6d', 'device.edit_wifi', 'Edit WiFi', 'Change device WiFi configuration', 'device'),
 ('d4e6fb07-3f8a-4c4d-1e5b-0a1f9d4g6h7i', 'device.search', 'Search Devices', 'Search and filter devices', 'device'),
 ('e5f7gc18-4g9b-4d5e-2f6c-1b2g0h5i7j8k', 'notification.subscribe', 'Subscribe Notifications', 'Subscribe to device notifications', 'notification'),
-('f6g8hd29-5h0c-4e6f-3g7d-2c3h1i6j8k9l', 'notification.view', 'View Subscriptions', 'View own subscriptions', 'notification');
+('f6g8hd29-5h0c-4e6f-3g7d-2c3h1i6j8k9l', 'notification.view', 'View Subscriptions', 'View own subscriptions', 'notification'),
+('07h9ie30-6i1d-4f7g-4h8e-3d4i2j7k9l0m', 'report.view', 'View Reports', 'Generate on-demand reports', 'report'),
+('18i0jf41-7j2e-4g8h-5i9f-4e5j3k8l0m1n', 'report.schedule', 'Schedule Reports', 'Create and manage report schedules', 'report'),
+('29j1kg52-8k3f-4h9i-6j0g-5f6k4l9m1n2o', 'map.view', 'View Map', 'View device locations and GPS', 'map'),
+('30k2lh63-9l4g-4i0j-7k1h-6g7l5m0n2o3p', 'admin.user_manage', 'Manage Users', 'Add, edit, remove users and roles', 'admin'),
+('41l3mi74-0m5h-4j1k-8l2i-7h8m6n1o3p4q', 'admin.config', 'System Configuration', 'Access system configuration', 'admin');
 
 -- --------------------------------------------------------
 
@@ -338,9 +330,9 @@ INSERT INTO `telegram_permissions` (`id`, `permission_key`, `permission_name`, `
 --
 
 CREATE TABLE `telegram_report_logs` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `chat_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `report_type` enum('daily','weekly') COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `chat_id` varchar(255) NOT NULL,
+  `report_type` enum('daily','weekly') NOT NULL,
   `report_date` date NOT NULL COMMENT 'Date the report covers',
   `sent_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `total_devices` int NOT NULL DEFAULT '0',
@@ -350,7 +342,7 @@ CREATE TABLE `telegram_report_logs` (
   `new_offline_count` int NOT NULL DEFAULT '0' COMMENT 'Devices that went offline',
   `offline_24h_count` int NOT NULL DEFAULT '0' COMMENT 'Devices offline > 24 hours',
   `poor_signal_count` int NOT NULL DEFAULT '0' COMMENT 'Devices with poor signal (<-25 dBm)',
-  `report_data` text COLLATE utf8mb4_general_ci COMMENT 'JSON data with detailed statistics'
+  `report_data` text COMMENT 'JSON data with detailed statistics'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='History of all sent reports for analytics';
 
 -- --------------------------------------------------------
@@ -360,9 +352,9 @@ CREATE TABLE `telegram_report_logs` (
 --
 
 CREATE TABLE `telegram_report_schedules` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `chat_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `report_type` enum('daily','weekly') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'daily',
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `chat_id` varchar(255) NOT NULL,
+  `report_type` enum('daily','weekly') NOT NULL DEFAULT 'daily',
   `schedule_time` time NOT NULL DEFAULT '08:00:00' COMMENT 'Time to send report (HH:MM:SS)',
   `schedule_day` tinyint(1) DEFAULT NULL COMMENT 'Day of week for weekly reports (0=Sunday, 6=Saturday)',
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
@@ -377,9 +369,9 @@ CREATE TABLE `telegram_report_schedules` (
 --
 
 CREATE TABLE `telegram_role_permissions` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `role` enum('admin','operator','viewer') COLLATE utf8mb4_general_ci NOT NULL,
-  `permission_key` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('admin','operator','viewer') NOT NULL,
+  `permission_key` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Maps permissions to roles for access control';
 
 --
@@ -419,10 +411,10 @@ INSERT INTO `telegram_role_permissions` (`id`, `role`, `permission_key`) VALUES
 --
 
 CREATE TABLE `telegram_subscriptions` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `chat_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `device_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `device_serial` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `chat_id` varchar(255) NOT NULL,
+  `device_id` varchar(255) NOT NULL,
+  `device_serial` varchar(255) DEFAULT NULL,
   `subscribed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='User subscriptions for device status notifications';
@@ -434,12 +426,12 @@ CREATE TABLE `telegram_subscriptions` (
 --
 
 CREATE TABLE `telegram_users` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `chat_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Telegram username',
-  `first_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `role` enum('admin','operator','viewer') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'viewer',
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `chat_id` varchar(255) NOT NULL,
+  `username` varchar(255) DEFAULT NULL COMMENT 'Telegram username',
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `role` enum('admin','operator','viewer') NOT NULL DEFAULT 'viewer',
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -469,11 +461,11 @@ CREATE TABLE `telegram_user_permissions` (
 --
 
 CREATE TABLE `telegram_user_sessions` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `chat_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `session_type` varchar(50) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'editwifi, search, etc',
-  `session_data` text COLLATE utf8mb4_general_ci COMMENT 'JSON data for the session',
-  `current_step` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `chat_id` varchar(255) NOT NULL,
+  `session_type` varchar(50) NOT NULL COMMENT 'editwifi, search, etc',
+  `session_data` text COMMENT 'JSON data for the session',
+  `current_step` varchar(50) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `expires_at` timestamp NULL DEFAULT NULL
@@ -486,16 +478,16 @@ CREATE TABLE `telegram_user_sessions` (
 --
 
 CREATE TABLE `users` (
-  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `phone` char(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `first_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `last_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `phone` char(13) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `status` smallint NOT NULL,
   `role_id` bigint NOT NULL,
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'default.png',
+  `image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'default.png',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Web dashboard user authentication';
@@ -505,8 +497,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `phone`, `email`, `password`, `status`, `role_id`, `image`, `created_at`, `updated_at`) VALUES
-('1', 'user', 'User', '-', NULL, 'user@email.com', '$2y$12$KK8uA4gbevAlLyy.4COlWuM9OaRz9Cgw/PE17RDlYscL45E/Jxyxm', 1, 1, 'default.png', '2025-11-22 04:44:45', '2025-11-30 06:54:27'),
-('1be06acd-6d8b-47cf-a2b2-41db67746260', 'fullo', 'M Taufik', 'Saefulloh', '08123456789', 'fullo@email.com', '$2b$12$3s5IFy6qs3joQii9BH41NORy6Jq3WnVRmEwjeO0.q/t8o286NFI3i', 1, 2, 'default.png', '2025-12-05 07:34:40', '2025-12-06 20:23:05');
+('1', 'user', 'User', '-', NULL, 'user@email.com', '$2y$12$KK8uA4gbevAlLyy.4COlWuM9OaRz9Cgw/PE17RDlYscL45E/Jxyxm', 1, 1, 'default.png', '2025-11-22 11:44:45', '2025-11-30 13:54:27'),
+('1be06acd-6d8b-47cf-a2b2-41db67746260', 'fullo', 'M Taufik', 'Saefulloh', '08123456789', 'fullo@email.com', '$2b$12$3s5IFy6qs3joQii9BH41NORy6Jq3WnVRmEwjeO0.q/t8o286NFI3i', 1, 2, 'default.png', '2025-12-05 14:34:40', '2025-12-07 03:23:05');
 
 -- --------------------------------------------------------
 
@@ -541,8 +533,7 @@ ALTER TABLE `device_monitoring`
 --
 ALTER TABLE `genieacs_credentials`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `unique_host_port` (`host`,`port`),
-  ADD KEY `user_id` (`user_id`);
+  ADD UNIQUE KEY `unique_host_port` (`host`,`port`);
 
 --
 -- Indexes for table `mac_vendor_cache`
@@ -710,20 +701,134 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `configurations`
+--
+-- ALTER TABLE `configurations`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `device_monitoring`
+--
+-- ALTER TABLE `device_monitoring`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `map_connections`
+--
+-- ALTER TABLE `map_connections`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `map_items`
+--
+-- ALTER TABLE `map_items`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `mikrotik_credentials`
+--
+-- ALTER TABLE `mikrotik_credentials`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `odc_config`
+--
+-- ALTER TABLE `odc_config`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `odp_config`
+--
+-- ALTER TABLE `odp_config`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `olt_config`
+--
+-- ALTER TABLE `olt_config`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `olt_pon_ports`
+--
+-- ALTER TABLE `olt_pon_ports`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `onu_config`
+--
+-- ALTER TABLE `onu_config`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT for table `server_pon_ports`
 --
+-- ALTER TABLE `server_pon_ports`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `genieacs_credentials`
+-- AUTO_INCREMENT for table `telegram_callback_cache`
 --
-ALTER TABLE `genieacs_credentials`
-  ADD CONSTRAINT `fk_user_genieacs` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+-- ALTER TABLE `telegram_callback_cache`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `telegram_config`
+--
+-- ALTER TABLE `telegram_config`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `telegram_permissions`
+--
+-- ALTER TABLE `telegram_permissions`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `telegram_report_logs`
+--
+-- ALTER TABLE `telegram_report_logs`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `telegram_report_schedules`
+--
+-- ALTER TABLE `telegram_report_schedules`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `telegram_role_permissions`
+--
+-- ALTER TABLE `telegram_role_permissions`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `telegram_subscriptions`
+--
+-- ALTER TABLE `telegram_subscriptions`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `telegram_users`
+--
+-- ALTER TABLE `telegram_users`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `telegram_user_sessions`
+--
+-- ALTER TABLE `telegram_user_sessions`
+--   MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
 
 --
 -- Constraints for table `map_connections`

@@ -1,5 +1,6 @@
 import connectDB from "@/lib/db";
 import { DataTypes, UUIDV4 } from "sequelize";
+import User from "../users/User";
 
 const GenieacsCredential = connectDB.define(
   "GenieacsCredential",
@@ -8,6 +9,10 @@ const GenieacsCredential = connectDB.define(
       type: DataTypes.UUID,
       defaultValue: () => UUIDV4(),
       primaryKey: true,
+      allowNull: false,
+    },
+    user_id: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
     host: {
@@ -52,5 +57,12 @@ const GenieacsCredential = connectDB.define(
     timestamps: false, 
   }
 );
+
+GenieacsCredential.belongsTo(User, {
+  foreignKey: "user_id",
+  targetKey: "id",
+  onDelete: "RESTRICT",
+  onUpdate: "RESTRICT",
+});
 
 export default GenieacsCredential;
