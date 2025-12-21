@@ -4,6 +4,7 @@ import InputGroup from "@/components/FormElements/InputGroup";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 export default function ACSConfig() {
   const [loading, setLoading] = useState(false);
@@ -99,7 +100,9 @@ export default function ACSConfig() {
   }
 
   return (
-    <ShowcaseSection title="GenieACS Configuration" className="!p-6.5">
+    <>
+    <Breadcrumb pageName="ACS Configuration" />    
+    <ShowcaseSection title="" className="!p-6.5">
       <form action="#" onSubmit={handleSubmit}>
         <InputGroup
           label="Host"
@@ -137,8 +140,7 @@ export default function ACSConfig() {
           onChange={handleChange}
         />
 
-        <div className="mt-5 flex gap-3">
-          {/* Button Test Koneksi */}
+        <div className="mt-7 flex gap-3">
           <button
             type="button"
             onClick={handleTestConnection}
@@ -151,7 +153,6 @@ export default function ACSConfig() {
             )}
           </button>
 
-          {/* Button Save */}
           <button
             type="submit"
             disabled={loading}
@@ -172,5 +173,6 @@ export default function ACSConfig() {
         </button> */}
       </form>
     </ShowcaseSection>
+    </>
   );
 }

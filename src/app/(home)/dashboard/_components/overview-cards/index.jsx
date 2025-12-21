@@ -1,43 +1,44 @@
 import { compactFormat } from "@/lib/format-number";
-import { getOverviewData } from "../../fetch";
 import { OverviewCard } from "./card";
+import { getDeviceStatus, getUplinkStatus } from "../../fetch";
+import axios from "axios";
 
 export async function OverviewCardsGroup() {
-  const { devices, on_status, off_status, users } = await getOverviewData();
-
+  // const { devices, on_status, off_status, users } = await getOverviewData();
+  const stats = await getDeviceStatus();
   return (
     <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4 2xl:gap-7.5">
       <OverviewCard
         label="Total Devices"
         data={{
-          ...devices,
-          value: compactFormat(devices.value),
+          ...stats.data.total,
+          value: compactFormat(stats.data.total),
         }}
       />
 
       <OverviewCard
         label="Online"
         data={{
-          ...on_status,
-          value: compactFormat(on_status.value),
+          ...stats.data.online,
+          value: compactFormat(stats.data.online),
         }}
       />
 
       <OverviewCard
         label="Offiline"
         data={{
-          ...off_status,
-          value: compactFormat(off_status.value),
+          ...stats.data.offline,
+          value: compactFormat(stats.data.offline),
         }}
       />
 
-      <OverviewCard
+      {/* <OverviewCard
         label="Total Users"
         data={{
           ...users,
           value: compactFormat(users.value),
         }}
-      />
+      /> */}
     </div>
   );
 }

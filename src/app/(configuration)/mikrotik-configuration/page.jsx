@@ -1,4 +1,5 @@
 'use client'
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import InputGroup from "@/components/FormElements/InputGroup";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
 import { useState } from "react";
@@ -19,48 +20,51 @@ export default function MikrotikConfig() {
     };
 
   return (
-    <ShowcaseSection title="MikroTik Configuration" className="!p-6.5">
-      <form action="#">
-        <InputGroup
-          label="Host"
-          type="text"
-          name="host"
-          placeholder="Enter your Host or IP Address"
-          value={form.host}
-          onChange={handleChange}
-          className="mb-4.5"
-        />
-        <InputGroup
-          label="Port API"
-          type="text"
-          name="port"
-          placeholder="Enter your Port"
-          value={form.port}
-          onChange={handleChange}
-          className="mb-4.5"
-        />
-        <InputGroup
-          label="Username"
-          type="text"
-          name="username"
-          placeholder="Enter Username"
-          value={form.username}
-          onChange={handleChange}          
-          className="mb-4.5"
-        />
-        <InputGroup
-          label="Password"
-          type="password"
-          name="password"
-          placeholder="Enter your password"
-          value={form.password}
-          onChange={handleChange}
-        />
+    <>
+      <Breadcrumb pageName="MikroTik Configuration" />  
+      <ShowcaseSection title="" className="!p-6.5">
+        <form action="#">
+          <InputGroup
+            label="Host"
+            type="text"
+            name="host"
+            placeholder="Enter your Host or IP Address"
+            value={form.host}
+            onChange={handleChange}
+            className="mb-4.5"
+          />
+          <InputGroup
+            label="Port API"
+            type="text"
+            name="port"
+            placeholder="Enter your Port"
+            value={form.port}
+            onChange={handleChange}
+            className="mb-4.5"
+          />
+          <InputGroup
+            label="Username"
+            type="text"
+            name="username"
+            placeholder="Enter Username"
+            value={form.username}
+            onChange={handleChange}          
+            className="mb-4.5"
+          />
+          <InputGroup
+            label="Password"
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            value={form.password}
+            onChange={handleChange}
+          />
 
-        <button className="flex w-full justify-center rounded-lg bg-primary p-[13px] font-medium text-white hover:bg-opacity-90 mt-5">
-            Save Configuration
-        </button>
-      </form>
-    </ShowcaseSection>
+          <button className="flex w-full justify-center rounded-lg bg-primary p-[13px] font-medium text-white hover:bg-opacity-90 mt-5">
+              Save Configuration
+          </button>
+        </form>
+      </ShowcaseSection>    
+    </>
   );
 }

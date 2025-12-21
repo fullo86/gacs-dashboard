@@ -1,16 +1,14 @@
 import { UsedDevices } from "@/components/Charts/used-devices";
-import { TopChannels } from "@/components/Tables/top-channels";
-import { TopChannelsSkeleton } from "@/components/Tables/top-channels/skeleton";
 import { createTimeFrameExtractor } from "@/utils/timeframe-extractor";
 import { Suspense } from "react";
 import { ChatsCard } from "./_components/chats-card";
 import { OverviewCardsGroup } from "./_components/overview-cards";
 import { OverviewCardsSkeleton } from "./_components/overview-cards/skeleton";
+import { RecentDevicesPage } from "./recentdevices";
 
 export default async function Home({ searchParams }) {
   const { selected_time_frame } = await searchParams;
   const extractTimeFrame = createTimeFrameExtractor(selected_time_frame);
-
   return (
     <>
         <Suspense fallback={<OverviewCardsSkeleton />}>
@@ -30,15 +28,11 @@ export default async function Home({ searchParams }) {
             timeFrame={extractTimeFrame("used_devices")?.split(":")[1]}
           />
 
-          <div className="col-span-12 grid xl:col-span-8">
-            <Suspense fallback={<TopChannelsSkeleton />}>
-              <TopChannels />
+          <div className="col-span-12 grid xl:col-span-12 mt-4">
+            <Suspense fallback={null}>
+              <RecentDevicesPage className="col-span-12" />
             </Suspense>
           </div>
-
-          <Suspense fallback={null}>
-            <ChatsCard />
-          </Suspense>
         </div>        
     </>
   );

@@ -72,7 +72,23 @@ export default function SettingsPage() {
     }
   };
 
-  if (status === "loading" || !form) return <div>Loading...</div>;
+  if (status === "loading" || !form) {
+    return (
+      <div className="mx-auto w-full max-w-[1080px] space-y-6">
+        <div className="h-6 w-40 bg-gray-200 rounded animate-pulse dark:bg-gray-700"></div>
+        <div className="grid grid-cols-5 gap-8">
+          <div className="col-span-5 xl:col-span-3 space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-10 w-full bg-gray-200 rounded animate-pulse dark:bg-gray-700"></div>
+            ))}
+          </div>
+          <div className="col-span-5 xl:col-span-2">
+            <div className="h-40 w-full bg-gray-200 rounded animate-pulse dark:bg-gray-700"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="mx-auto w-full max-w-[1080px]">

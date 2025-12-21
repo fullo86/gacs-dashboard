@@ -89,6 +89,59 @@ export async function addRefreshTask(userId, deviceId, parameterPath) {
   return await genieacsRequest(userId, endpoint, 'POST', data);
 }
 
+export async function getDeviceCount(userId, query = {}) {
+  const queryString =
+    Object.keys(query).length === 0
+      ? ""
+      : `?query=${encodeURIComponent(JSON.stringify(query))}`;
+
+  const endpoint = `/devices/${queryString}`;
+  const result = await genieacsRequest(userId, endpoint, "GET");
+
+  if (result?.success && Array.isArray(result?.data)) {
+    return { success: true, devices: result.data.length };
+  }
+  return { success: false, devices: 0 };
+}
+
+
+/**
+ * Get device statistics
+ */
+export async function getDeviceStats(userId) {
+  const devices = await getDevices(userId);
+  if (!devices.success) {
+    return { success: false, error: "Failed to fetch devices" };
+  }
+
+  let total = devices.data.length;
+  let online = 0;
+  let offline = 0;
+
+  const now = Date.now();
+
+  for (const device of devices.data) {
+    const lastInform = device?._lastInform;
+
+    let isOnline = false;
+
+    if (lastInform) {
+      const lastInformTime = Date.parse(lastInform); // ISO 8601 → timestamp (ms)
+      if (!isNaN(lastInformTime)) {
+        isOnline = now - lastInformTime < 5 * 60 * 1000;
+      }
+    }
+
+    if (isOnline) {
+      online++;
+    } else {
+      offline++;
+    }
+  }
+
+  return { success: true, data: { total, online, offline }  };
+}
+
 export function parseDeviceData(device) {
   const data = {}
 

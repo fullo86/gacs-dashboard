@@ -1,3 +1,19 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getDeviceCount, getDeviceStats } from "@/lib/GenieACS";
+import { getServerSession } from "next-auth";
+
+export async function getTotalDevices() {
+    const session = await getServerSession(authOptions);
+    const deviceCount = await getDeviceCount(session?.user?.id)
+    return deviceCount
+}
+
+export async function getDeviceStatus() {
+    const session = await getServerSession(authOptions);
+    const deviceStats = await getDeviceStats(session?.user?.id)
+    return deviceStats
+}
+
 export async function getOverviewData() {
   // Fake delay
   await new Promise((resolve) => setTimeout(resolve, 2000));

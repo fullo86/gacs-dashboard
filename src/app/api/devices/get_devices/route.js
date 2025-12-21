@@ -16,7 +16,6 @@ export async function GET(request) {
     }
 
     const userId = session.user.id;
-
     const url = new URL(request.url);
     const limit = parseInt(url.searchParams.get('limit')) || 100;
     const skip = parseInt(url.searchParams.get('skip')) || 0;
@@ -25,31 +24,29 @@ export async function GET(request) {
 
     const credential = await GenieacsCredential.findOne({
       where: {
-        user_id: userId,
-        is_connected: 1
-      }
+        user_id: userId      }
     });
 
     if (!credential) {
       return NextResponse.json(
-        { success: false, message: 'Credential GenieACS tidak ditemukan untuk user ini' },
+        { success: false, message: 'Configuraton not found.' },
         { status: 404 }
       );
     }
 
-    // parseDeviceData(
-    //   credential.host,
-    //   credential.port,
-    //   credential.username,
-    //   credential.password,
-    // )
+    if (credential.is_connected != 1) {
+      return NextResponse.json(
+        { success: false, message: 'Configuration is not connected' },
+        { status: 404 }
+      );
+    }
 
     const devicesResult = await getDevices(userId, {}, limit, skip);
 
     if (!devicesResult.success) {
       return NextResponse.json({
         success: false,
-        message: 'Gagal mengambil data devices',
+        message: 'Get devices failed',
         error: devicesResult.error || 'Unknown error'
       });
     }
