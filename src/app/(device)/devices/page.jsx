@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Swal from "sweetalert2";
 import axios from 'axios';
 import {
   Table,
@@ -11,7 +12,7 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { TrashIcon } from '@/assets/icons';
-import { DownloadIcon, PreviewIcon } from './icons';
+import { DownloadIcon, RefreshIcon, PreviewIcon } from './icons';
 import DeviceOverviewModal from '@/components/Modals/modalDeviceOverview';
 
 export default function Devices() {
@@ -50,6 +51,43 @@ export default function Devices() {
     fetchDevices();
   }, [skip]);
 
+  const handleDelete = async (device) => {
+    const result = await Swal.fire({
+      title: "Yakin ingin menghapus?",
+      text: `Device "${device.wifi_ssid}" akan dihapus permanen.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Hapus",
+      cancelButtonText: "Batal",
+      reverseButtons: true,
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      // 🔥 panggil API delete
+      // await deleteDevice(device.id);
+
+      await Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Device berhasil dihapus",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      fetchDevices();
+    } catch (err) {
+      await Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Terjadi kesalahan saat menghapus device",
+      });
+    }
+  };
+
+  console.log(devices, 'asdd')
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
       {error && <p className="text-red-500">{error}</p>}
@@ -119,22 +157,52 @@ export default function Devices() {
                     </div>
                   </TableCell>
                   <TableCell className="xl:pr-7.5">
-                    <div className="flex items-center justify-end gap-x-3.5">
-                      <button
-                        className="hover:text-primary"
-                        onClick={() => {
-                          setSelectedDevice(device);
-                          setOpenPreview(true);
-                        }}
-                      >
-                        <PreviewIcon />
-                      </button>
-                      <button className="hover:text-primary">
-                        <TrashIcon />
-                      </button>
-                      <button className="hover:text-primary">
-                        <DownloadIcon />
-                      </button>
+                    <div className="grid grid-cols-3 gap-3 place-items-center">
+                      {[
+                        {
+                          icon: PreviewIcon,
+                          label: "Preview",
+                          onClick: () => {
+                            setSelectedDevice(device);
+                            setOpenPreview(true);
+                          },
+                        },
+                        { icon: TrashIcon, label: "Delete" },
+                        { icon: TrashIcon, label: "Delete" },
+                        { icon: TrashIcon, label: "Delete" },
+                        { icon: TrashIcon, label: "Delete" },
+                        { icon: TrashIcon, label: "Delete" },
+                        { icon: TrashIcon, label: "Delete" },
+                        {
+                          icon: RefreshIcon,
+                          label: "Refresh",
+                          className: loading ? "animate-spin" : "",
+                          onClick: fetchDevices,
+                        },
+                        {
+                          icon: TrashIcon,
+                          label: "Delete",
+                          className: "hover:text-red-500",
+                          onClick: () => handleDelete(device),
+                        },
+                      ].map(({ icon: Icon, label, onClick }, idx) => (
+                        <button
+                          key={idx}
+                          onClick={onClick}
+                          title={label}
+                          className="
+                            text-gray-500
+                            hover:text-primary
+                            transition
+                            duration-200
+                            ease-in-out
+                            hover:scale-110
+                            active:scale-95
+                          "
+                        >
+                          <Icon />
+                        </button>
+                      ))}
                     </div>
                   </TableCell>
                 </TableRow>

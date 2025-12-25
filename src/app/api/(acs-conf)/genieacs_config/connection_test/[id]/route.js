@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import GenieacsCredential from "@/models/genieacs/GenieACSCredential"
-import { getServerSession } from "next-auth"
 import sequelize from "@/lib/db"
 import axios from "axios"
+import { GetSessionFromServer } from "@/lib/GetSessionfromServer"
 
 export async function POST(req, { params }) {
   let transaction
   try {
-    const session = await getServerSession(authOptions)
+    const session = await GetSessionFromServer()
     if (!session) {
       return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 })
     }

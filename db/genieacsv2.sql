@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 14, 2025 at 02:54 PM
+-- Generation Time: Dec 25, 2025 at 09:49 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `configurations` (
   `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` char(36) COLLATE utf8mb4_general_ci NOT NULL,
   `config_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `config_value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -84,6 +85,7 @@ INSERT INTO `genieacs_credentials` (`id`, `user_id`, `host`, `port`, `username`,
 
 CREATE TABLE `mac_vendor_cache` (
   `oui` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'First 6 characters of MAC address (OUI)',
+  `user_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `vendor_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `cached_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Cache for MAC address vendor lookups to reduce API calls';
@@ -494,6 +496,7 @@ CREATE TABLE `users` (
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `status` smallint NOT NULL,
+  `active_trx` smallint NOT NULL DEFAULT '0',
   `role_id` bigint NOT NULL,
   `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'default.png',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -504,9 +507,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `phone`, `email`, `password`, `status`, `role_id`, `image`, `created_at`, `updated_at`) VALUES
-('1', 'user', 'User', '-', NULL, 'user@email.com', '$2y$12$KK8uA4gbevAlLyy.4COlWuM9OaRz9Cgw/PE17RDlYscL45E/Jxyxm', 1, 1, 'default.png', '2025-11-22 04:44:45', '2025-11-30 06:54:27'),
-('1be06acd-6d8b-47cf-a2b2-41db67746260', 'fullo', 'M Taufik', 'Saefulloh', '08123456789', 'fullo@email.com', '$2b$12$3s5IFy6qs3joQii9BH41NORy6Jq3WnVRmEwjeO0.q/t8o286NFI3i', 1, 2, 'default.png', '2025-12-05 07:34:40', '2025-12-06 20:23:05');
+INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `phone`, `email`, `password`, `status`, `active_trx`, `role_id`, `image`, `created_at`, `updated_at`) VALUES
+('1', 'user', 'User', '-', NULL, 'user@email.com', '$2y$12$KK8uA4gbevAlLyy.4COlWuM9OaRz9Cgw/PE17RDlYscL45E/Jxyxm', 1, 0, 1, 'default.png', '2025-11-22 04:44:45', '2025-11-30 06:54:27'),
+('1be06acd-6d8b-47cf-a2b2-41db67746260', 'fullo', 'M Taufikmm', 'Saefulloh', '08123456789', 'fullo@email.com', '$2b$12$3s5IFy6qs3joQii9BH41NORy6Jq3WnVRmEwjeO0.q/t8o286NFI3i', 1, 0, 2, 'default.png', '2025-12-05 07:34:40', '2025-12-25 21:13:18');
 
 -- --------------------------------------------------------
 
@@ -526,7 +529,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 ALTER TABLE `configurations`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `config_key` (`config_key`);
+  ADD UNIQUE KEY `config_key` (`config_key`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `device_monitoring`
@@ -549,7 +553,8 @@ ALTER TABLE `genieacs_credentials`
 --
 ALTER TABLE `mac_vendor_cache`
   ADD PRIMARY KEY (`oui`),
-  ADD KEY `idx_cached_at` (`cached_at`);
+  ADD KEY `idx_cached_at` (`cached_at`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `map_connections`
@@ -720,10 +725,22 @@ ALTER TABLE `roles`
 --
 
 --
+-- Constraints for table `configurations`
+--
+ALTER TABLE `configurations`
+  ADD CONSTRAINT `configurations_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT;
+
+--
 -- Constraints for table `genieacs_credentials`
 --
 ALTER TABLE `genieacs_credentials`
   ADD CONSTRAINT `fk_user_genieacs` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `mac_vendor_cache`
+--
+ALTER TABLE `mac_vendor_cache`
+  ADD CONSTRAINT `to_users_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `map_connections`

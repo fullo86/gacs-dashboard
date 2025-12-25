@@ -1,11 +1,10 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import User from "@/models/users/User";
 import { compare } from "bcrypt";
 
 export async function PATCH(req) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await GetSessionFromServer();
 
     if (!session?.user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {

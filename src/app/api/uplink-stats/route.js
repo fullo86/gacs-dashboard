@@ -1,11 +1,10 @@
 import { getDevices } from "@/lib/GenieACS";
-import { authOptions } from "../auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { parseDeviceDataFast } from "@/lib/GenieACSFast";
+import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
+  const session = await GetSessionFromServer();
 
   if (!session?.user?.id) {
     return NextResponse.json(

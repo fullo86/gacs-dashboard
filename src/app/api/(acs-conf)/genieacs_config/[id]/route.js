@@ -1,14 +1,12 @@
 import sequelize from '@/lib/db';
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import GenieacsCredential from "@/models/genieacs/GenieACSCredential";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export async function PATCH(request, { params }) {
   const transaction = await sequelize.transaction();
 
   try {
-    const session = await getServerSession(authOptions);
+    const session = await GetSessionFromServer();
     const userId = session?.user?.id
     const resolvedParams = await params;
     const id = resolvedParams.id;

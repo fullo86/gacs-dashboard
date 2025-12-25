@@ -81,11 +81,11 @@ export function RecentDevices({ data, className }) {
                   {device.status || 'unknown'}
                 </div>
               </TableCell>                           
-              {/* <TableCell>
+              <TableCell>
                 {device.last_inform_timestamp
                   ? new Date(device.last_inform_timestamp).toLocaleString()
                   : "-"}
-              </TableCell> */}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

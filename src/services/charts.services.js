@@ -1,9 +1,8 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getDeviceStats } from "@/lib/GenieACS";
-import { getServerSession } from "next-auth";
+import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 
 export async function getDevicesUsedData() {
-  const session = await getServerSession(authOptions);
+  const session = await GetSessionFromServer();
   const stats = await getDeviceStats(session?.user?.id);
 
   if (!stats.success || !stats.data) {

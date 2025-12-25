@@ -13,6 +13,7 @@ export function PreviewIcon(props) {
   );
 }
 
+
 export function DownloadIcon(props) {
   return (
     <svg
@@ -27,3 +28,34 @@ export function DownloadIcon(props) {
     </svg>
   );
 }
+
+
+export function RefreshIcon(props) {
+  return (
+    <svg
+      width={20}
+      height={20}
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      {...props}
+    >
+      <path
+        fillRule="evenodd"
+        d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.418A6 6 0 1 1 8 2v1z"
+      />
+      <path d="M8 1.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 1.5z" />
+    </svg>
+  );
+}
+{/* <svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 16 16"
+  fill="currentColor"
+  className="w-5 h-5"
+>
+  <path
+    fillRule="evenodd"
+    d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.418A6 6 0 1 1 8 2v1z"
+  />
+  <path d="M8 1.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 1.5z" />
+</svg> */}

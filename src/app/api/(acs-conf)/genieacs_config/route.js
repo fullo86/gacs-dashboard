@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
 import sequelize from '@/lib/db';
 import GenieacsCredential from '@/models/genieacs/GenieACSCredential';
-import { getServerSession } from 'next-auth';
 import User from '@/models/users/User';
-import { authOptions } from '../../auth/[...nextauth]/route';
 import { v4 as uuidv4 } from "uuid";
+import { GetSessionFromServer } from '@/lib/GetSessionfromServer';
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions); 
+    const session = await GetSessionFromServer(); 
     if (!session?.user?.id) {
       return new Response(
         JSON.stringify({ success: false, message: "Unauthorized" }),
@@ -48,7 +47,7 @@ export async function GET() {
 export async function POST(request) {
   const transaction = await sequelize.transaction();
   try {
-    const session = await getServerSession(authOptions);
+    const session = await GetSessionFromServer();
     if (!session || !session.user?.username) {
       return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
     }
