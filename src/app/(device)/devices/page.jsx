@@ -11,9 +11,10 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
-import { TrashIcon } from '@/assets/icons';
-import { DownloadIcon, RefreshIcon, PreviewIcon } from './icons';
+import { RouterIcon, TrashIcon } from '@/assets/icons';
+import { DownloadIcon, RefreshIcon, PreviewIcon, LightningIcon } from './icons';
 import DeviceOverviewModal from '@/components/Modals/modalDeviceOverview';
+import DHCPServerModal from '@/components/Modals/modalDHCPServer';
 
 export default function Devices() {
   const [devices, setDevices] = useState([]);
@@ -23,7 +24,19 @@ export default function Devices() {
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [openPreview, setOpenPreview] = useState(false);
-  const [selectedDevice, setSelectedDevice] = useState(null);
+  const [selectedDeviceOverview, setSelectedDeviceOverview] = useState(null);
+  const [selectedDeviceDHCP, setSelectedDeviceDHCP] = useState(null);
+  const [openDHCP, setOpenDHCP] = useState(false);
+  const [dhcpForm, setDhcpForm] = useState({
+  DHCPServerEnable: true,
+  MinAddress: "192.168.1.10",
+  MaxAddress: "192.168.1.200",
+  SubnetMask: "255.255.255.0",
+  IPRouters: "192.168.1.1",
+  DNSServers: "8.8.8.8,8.8.4.4",
+  DHCPLeaseTime: 86400,
+});
+
 
   const fetchDevices = async () => {
     try {
@@ -53,14 +66,14 @@ export default function Devices() {
 
   const handleDelete = async (device) => {
     const result = await Swal.fire({
-      title: "Yakin ingin menghapus?",
-      text: `Device "${device.wifi_ssid}" akan dihapus permanen.`,
+      title: "Are you sure to Delete?",
+      text: `Device "${device.wifi_ssid}" will be permanent delete.`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#ef4444",
       cancelButtonColor: "#6b7280",
-      confirmButtonText: "Hapus",
-      cancelButtonText: "Batal",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
       reverseButtons: true,
     });
 
@@ -72,8 +85,8 @@ export default function Devices() {
 
       await Swal.fire({
         icon: "success",
-        title: "Berhasil",
-        text: "Device berhasil dihapus",
+        title: "Success",
+        text: "Device Successfully Deleted",
         timer: 1500,
         showConfirmButton: false,
       });
@@ -81,12 +94,75 @@ export default function Devices() {
     } catch (err) {
       await Swal.fire({
         icon: "error",
-        title: "Gagal",
-        text: "Terjadi kesalahan saat menghapus device",
+        title: "Error",
+        text: "An Error have been occured.",
       });
     }
   };
 
+  const handleSummonDevice = async (device) => {
+    try {
+      const res = await axios.post(
+        "/api/devices/summon",
+        {
+          device_id: device.device_id, // ✅ ID GENIEACS
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (!res.data.success) {
+        throw new Error(res.data.message);
+      }
+
+      await Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Device Successfully Summoned",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      console.error(err);
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err.response?.data?.message,
+      });
+    }
+  };
+
+  const handleEditDhcpServer = async (device, dhcpForm) => {
+    try {
+      const res = await axios.post(
+        "/api/devices/dhcp",
+        {
+          device_id: device.device_id,
+          parameters: dhcpForm,
+        },
+        { withCredentials: true }
+      );
+
+      if (!res.data.success) {
+        throw new Error(res.data.message);
+      }
+
+      await Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "DHCP Server Updated",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err.response?.data?.message || err.message,
+      });
+    }
+  };
   console.log(devices, 'asdd')
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
@@ -101,7 +177,7 @@ export default function Devices() {
             <TableHead>SSID</TableHead>
             <TableHead>RX</TableHead>
             <TableHead>STATUS</TableHead>
-            <TableHead className="text-right xl:pr-7.5">ACTIONS</TableHead>
+            <TableHead>ACTIONS</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -157,28 +233,33 @@ export default function Devices() {
                     </div>
                   </TableCell>
                   <TableCell className="xl:pr-7.5">
-                    <div className="grid grid-cols-3 gap-3 place-items-center">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 place-items-center">
                       {[
                         {
                           icon: PreviewIcon,
                           label: "Preview",
                           onClick: () => {
-                            setSelectedDevice(device);
+                            setSelectedDeviceOverview(device);
                             setOpenPreview(true);
+                          },
+                        },
+                        { 
+                          icon: LightningIcon, 
+                          label: "Summon Device",
+                          onClick: () => handleSummonDevice(device),
+                        },
+                        { 
+                          icon: RouterIcon, 
+                          label: "Edit DHCP Server",
+                          onClick: () => {
+                            setSelectedDeviceDHCP(device);
+                            setOpenDHCP(true);
                           },
                         },
                         { icon: TrashIcon, label: "Delete" },
                         { icon: TrashIcon, label: "Delete" },
                         { icon: TrashIcon, label: "Delete" },
                         { icon: TrashIcon, label: "Delete" },
-                        { icon: TrashIcon, label: "Delete" },
-                        { icon: TrashIcon, label: "Delete" },
-                        {
-                          icon: RefreshIcon,
-                          label: "Refresh",
-                          className: loading ? "animate-spin" : "",
-                          onClick: fetchDevices,
-                        },
                         {
                           icon: TrashIcon,
                           label: "Delete",
@@ -213,7 +294,13 @@ export default function Devices() {
       <DeviceOverviewModal
         open={openPreview}
         onClose={() => setOpenPreview(false)}
-        device={selectedDevice}
+        device={selectedDeviceOverview}
+      />
+
+      <DHCPServerModal
+        open={openDHCP}
+        onClose={() => setOpenDHCP(false)}
+        device={selectedDeviceDHCP}
       />
 
       <div className="mt-4 flex justify-end gap-2">

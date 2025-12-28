@@ -144,6 +144,22 @@ export default function ACSConfig() {
           <button
             type="button"
             onClick={handleTestConnection}
+            className="flex w-1/2 items-center justify-center rounded-lg bg-primary p-[13px] font-medium text-white"
+          >
+            Connection Test
+          </button>
+
+          <button
+            type="submit"
+            className="flex w-1/2 items-center justify-center rounded-lg bg-primary p-[13px] font-medium text-white"
+          >
+            Save Configuration
+          </button>
+        </div>
+        {/* <div className="mt-7 flex gap-3">
+          <button
+            type="button"
+            onClick={handleTestConnection}
             disabled={loading}
             className="flex w-1/2 items-center justify-center rounded-lg border border-primary bg-white p-[13px] font-medium text-primary hover:bg-primary hover:text-white transition"
           >
@@ -163,7 +179,7 @@ export default function ACSConfig() {
               <span className="ml-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-primary border-t-transparent" />
             )}
           </button>
-        </div>
+        </div> */}
 
         {/* <button className="flex w-full justify-center rounded-lg bg-primary p-[13px] font-medium text-white hover:bg-opacity-90 mt-5" disabled={loading}>
           Save Configuration

@@ -22,7 +22,7 @@ import { SessionProvider } from 'next-auth/react'
 export default function RootLayout({ children }) {
   const pathname = usePathname();
   const excludedPaths = ["/auth/sign-in", "/auth/sign-up"];
-  const isExcluded = excludedPaths.includes(pathname);
+  const isExcluded = excludedPaths.includes(pathname) || children.type.name === "NotFoundPage";
 
   return (
     <html lang="en" suppressHydrationWarning>

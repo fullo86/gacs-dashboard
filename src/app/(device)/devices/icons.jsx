@@ -47,15 +47,22 @@ export function RefreshIcon(props) {
     </svg>
   );
 }
-{/* <svg
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 16 16"
-  fill="currentColor"
-  className="w-5 h-5"
->
-  <path
-    fillRule="evenodd"
-    d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.418A6 6 0 1 1 8 2v1z"
-  />
-  <path d="M8 1.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 1.5z" />
-</svg> */}
+
+export function LightningIcon({ size = 20, className = "" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  );
+}

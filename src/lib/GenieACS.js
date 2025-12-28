@@ -143,6 +143,20 @@ export async function getDeviceStats(userId) {
   return { success: true, data: { total, online, offline }  };
 }
 
+export async function summonAndFetchAdminCredentials(userId, deviceId) {
+  const encodedId = encodeURIComponent(deviceId);
+
+  const endpoint = `/devices/${encodedId}/tasks`;
+
+  const data = {
+    name: "refreshObject",
+    objectName: "VirtualParameters",
+    connection_request: true,
+  };
+
+  return await genieacsRequest(userId, endpoint, "POST", data);
+}
+
 export function parseDeviceData(device) {
   const data = {};
 
