@@ -41,6 +41,10 @@ const User = connectDB.define(
       type: DataTypes.SMALLINT,
       allowNull: false
     },
+    activation_token : {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
     role_id: {
       type: DataTypes.BIGINT,
       references: {

@@ -32,7 +32,6 @@ export async function GET() {
       );
     }
 
-    // Ambil semua device
     const devicesResult = await getDevices(credential.user_id);
 
     if (!devicesResult.success) {
@@ -43,8 +42,7 @@ export async function GET() {
       });
     }
 
-    // Pakai parser lengkap → semua field pasti muncul
-    const devices = devicesResult.data.map(device =>
+    const devices = (devicesResult.data || []).map(device =>
       parseDeviceData(device)
     );
 

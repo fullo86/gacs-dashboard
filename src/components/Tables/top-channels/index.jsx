@@ -34,7 +34,7 @@ export function TopChannels({ data, className }) {
         </TableHeader>
 
         <TableBody>
-          {data.map((channel, i) => (
+          {(data || []).map((channel, i) => (
             <TableRow
               className="text-center text-base font-medium text-dark dark:text-white"
               key={channel.name + i}

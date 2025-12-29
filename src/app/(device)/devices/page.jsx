@@ -64,48 +64,12 @@ export default function Devices() {
     fetchDevices();
   }, [skip]);
 
-  const handleDelete = async (device) => {
-    const result = await Swal.fire({
-      title: "Are you sure to Delete?",
-      text: `Device "${device.wifi_ssid}" will be permanent delete.`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#6b7280",
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
-      reverseButtons: true,
-    });
-
-    if (!result.isConfirmed) return;
-
-    try {
-      // 🔥 panggil API delete
-      // await deleteDevice(device.id);
-
-      await Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Device Successfully Deleted",
-        timer: 1500,
-        showConfirmButton: false,
-      });
-      fetchDevices();
-    } catch (err) {
-      await Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "An Error have been occured.",
-      });
-    }
-  };
-
   const handleSummonDevice = async (device) => {
     try {
       const res = await axios.post(
         "/api/devices/summon",
         {
-          device_id: device.device_id, // ✅ ID GENIEACS
+          device_id: device.device_id,
         },
         {
           withCredentials: true,
@@ -177,6 +141,7 @@ export default function Devices() {
             <TableHead>SSID</TableHead>
             <TableHead>RX</TableHead>
             <TableHead>STATUS</TableHead>
+            <TableHead>TAGS</TableHead>
             <TableHead>ACTIONS</TableHead>
           </TableRow>
         </TableHeader>
@@ -201,7 +166,7 @@ export default function Devices() {
                 </TableCell>
               </TableRow>
             )
-            : devices.map((device, index) => (
+            : (devices || []).map((device, index) => (
                 <TableRow key={device.id || index} className="border-[#eee] dark:border-dark-3">
                   <TableCell>
                     <p className="mt-[3px] text-body-sm font-small">{device.serial_number || '-'}</p>
@@ -232,6 +197,7 @@ export default function Devices() {
                       {device.status || 'unknown'}
                     </div>
                   </TableCell>
+                  <TableCell>-</TableCell>
                   <TableCell className="xl:pr-7.5">
                     <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 place-items-center">
                       {[
@@ -260,12 +226,6 @@ export default function Devices() {
                         { icon: TrashIcon, label: "Delete" },
                         { icon: TrashIcon, label: "Delete" },
                         { icon: TrashIcon, label: "Delete" },
-                        {
-                          icon: TrashIcon,
-                          label: "Delete",
-                          className: "hover:text-red-500",
-                          onClick: () => handleDelete(device),
-                        },
                       ].map(({ icon: Icon, label, onClick }, idx) => (
                         <button
                           key={idx}

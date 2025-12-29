@@ -34,7 +34,7 @@ export function RecentDevices({ data, className }) {
         </TableHeader>
 
         <TableBody>
-          {data.map((device) => (
+          {(data || []).map((device) => (
             <TableRow
               className="text-center text-base font-medium text-dark dark:text-white"
               key={device.device_id}

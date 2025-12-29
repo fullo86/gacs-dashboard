@@ -5,6 +5,8 @@ import User from "@/models/users/User";
 import { userRegisterSchema } from "@/lib/validation";
 import { v4 as uuidv4 } from "uuid";
 import { ZodError } from "zod";
+import { sendEmail } from "@/lib/mailer";
+import ActivationEmail from "@/components/Email/templates/ActivationEmail";
 
 export async function POST(request) {
   const transaction = await connectDB.transaction();
@@ -48,6 +50,7 @@ export async function POST(request) {
     }
 
     const hashedPassword = await bcrypt.hash(parsed.password, 12);
+    const activationToken = uuidv4();
 
     const user = await User.create(
       {
@@ -59,11 +62,25 @@ export async function POST(request) {
         phone: parsed.phone,
         password: hashedPassword,
         status: 0,
+        activation_token: activationToken,
         role_id: 2,
         image: "default.png",
       },
       { transaction }
     );
+
+    const activationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/activate?token=${activationToken}`;
+
+    await sendEmail({
+      to: user.email,
+      subject: "Aktivasi Akun",
+      component: (
+        <ActivationEmail
+          name={user.first_name}
+          activationLink={activationLink}
+        />
+      ),
+    });
 
     await transaction.commit();
     return NextResponse.json(
