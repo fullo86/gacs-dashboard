@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import React, { useId, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import InputGroup from "../FormElements/InputGroup";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Swal from "sweetalert2";
 
@@ -14,6 +14,30 @@ export default function SigninWithPassword() {
   });
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const activated = searchParams.get("activated");
+
+  useEffect(() => {
+    if (activated === "true") {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Account is activated, please login.",
+        timer: 3000,
+        showConfirmButton: false,
+      });
+    }
+    
+    if (activated === "false") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "An error have been occurred",
+        timer: 3000,
+        showConfirmButton: false,
+      });
+    }
+  }, [activated]);
 
   const handleChange = (e) => {
     setData({
@@ -102,98 +126,3 @@ export default function SigninWithPassword() {
     </form>
   );
 }
-
-// "use client";
-// import Link from "next/link";
-// import React, { useId, useState } from "react";
-// import InputGroup from "../FormElements/InputGroup";
-// import { useRouter } from "next/navigation";
-// import { signIn } from "next-auth/react";
-
-// export default function SigninWithPassword() {
-//   const [data, setData] = useState({
-//     email: process.env.NEXT_PUBLIC_DEMO_USER_MAIL || "",
-//     password: process.env.NEXT_PUBLIC_DEMO_USER_PASS || "",
-//     remember: false,
-//   });
-//   const router = useRouter()
-//   const [loading, setLoading] = useState(false);
-
-//   const handleChange = (e) => {
-//     setData({
-//       ...data,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const res = await signIn("credentials", {
-//         redirect: false,
-//         username: e.target.username.value,
-//         password: e.target.password.value,
-//         callbackUrl: '/'
-//       })
-//       if (!res?.error) {
-//         router.push('/')
-//       }else{
-//         console.log(res.error)
-//       }
-//     } catch (error) {
-//       console.log(error)            
-//     }
-
-//     setLoading(true);
-
-//     setTimeout(() => {
-//       setLoading(false);
-//     }, 1000);
-//   };
-
-//   const id = useId();
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <InputGroup
-//         type="text"
-//         label="Username"
-//         className="mb-4 [&_input]:py-[15px]"
-//         placeholder="Enter your username"
-//         name="username"
-//         onChange={handleChange}
-//         value={data.username}
-//       />
-
-//       <InputGroup
-//         type="password"
-//         label="Password"
-//         className="mb-5 [&_input]:py-[15px]"
-//         placeholder="Enter your password"
-//         name="password"
-//         onChange={handleChange}
-//         value={data.password}
-//       />
-
-//       <div className="mb-6 flex items-center justify-end gap-2 py-2 font-medium">
-//         <Link
-//           href="/auth/forgot-password"
-//           className="hover:text-primary dark:text-white dark:hover:text-primary"
-//         >
-//           Forgot Password?
-//         </Link>
-//       </div>
-
-//       <div className="mb-4.5">
-//         <button
-//           type="submit"
-//           className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
-//         >
-//           Sign In
-//           {loading && (
-//             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent dark:border-primary dark:border-t-transparent" />
-//           )}
-//         </button>
-//       </div>
-//     </form>
-//   );
-// }

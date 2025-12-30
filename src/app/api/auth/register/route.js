@@ -69,7 +69,7 @@ export async function POST(request) {
       { transaction }
     );
 
-    const activationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/activate?token=${activationToken}`;
+    const activationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/activate/${activationToken}`;
 
     await sendEmail({
       to: user.email,

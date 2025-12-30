@@ -33,7 +33,6 @@ const Alert = ({
   ...props
 }) => {
   const IconComponent = icons[variant];
-
   return (
     <div
       role="alert"

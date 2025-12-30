@@ -1,28 +1,33 @@
 "use client";
+
 import Signup from "@/components/Auth/Signup";
 import Image from "next/image";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export default function Register() {
-  const [darkMode, setDarkMode] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
+    setMounted(true);
+  }, []);
 
-  const toggleDarkMode = () => setDarkMode(!darkMode);
+  if (!mounted) return null;
+
+  const darkMode = theme === "dark";
+
+  const toggleDarkMode = () => {
+    setTheme(darkMode ? "light" : "dark");
+  };
 
   return (
     <div className="relative flex min-h-screen w-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
       
       <button
         onClick={toggleDarkMode}
-        className="fixed bottom-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-700 shadow-lg transition hover:scale-105"
+        className="fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-700 shadow-lg transition hover:scale-105"
         aria-label="Toggle dark mode"
       >
         {darkMode ? (
@@ -53,13 +58,24 @@ export default function Register() {
       </button>
 
       <div className="flex w-full flex-col xl:flex-row">
+        
         <div className="flex w-full xl:w-1/2 items-center justify-center p-8 sm:p-12.5 xl:p-15">
           <Signup />
         </div>
 
         <div className="hidden xl:flex w-full xl:w-1/2">
-          <div className="flex flex-col justify-between w-full h-full overflow-hidden px-12.5 pt-12.5 pb-8 custom-gradient-1 dark:!bg-dark-2 dark:bg-none transition-colors duration-300">
+          <div
+            className={`
+              flex flex-col justify-between w-full h-full overflow-hidden
+              px-12.5 pt-12.5 pb-8
+              transition-colors duration-300
 
+              ${darkMode 
+                ? "bg-gradient-to-br from-gray-900 to-gray-800" 
+                : "bg-gradient-to-br from-indigo-50 to-purple-100"
+              }
+            `}
+          >
             <Link className="mb-6 inline-block" href="/">
               <Image
                 className="hidden dark:block"
@@ -78,13 +94,13 @@ export default function Register() {
             </Link>
 
             <div className="flex-1 flex flex-col justify-center">
-              <p className="mb-3 text-xl font-medium text-dark dark:text-white">
+              <p className={darkMode ? "mb-3 text-xl font-medium text-gray-300" : "mb-3 text-xl font-medium text-gray-700"}>
                 Register your account
               </p>
-              <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
+              <h1 className={darkMode ? "mb-4 text-2xl font-bold text-white sm:text-heading-3" : "mb-4 text-2xl font-bold text-gray-900 sm:text-heading-3"}>
                 Welcome New User!
               </h1>
-              <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
+              <p className={darkMode ? "w-full max-w-[375px] font-medium text-gray-400" : "w-full max-w-[375px] font-medium text-gray-600"}>
                 Completing the necessary fields below to register new account
               </p>
             </div>
@@ -95,78 +111,13 @@ export default function Register() {
                 alt="Illustration"
                 width={405}
                 height={325}
-                className="mx-auto dark:opacity-30"
+                className={darkMode ? "mx-auto opacity-30" : "mx-auto opacity-80"}
               />
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
 }
-
-// import Signup from "@/components/Auth/Signup";
-// import Image from "next/image";
-// import Link from "next/link";
-
-// export const metadata = {
-//   title: "Sign Up",
-// };
-
-// export default function Register() {
-//   return (
-//     <div className="flex min-h-screen w-screen bg-gray-100 dark:bg-gray-900">
-//       <div className="flex w-full flex-col xl:flex-row">
-
-//         <div className="flex w-full xl:w-1/2 items-center justify-center p-8 sm:p-12.5 xl:p-15">
-//           <Signup />
-//         </div>
-
-//         <div className="hidden xl:flex w-full xl:w-1/2">
-//           <div className="flex flex-col justify-between w-full h-full overflow-hidden px-12.5 pt-12.5 pb-8 custom-gradient-1 dark:!bg-dark-2 dark:bg-none">
-
-//             <Link className="mb-6 inline-block" href="/">
-//               <Image
-//                 className="hidden dark:block"
-//                 src={"/images/logo/logo.svg"}
-//                 alt="Logo"
-//                 width={176}
-//                 height={32}
-//               />
-//               <Image
-//                 className="dark:hidden"
-//                 src={"/images/logo/logo-dark.svg"}
-//                 alt="Logo"
-//                 width={176}
-//                 height={32}
-//               />
-//             </Link>
-
-//             {/* Teks */}
-//             <div className="flex-1 flex flex-col justify-center">
-//               <p className="mb-3 text-xl font-medium text-dark dark:text-white">
-//                 Register your account
-//               </p>
-//               <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
-//                 Welcome New User!
-//               </h1>
-//               <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
-//                 Completing the necessary fields below to register new account
-//               </p>
-//             </div>
-
-//             <div className="mt-8">
-//               <Image
-//                 src={"/images/grids/grid-02.svg"}
-//                 alt="Illustration"
-//                 width={405}
-//                 height={325}
-//                 className="mx-auto dark:opacity-30"
-//               />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
