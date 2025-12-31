@@ -4,6 +4,7 @@ import connectDB from "@/lib/db";
 import User from "@/models/users/User";
 import { userRegisterSchema } from "@/lib/validation";
 import { v4 as uuidv4 } from "uuid";
+import crypto from "crypto";
 import { ZodError } from "zod";
 import { sendEmail } from "@/lib/mailer";
 import ActivationEmail from "@/components/Email/templates/ActivationEmail";
@@ -50,7 +51,7 @@ export async function POST(request) {
     }
 
     const hashedPassword = await bcrypt.hash(parsed.password, 12);
-    const activationToken = uuidv4();
+    const activationToken = crypto.randomBytes(32).toString("hex");
 
     const user = await User.create(
       {

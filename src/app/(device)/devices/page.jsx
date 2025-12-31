@@ -151,7 +151,7 @@ export default function Devices() {
             ?
               [...Array(limit)].map((_, idx) => (
                 <TableRow key={idx} className="border-[#eee] dark:border-dark-3">
-                  {[...Array(7)].map((__, i) => (
+                  {[...Array(8)].map((__, i) => (
                     <TableCell key={i}>
                       <div className="h-4 w-full bg-gray-200 rounded animate-pulse dark:bg-gray-700" />
                     </TableCell>
@@ -161,7 +161,7 @@ export default function Devices() {
             : devices.length === 0
             ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-6">
+                <TableCell colSpan={8} className="text-center py-6">
                   No Data Found
                 </TableCell>
               </TableRow>

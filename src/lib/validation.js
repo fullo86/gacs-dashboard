@@ -9,3 +9,13 @@ export const userRegisterSchema = z.object({
     password: z.string().min(8, { message: 'Password min 8 character' }),
     cfm_password: z.string().min(8, { message: 'Password min 8 character' }),
 });
+
+
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email("Email tidak valid"),
+});
+
+export const ResetPasswordSchema = z.object({
+  token: z.string().min(1, "Token empty"),
+  newPassword: z.string().min(6, "Password less than 6"),
+});
