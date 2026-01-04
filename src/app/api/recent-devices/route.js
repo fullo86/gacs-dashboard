@@ -40,7 +40,7 @@ export async function GET() {
       return NextResponse.json({
         success: false,
         message: "Failed to fetch devices from GenieACS",
-      });
+      }, { status: 400 });
     }
 
     const recentDevices = result.data.map((device) => {
@@ -55,8 +55,12 @@ export async function GET() {
 
     const topDevices = recentDevices.slice(0, 5);
 
-    return NextResponse.json({ success: true, devices: topDevices });
+    return NextResponse.json({ success: true, devices: topDevices }, 
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ success: false, message: error.message });
+    return NextResponse.json({ success: false, message: error.message }, 
+      { status: 500 }
+    );
   }
 }

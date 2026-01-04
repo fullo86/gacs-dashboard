@@ -6,13 +6,14 @@ import axios from "axios";
 export async function OverviewCardsGroup() {
   // const { devices, on_status, off_status, users } = await getOverviewData();
   const stats = await getDeviceStatus();
+  const avg = stats?.data?.total > 0 ? Math.round((stats?.data?.online / stats?.data?.total) * 100) : 0;
   return (
     <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4 2xl:gap-7.5">
       <OverviewCard
         label="Total Devices"
         data={{
           ...stats.data.total,
-          value: compactFormat(stats.data.total),
+          value: compactFormat(stats?.data?.total),
         }}
       />
 
@@ -20,7 +21,7 @@ export async function OverviewCardsGroup() {
         label="Online"
         data={{
           ...stats.data.online,
-          value: compactFormat(stats.data.online),
+          value: compactFormat(stats?.data?.online),
         }}
       />
 
@@ -28,17 +29,17 @@ export async function OverviewCardsGroup() {
         label="Offiline"
         data={{
           ...stats.data.offline,
-          value: compactFormat(stats.data.offline),
+          value: compactFormat(stats?.data?.offline),
         }}
       />
 
-      {/* <OverviewCard
-        label="Total Users"
+      <OverviewCard
+        label="Avg Uptime"
         data={{
-          ...users,
-          value: compactFormat(users.value),
+          ...avg,
+          value: compactFormat(avg),
         }}
-      /> */}
+      />
     </div>
   );
 }

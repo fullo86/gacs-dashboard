@@ -36,11 +36,11 @@ export default function SettingsPage() {
     try {
       const res = await axios.patch("/api/account_settings", form);
 
-      if (res.status !== 200 || !res.data?.user) {
-        throw new Error(res.data?.error);
+      if (res.status !== 200 || !res.data?.success) {
+        throw new Error(res.data?.message || "Update failed");
       }
-      
-      const updatedUser = res.data.user;
+
+      const updatedUser = res.data.data;
 
       await signIn("credentials", {
         redirect: false,
@@ -56,17 +56,18 @@ export default function SettingsPage() {
       Swal.fire({
         icon: "success",
         title: "Successfully Updated!",
-        text: "Account Setting has successfully updated!",
+        text: res.data.message,
       });
 
     } catch (error) {
       const message =
-        error.response?.data?.error ||
-        error.message ;
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
 
       Swal.fire({
         icon: "error",
-        title: "Oops an error occured.",
+        title: "Oops an error occurred.",
         text: message,
       });
     }

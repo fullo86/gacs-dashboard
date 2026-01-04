@@ -19,3 +19,11 @@ export const ResetPasswordSchema = z.object({
   token: z.string().min(1, "Token empty"),
   newPassword: z.string().min(6, "Password less than 6"),
 });
+
+export const WifiSchema = z.object({
+  device_id: z.string().min(1),
+  wifi_ssid: z.string().min(1).max(32),
+  security_mode: z.string().optional().default('WPA2PSK'),
+  wifi_password: z.string().optional(),
+  wlan_index: z.number().optional().default(1)
+});

@@ -11,10 +11,20 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
-import { RouterIcon, TrashIcon } from '@/assets/icons';
-import { DownloadIcon, RefreshIcon, PreviewIcon, LightningIcon } from './icons';
-import DeviceOverviewModal from '@/components/Modals/modalDeviceOverview';
+import { 
+  DownloadIcon, 
+  RefreshIcon, 
+  PreviewIcon, 
+  LightningIcon, 
+  WifiIcon, 
+  RouterIcon, 
+  TrashIcon, 
+  ConnectedDeviceIcon
+} from '@/components/Icons/Icons';
 import DHCPServerModal from '@/components/Modals/modalDHCPServer';
+import DeviceOverviewModal from './modals/modalDeviceOverview';
+import WiFiConfigModal from './modals/modalWifiConfig';
+import ConnectedDeviceModal from './modals/modalDeviceConnected';
 
 export default function Devices() {
   const [devices, setDevices] = useState([]);
@@ -36,6 +46,10 @@ export default function Devices() {
   DNSServers: "8.8.8.8,8.8.4.4",
   DHCPLeaseTime: 86400,
 });
+const [openWiFi, setOpenWiFi] = useState(false);
+const [selectedDeviceWiFi, setSelectedDeviceWiFi] = useState(null);
+const [openConnectDevice, setConnectDevice] = useState(false);
+const [selectedDeviceConnect, setSelectedDeviceConnect] = useState(null);
 
 
   const fetchDevices = async () => {
@@ -130,7 +144,7 @@ export default function Devices() {
   console.log(devices, 'asdd')
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
-      {error && <p className="text-red-500">{error}</p>}
+      {/* {error && <p className="text-red-500">{error}</p>} */}
 
       <Table>
         <TableHeader>
@@ -181,7 +195,7 @@ export default function Devices() {
                     <p className="mt-[3px] text-body-sm font-small">{device.wifi_ssid || '-'}</p>
                   </TableCell>
                   <TableCell>
-                    <p className="mt-[3px] text-body-sm font-small">{device.rx_power + ' DBM' || '-'}</p>
+                    <p className="mt-[3px] text-body-sm font-small">{device.rx_power + '/DBM' || '-'}</p>
                   </TableCell>
                   <TableCell>
                     <div
@@ -222,10 +236,25 @@ export default function Devices() {
                             setOpenDHCP(true);
                           },
                         },
+                        {
+                          icon: WifiIcon,
+                          label: "Edit WiFi",
+                          onClick: () => {
+                            setSelectedDeviceWiFi(device);
+                            setOpenWiFi(true);
+                          },
+                        },
                         { icon: TrashIcon, label: "Delete" },
                         { icon: TrashIcon, label: "Delete" },
                         { icon: TrashIcon, label: "Delete" },
-                        { icon: TrashIcon, label: "Delete" },
+                        {
+                          icon: ConnectedDeviceIcon,
+                          label: "Connected Device",
+                          onClick: () => {
+                            setSelectedDeviceConnect(device);
+                            setConnectDevice(true);
+                          },
+                        },
                       ].map(({ icon: Icon, label, onClick }, idx) => (
                         <button
                           key={idx}
@@ -261,6 +290,18 @@ export default function Devices() {
         open={openDHCP}
         onClose={() => setOpenDHCP(false)}
         device={selectedDeviceDHCP}
+      />
+
+      <WiFiConfigModal
+        open={openWiFi}
+        onClose={() => setOpenWiFi(false)}
+        device={selectedDeviceWiFi}
+      />
+
+      <ConnectedDeviceModal
+        open={openConnectDevice}
+        onClose={() => setConnectDevice(false)}
+        device={selectedDeviceConnect}
       />
 
       <div className="mt-4 flex justify-end gap-2">

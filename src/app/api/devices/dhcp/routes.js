@@ -3,12 +3,8 @@ import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import GenieacsCredential from "@/models/genieacs/GenieACSCredential";
 import { genieacsRequest } from "@/lib/GenieACS";
 
-/**
- * Update DHCP Server Configuration
- */
 export async function POST(request) {
   try {
-    // 🔐 require login
     const session = await GetSessionFromServer();
     const userId = session?.user?.id;
 
@@ -19,7 +15,6 @@ export async function POST(request) {
       );
     }
 
-    // 📦 ambil body
     const body = await request.json();
     const { device_id, parameters } = body;
 
@@ -37,7 +32,6 @@ export async function POST(request) {
       );
     }
 
-    // 🔒 allowed parameter mapping
     const basePath = "InternetGatewayDevice.LANDevice.1.LANHostConfigManagement";
 
     const allowedParams = {
@@ -51,7 +45,6 @@ export async function POST(request) {
       DHCPLeaseTime: "DHCPLeaseTime",
     };
 
-    // 🧩 build GenieACS parameters
     const genieParams = {};
 
     for (const key of Object.keys(parameters)) {
@@ -124,7 +117,6 @@ export async function POST(request) {
       }
     }
 
-    // 🔑 ambil credential GenieACS
     const credential = await GenieacsCredential.findOne({
       where: { user_id: userId },
     });
@@ -136,7 +128,6 @@ export async function POST(request) {
       );
     }
 
-    // 🚀 kirim task ke GenieACS
     const result = await genieacsRequest(
       userId,
       `/devices/${encodeURIComponent(device_id)}/tasks`,
@@ -154,7 +145,7 @@ export async function POST(request) {
         task_status: result.status === 200 ? "immediate" : "queued",
         parameters_updated: Object.keys(genieParams).length,
         dhcp_enabled: parameters.DHCPServerEnable ?? null,
-      });
+      }, { status : 200 });
     }
 
     return NextResponse.json(

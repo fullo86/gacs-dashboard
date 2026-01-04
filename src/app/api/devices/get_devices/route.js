@@ -48,9 +48,10 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
+      message: " Get Devices Successfully ",
       devices,
       count: devices.length
-    });
+    }, { status: 200 });
 
   } catch (error) {
     return NextResponse.json(

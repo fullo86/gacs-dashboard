@@ -24,7 +24,7 @@ export async function POST(request) {
     if (emailUser) {
       await transaction.rollback();
       return NextResponse.json(
-        { statusCode: 400, success: false, message: "Email already exists" },
+        { success: false, message: "Email already exists" },
         { status: 400 }
       );
     }
@@ -37,7 +37,7 @@ export async function POST(request) {
     if (userName) {
       await transaction.rollback();
       return NextResponse.json(
-        { statusCode: 400, success: false, message: "Username already exists" },
+        { success: false, message: "Username already exists" },
         { status: 400 }
       );
     }
@@ -45,7 +45,7 @@ export async function POST(request) {
     if (parsed.password !== parsed.cfm_password) {
       await transaction.rollback();
       return NextResponse.json(
-        { statusCode: 400, success: false, message: "Confirmation does not match" },
+        { success: false, message: "Confirmation does not match" },
         { status: 400 }
       );
     }
@@ -86,7 +86,6 @@ export async function POST(request) {
     await transaction.commit();
     return NextResponse.json(
       {
-        statusCode: 201,
         success: true,
         message: "Successfully Registered",
         data: {
@@ -121,7 +120,6 @@ export async function POST(request) {
     console.error("Register error:", error);
     return NextResponse.json(
       {
-        statusCode: 500,
         success: false,
         message: "Internal Server Error",
         error: error.message,

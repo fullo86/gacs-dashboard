@@ -1,36 +1,37 @@
+import { NextResponse } from "next/server";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import User from "@/models/users/User";
 import { compare } from "bcrypt";
+import connectDB from "@/lib/db";
 
 export async function PATCH(req) {
+  const transaction = await connectDB.transaction();
   try {
     const session = await GetSessionFromServer();
 
     if (!session?.user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
+      return NextResponse.json({ success: false, message: "Unauthorized" }, 
+        { status: 401 }
+      ) 
     }
 
     const body = await req.json();
     const { first_name, last_name, email, phone, password } = body;
 
-    const user = await User.findOne({ where: { id: session.user.id } });
+    const user = await User.findOne({ where: { id: session.user.id }}, { transaction });
 
     if (!user) {
-      return new Response(JSON.stringify({ error: "User not found" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });
+      await transaction.rollback();
+      return NextResponse.json({ success: false, message: "User not found"}, 
+        { status: 404 }
+      ) 
     }
 
     const cmprepswd = await compare(password, user.password)
-    if (!password || !cmprepswd) {
-      return new Response(JSON.stringify({ error: "Please check the password" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });      
+      if (!password || !cmprepswd) {
+        return NextResponse.json({ success: false, message: "Wrong Password" }, 
+          { status: 404 }
+        )      
     }
 
     await user.update({
@@ -38,18 +39,15 @@ export async function PATCH(req) {
       last_name,
       email,
       phone,
-    });
+    }, { transaction });
 
-    return new Response(JSON.stringify({ user }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-
+    await transaction.commit();
+    return NextResponse.json({ success: true, message: "Account Successfully Updated", data: user }, { status: 200 })    
   } catch (error) {
-    console.error(error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    await transaction.rollback();
+    console.log(error);
+    return NextResponse.json({ success: false, message: error || "Internal Server Error" }, 
+      { status: 500 }
+    )    
   }
 }

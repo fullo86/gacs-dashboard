@@ -24,16 +24,18 @@ const PasswordReset = connectDB.define(
       allowNull: false,
     },
     used: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      type: DataTypes.TINYINT,
       allowNull: false,
+      defaultValue: 0, // pake 0, jangan false
     },
     created_at: {
       type: DataTypes.DATE,
+      allowNull: false,
       defaultValue: DataTypes.NOW,
     },
     updated_at: {
       type: DataTypes.DATE,
+      allowNull: false,
       defaultValue: DataTypes.NOW,
     },
   },
@@ -43,9 +45,11 @@ const PasswordReset = connectDB.define(
   }
 );
 
+// Association dengan User
 PasswordReset.belongsTo(User, {
   foreignKey: "user_id",
   targetKey: "id",
+  as: "User", // pastikan include nanti pakai alias ini
   onDelete: "RESTRICT",
   onUpdate: "RESTRICT",
 });

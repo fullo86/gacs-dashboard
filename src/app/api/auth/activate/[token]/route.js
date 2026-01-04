@@ -22,7 +22,7 @@ export async function GET(request, { params }) {
       // return NextResponse.json({ statusCode: 404, success: false, message: "Invalid activation token" }, { status: 404 });
     }
 
-    user.status = 1; // aktif
+    user.status = 1;
     user.activation_token = null;
     await user.save({ transaction });
 

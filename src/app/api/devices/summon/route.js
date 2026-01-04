@@ -5,7 +5,6 @@ import { summonAndFetchAdminCredentials } from "@/lib/GenieACS";
 
 export async function POST(request) {
   try {
-    // ambil session
     const session = await GetSessionFromServer();
 
     if (!session) {
@@ -17,7 +16,6 @@ export async function POST(request) {
 
     const userId = session.user.id;
 
-    // ambil body
     const body = await request.json();
     const { device_id } = body;
 
@@ -28,7 +26,6 @@ export async function POST(request) {
       );
     }
 
-    // ambil credential
     const credential = await GenieacsCredential.findOne({
       where: { user_id: userId },
     });
@@ -50,7 +47,6 @@ export async function POST(request) {
       );
     }
 
-    // summon device
     const result = await summonAndFetchAdminCredentials(
       userId,
       device_id
@@ -60,11 +56,12 @@ export async function POST(request) {
       return NextResponse.json({
         success: true,
         message:
-          "Device summon berhasil dan admin credentials sedang diambil...",
+          "Device Successfully Summoned",
+        data: result
       });
     }
 
-    let errorMsg = "Gagal summon device";
+    let errorMsg = "Failed when summoned device";
     if (result.error) {errorMsg += ": " + result.error}
     if (result.status) {errorMsg += " (HTTP " + result.status + ")"}
 

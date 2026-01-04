@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server"
-import GenieacsCredential from "@/models/genieacs/GenieACSCredential"
-import sequelize from "@/lib/db"
-import axios from "axios"
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer"
+import GenieacsCredential from "@/models/genieacs/GenieACSCredential"
+import axios from "axios"
+import connectDB from "@/lib/db"
 
 export async function POST(req, { params }) {
-  let transaction
+  const transaction = await connectDB.transaction();
   try {
     const session = await GetSessionFromServer()
     if (!session) {
@@ -14,8 +14,6 @@ export async function POST(req, { params }) {
 
     const resolvedParams = await params
     const id = resolvedParams.id
-
-    transaction = await sequelize.transaction()
 
     const data = await GenieacsCredential.findByPk(id, { transaction })
     if (!data) {
@@ -79,11 +77,13 @@ export async function POST(req, { params }) {
     }                
 
     await transaction.commit()
-
-    return NextResponse.json({ success: true, message: `Connected / Role [${userRole}]`, role: userRole }, { status: 200 })      
-
+    return NextResponse.json({ success: true, message: `Connected / Role [${userRole}]`, data: userRole }, 
+      { status: 200 }
+    )      
   } catch (err) {
-    if (transaction) await transaction.rollback()
-    return NextResponse.json({ success: false, message: `Connection error: ${err.message}` }, { status: 500 })      
+    await transaction.rollback()
+    return NextResponse.json({ success: false, message: `Connection error: ${err.message}` }, 
+      { status: 500 }
+    )      
   }
 }

@@ -18,8 +18,8 @@ export default function ACSConfig() {
 
   useEffect(() => {
     const fetchConfig = async () => {
-      try {
         const res = await axios.get(`/api/genieacs_config`);
+        console.log(res.data)
         if (res?.data?.data) {
           setConfigId(res.data.data.id);
           setForm({
@@ -29,9 +29,6 @@ export default function ACSConfig() {
             password: res.data.data.username || "",
           });
         }
-      } catch (error) {
-        console.error("Failed to load config:", error);
-      }
     };
 
     fetchConfig();

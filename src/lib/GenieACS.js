@@ -8,8 +8,14 @@ async function getCredentialByUser(userId) {
 
 async function genieacsRequest(userId, endpoint, method = 'GET', data = null) {
   const credential = await getCredentialByUser(userId);
-  if (!credential) throw new Error('Credential not found');
-
+  if (!credential) {
+    return {
+      success: false,
+      error: "GENIEACS_NOT_CONFIGURED",
+      status: 200,
+    };
+  }
+  
   const url = `http://${credential.host}:${credential.port}${endpoint}`;
 
   const config = {
@@ -105,6 +111,18 @@ export async function getDeviceCount(userId, query = {}) {
   return { success: false, devices: 0 };
 }
 
+export async function setWiFiConfig(userId, deviceId, ssid, password = "", wlanIndex = 1, securityMode = "WPA2PSK") {
+  const parameters = [];
+  parameters.push({ name: `InternetGatewayDevice.LANDevice.1.WLANConfiguration.${wlanIndex}.SSID`, value: ssid, type: "xsd:string" });
+  const beaconTypeMap = { WPA2PSK: "11i", WPAPSK: "WPA", WPA2PSKWPAPSK: "WPAand11i", None: "Basic" };
+  parameters.push({ name: `InternetGatewayDevice.LANDevice.1.WLANConfiguration.${wlanIndex}.BeaconType`, value: beaconTypeMap[securityMode] || "11i", type: "xsd:string" });
+
+  if (securityMode !== "None" && password) {
+    parameters.push({ name: `InternetGatewayDevice.LANDevice.1.WLANConfiguration.${wlanIndex}.KeyPassphrase`, value: password, type: "xsd:string" });
+  }
+
+  return await genieacsRequest(userId, `/devices/${deviceId}/tasks`, "POST", { name: "SetParameterValues", parameters });
+}
 
 /**
  * Get device statistics

@@ -1,29 +1,29 @@
-import bcrypt from "bcryptjs";
-import User from "@/models/users/User";
+import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
 import { ResetPasswordSchema } from "@/lib/validation";
 import { Op } from "sequelize";
 import PasswordReset from "@/models/reset_password/ResetPassword";
+import connectDB from "@/lib/db";
 
 export async function POST(req) {
+  const transaction = await connectDB.transaction();
   try {
     const body = await req.json();
     const { token, newPassword } = ResetPasswordSchema.parse(body);
 
-    // Cari token yang valid
     const reset = await PasswordReset.findOne({
       where: {
         token,
-        used: false,
+        used: 0,              
         expires: { [Op.gt]: new Date() },
-      },
-      include: User,
-    });
+      }
+    }, { transaction });
 
     if (!reset) {
-      return new Response(
-        JSON.stringify({ message: "Token Expired" }),
+      await transaction.rollback();
+      return NextResponse.json({ success: false, mesage: "Token Expired Or Not Valid" }, 
         { status: 400 }
-      );
+      )      
     }
 
     const hashed = await bcrypt.hash(newPassword, 12);
@@ -32,19 +32,21 @@ export async function POST(req) {
 
     reset.used = true;
     await reset.save();
+    await transaction.commit();
 
-    return new Response(
-      JSON.stringify({ status: true, message: "Password Successfully Changed" }),
+    return NextResponse.json({ success: true, message: "Password Successfully Changed" }, 
       { status: 200 }
-    );
+    )
   } catch (error) {
+    await transaction.rollback();
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify({ errors: error.errors }), { status: 400 });
+      return NextResponse.json({ success: false, message: error.errrors }, 
+        { status: 400 }
+      )
     }
     console.error(error);
-    return new Response(
-      JSON.stringify({ message: "Internal Server Error" }),
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: "Internal Server Error" }, 
+      { status: 400 }
+    )      
   }
 }

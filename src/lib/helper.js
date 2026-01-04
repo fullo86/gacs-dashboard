@@ -7,6 +7,7 @@ import GenieacsCredential from "../models/genieacs/GenieACSCredential";
 import Configuration from "@/models/configuration/Configuration";
 import { GetSessionFromServer } from "./GetSessionfromServer";
 import MacVendorCache from "@/models/mac_vendor_cache/MacVendorCache";
+import PasswordReset from "@/models/reset_password/ResetPassword";
 
 
 // JSON response helper
@@ -171,4 +172,16 @@ export async function getMACVendor(macAddress, fallbackName = 'Unknown Device') 
   });
 
   return fallbackName;
+}
+
+
+export async function validateResetToken(token) {
+  console.log(token,'s')
+  if (!token) return false;
+
+  const resetToken = await PasswordReset.findOne({
+    where: { token },
+  });
+
+  return !!resetToken;
 }
