@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import SignInForm from "./SignInForm";
+import { Button } from "@/components/ui-elements/button";
 
 export default function SignIn() {
   const { theme, setTheme } = useTheme();
@@ -20,12 +21,14 @@ export default function SignIn() {
   return (
     <div className="relative flex h-screen w-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
       
-      <button
+      <Button
         onClick={() => setTheme(darkMode ? "light" : "dark")}
-        className="fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-700 shadow-lg transition hover:scale-105"
-      >
-        {darkMode ? "🌞" : "🌙"}
-      </button>
+        icon={darkMode ? "🌞" : "🌙"}
+        variant="primary"
+        shape="full"
+        size="small"
+        className="fixed bottom-4 right-4 z-50 h-12 w-12 p-0 bg-gray-300 dark:bg-gray-700 shadow-lg"
+      />
 
       <div className="flex h-full w-full flex-col xl:flex-row">
 

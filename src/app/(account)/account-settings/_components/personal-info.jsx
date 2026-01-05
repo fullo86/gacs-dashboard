@@ -6,6 +6,7 @@ import {
 } from "@/assets/icons";
 import InputGroup from "@/components/FormElements/InputGroup";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
+import { Button } from "@/components/ui-elements/button";
 import Link from "next/link";
 
 export function PersonalInfoForm(props) {
@@ -86,12 +87,14 @@ export function PersonalInfoForm(props) {
             Cancel
           </Link>
 
-          <button
-            className="rounded-lg bg-primary px-6 py-[7px] font-medium text-gray-2 hover:bg-opacity-90"
+          <Button
+            label="Save"
             type="submit"
-          >
-            Save
-          </button>
+            variant="primary"
+            shape="rounded"
+            size="small"
+            className="text-gray-2"
+          />
         </div>
       </form>
     </ShowcaseSection>

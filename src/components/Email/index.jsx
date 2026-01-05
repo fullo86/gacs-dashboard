@@ -23,7 +23,7 @@ export default function BaseLayout({ children }) {
           {children}
           <Section style={{ marginTop: "32px" }}>
             <Text style={{ fontSize: "12px", color: "#888" }}>
-              © {new Date().getFullYear()} Your Company
+              © {new Date().getFullYear()}
             </Text>
           </Section>
         </Container>

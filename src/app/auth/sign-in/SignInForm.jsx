@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import Swal from "sweetalert2";
+import { Button } from "@/components/ui-elements/button";
 import ForgotPasswordForm from "../forgot-password/ForgotPasswordForm";
 import InputGroup from "@/components/FormElements/InputGroup";
-import Link from "next/link";
 
 export default function SignInForm() {
   const [openForgot, setOpenForgot] = useState(false);
@@ -103,26 +104,30 @@ export default function SignInForm() {
         />
 
         <div className="mb-6 flex items-center justify-end gap-2 py-2 font-medium">
-          <button
+          <Button
             type="button"
             onClick={() => setOpenForgot(true)}
-            className="hover:text-primary dark:text-white dark:hover:text-primary"
-          >
-            Forgot Password?
-          </button>
+            label="Forgot Password?"
+            variant="primary"
+            size="small"
+            className="bg-transparent hover:bg-transparent text-black dark:text-white dark:hover:text-primary p-0"
+          />
         </div>
 
         <div className="mb-4.5">
-          <button
+          <Button
             type="submit"
-            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
+            label="Sign In"
+            variant="primary"
+            shape="rounded"
+            size="default"
+            className="w-full gap-2 p-4"
             disabled={loading}
           >
-            Sign In
             {loading && (
               <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent dark:border-primary dark:border-t-transparent" />
             )}
-          </button>
+          </Button>
         </div>
       </form>
 

@@ -1,9 +1,10 @@
 "use client";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import SignUpForm from "./SignUpForm";
+import { Button } from "@/components/ui-elements/button";
 
 export default function Register() {
   const { theme, setTheme } = useTheme();
@@ -17,25 +18,23 @@ export default function Register() {
   return (
     <div className="relative flex min-h-screen w-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
 
-      {/* Toggle Dark Mode */}
-      <button
+      <Button
         onClick={() => setTheme(darkMode ? "light" : "dark")}
-        className="fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-700 shadow-lg"
-      >
-        {darkMode ? "🌞" : "🌙"}
-      </button>
+        icon={darkMode ? "🌞" : "🌙"}
+        variant="primary"
+        shape="full"
+        size="small"
+        className="fixed bottom-4 right-4 z-50 h-12 w-12 p-0 bg-gray-300 dark:bg-gray-700 shadow-lg"
+      />
 
       <div className="flex w-full flex-col xl:flex-row">
 
-        {/* LEFT - REGISTER FORM */}
         <div className="flex w-full xl:w-1/2 items-center justify-center p-8 sm:p-12.5 xl:p-15">
-          {/* 🔥 KUNCI KONSISTENSI */}
           <div className="w-full max-w-[600px]">
             <SignUpForm />
           </div>
         </div>
 
-        {/* RIGHT - INFO */}
         <div className="hidden xl:flex w-full xl:w-1/2">
           <div
             className={`

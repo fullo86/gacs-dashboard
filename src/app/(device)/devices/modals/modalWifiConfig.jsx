@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Modal from "@/components/Modals/modal";
 import InputGroup from "@/components/FormElements/InputGroup";
 import { Select } from "@/components/FormElements/select";
+import { Button } from "@/components/ui-elements/button";
 
 
 export default function WiFiConfigModal({ open, onClose, device }) {
@@ -109,20 +110,22 @@ export default function WiFiConfigModal({ open, onClose, device }) {
         />
 
         <div className="mt-7 flex gap-3">
-          <button
+          <Button
             type="button"
             onClick={onClose}
-            className="flex w-1/2 items-center justify-center rounded-lg border border-gray-300 p-[13px] font-medium"
-          >
-            Batal
-          </button>
+            label="Batal"
+            variant="outlineDark"
+            shape="rounded"
+            className="w-1/2 p-[13px]"
+          />
 
-          <button
+          <Button
             type="submit"
-            className="flex w-1/2 items-center justify-center rounded-lg bg-primary p-[13px] font-medium text-white"
-          >
-            Update WiFi
-          </button>
+            label="Update WiFi"
+            variant="primary"
+            shape="rounded"
+            className="w-1/2 p-[13px]"
+          />
         </div>
       </form>
     </Modal>

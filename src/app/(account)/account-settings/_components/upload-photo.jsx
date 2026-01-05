@@ -1,6 +1,8 @@
 import { UploadIcon } from "@/assets/icons";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
+import { Button } from "@/components/ui-elements/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export function UploadPhotoForm() {
   return (
@@ -60,18 +62,18 @@ export function UploadPhotoForm() {
         </div>
 
         <div className="flex justify-end gap-3">
-          <button
-            className="flex justify-center rounded-lg border border-stroke px-6 py-[7px] font-medium text-dark hover:shadow-1 dark:border-dark-3 dark:text-white"
-            type="button"
-          >
+          <Link href={'/dashboard'} className="rounded-lg border border-stroke px-6 py-[7px] font-medium text-dark hover:shadow-1 dark:border-dark-3 dark:text-white">
             Cancel
-          </button>
-          <button
-            className="flex items-center justify-center rounded-lg bg-primary px-6 py-[7px] font-medium text-gray-2 hover:bg-opacity-90"
+          </Link>
+
+          <Button
+            label="Save"
             type="submit"
-          >
-            Save
-          </button>
+            variant="primary"
+            shape="rounded"
+            size="small"
+            className="text-gray-2"
+          />          
         </div>
       </form>
     </ShowcaseSection>

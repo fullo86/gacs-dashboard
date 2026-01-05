@@ -25,6 +25,7 @@ import DHCPServerModal from '@/components/Modals/modalDHCPServer';
 import DeviceOverviewModal from './modals/modalDeviceOverview';
 import WiFiConfigModal from './modals/modalWifiConfig';
 import ConnectedDeviceModal from './modals/modalDeviceConnected';
+import { Button } from '@/components/ui-elements/button';
 
 export default function Devices() {
   const [devices, setDevices] = useState([]);
@@ -305,21 +306,25 @@ const [selectedDeviceConnect, setSelectedDeviceConnect] = useState(null);
       />
 
       <div className="mt-4 flex justify-end gap-2">
-        <button
+        <Button
           onClick={() => setSkip(Math.max(skip - limit, 0))}
           disabled={skip === 0}
-          className="rounded border px-3 py-1 disabled:opacity-50"
-        >
-          Prev
-        </button>
+          label="Prev"
+          variant="outlineDark"
+          shape="rounded"
+          size="small"
+          className="px-3 py-1 disabled:opacity-50"
+        />
 
-        <button
+        <Button
           onClick={() => setSkip(skip + limit)}
           disabled={!hasMore}
-          className="rounded border px-3 py-1 disabled:opacity-50"
-        >
-          Next
-        </button>
+          label="Next"
+          variant="outlineDark"
+          shape="rounded"
+          size="small"
+          className="px-3 py-1 disabled:opacity-50"
+        />
       </div>
     </div>
   );

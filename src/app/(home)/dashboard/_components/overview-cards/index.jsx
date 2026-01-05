@@ -1,10 +1,8 @@
 import { compactFormat } from "@/lib/format-number";
 import { OverviewCard } from "./card";
-import { getDeviceStatus, getUplinkStatus } from "../../fetch";
-import axios from "axios";
+import { getDeviceStatus } from "../../fetch";
 
 export async function OverviewCardsGroup() {
-  // const { devices, on_status, off_status, users } = await getOverviewData();
   const stats = await getDeviceStatus();
   const avg = stats?.data?.total > 0 ? Math.round((stats?.data?.online / stats?.data?.total) * 100) : 0;
   return (
