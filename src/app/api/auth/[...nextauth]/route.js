@@ -44,7 +44,6 @@ export const authOptions = {
                         message: "Account is not active"
                     }))
                 }
-
                 return {
                     id: user.id,
                     username: user.username,
@@ -52,7 +51,8 @@ export const authOptions = {
                     first_name: user.first_name,
                     last_name: user.last_name,
                     phone: user.phone,
-                    image: user.image
+                    image: user.image,
+                    active_trx: user.active_trx
                 }
             }
         })
@@ -68,6 +68,7 @@ export const authOptions = {
                 token.last_name = user.last_name
                 token.phone = user.phone
                 token.image = user.image
+                token.active_trx = user.active_trx
             }
             return token
         },
@@ -81,6 +82,7 @@ export const authOptions = {
                 session.user.last_name = token.last_name
                 session.user.phone = token.phone
                 session.user.image = token.image
+                session.user.active_trx = token.active_trx
             }
             return session
         }

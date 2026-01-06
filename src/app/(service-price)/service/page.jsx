@@ -37,7 +37,7 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen py-16 px-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 transition-colors">
       <h1 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">
-        Our Pricing Plans
+        Our Service Plans
       </h1>
 
       <div className="grid gap-8 md:grid-cols-3">

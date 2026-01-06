@@ -118,6 +118,20 @@ export function Table(props) {
   );
 }
 
+export function DigitalServiceIcon({ size = 20, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      className=""
+    >
+      <path d="M4 12a4 4 0 01.25-7.993A5 5 0 0115 7h.5a3.5 3.5 0 010 7H5a3 3 0 01-1-5.917" />
+    </svg>
+  );
+}
+
 export function PieChart(props) {
   return (
     <svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>

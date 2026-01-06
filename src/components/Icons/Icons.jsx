@@ -13,6 +13,21 @@ export function PreviewIcon(props) {
   );
 }
 
+export function ServiceIcon({ size = 20, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      className=""
+    >
+      <path d="M10 2a1 1 0 011 1v2h2a1 1 0 011 1v2a1 1 0 01-1 1h-2v2a1 1 0 01-1 1v2a1 1 0 01-1-1v-2H7a1 1 0 01-1-1V8a1 1 0 011-1h2V5a1 1 0 011-1z" />
+      <path d="M3 14.5c0-1.38.896-2.5 2-2.5h10c1.104 0 2 1.12 2 2.5v1c0 .828-.672 1.5-1.5 1.5H4.5C3.672 17 3 16.328 3 15.5v-1z" />
+    </svg>
+  );
+}
+
 
 export function DownloadIcon(props) {
   return (

@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import connectDB from "@/lib/db";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import Transaction from "@/models/transaction/Transaction";
-import Detail_Transaction from "@/models/detail_transaction/Detail_Transaction";
 
 export async function POST(req) {
   const transaction = await connectDB.transaction();    

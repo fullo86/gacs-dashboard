@@ -1,26 +1,19 @@
 import { signOut } from "next-auth/react";
 import * as Icons from "../icons";
 
-export const NAV_DATA = [
-  {
-    label: "MAIN MENU",
-    items: [
-      // {
-      //   title: "Dashboard",
-      //   icon: Icons.HomeIcon,
-      //   items: [
-      //     {
-      //       title: "eCommerce",
-      //       url: "/",
-      //     },
-      //   ],
-      // },
-      {
-        title: "Dashboard",
+export const getNavData = (active_trx) => {
+  let items = [];
+
+  items.push({
+    title: "Dashboard",
         url: "/dashboard",
         icon: Icons.HomeIcon,
         items: [],
-      },
+  });
+
+  if (active_trx === 1) {
+    // Menu tambahan hanya untuk active_trx = 1
+    items.push(
       {
         title: "Devices",
         url: "/devices",
@@ -37,28 +30,32 @@ export const NAV_DATA = [
         title: "Configuration",
         icon: Icons.Alphabet,
         items: [
-          {
-            title: "ACS Configuration",
-            url: "/acs-configuration",
-          },
-          {
-            title: "MikroTik Configuration",
-            url: "/mikrotik-configuration",
-          },
-          {
-            title: "BOT Configuration",
-            url: "/bot-configuration",
-          },
+          { title: "ACS Configuration", url: "/acs-configuration" },
+          { title: "MikroTik Configuration", url: "/mikrotik-configuration" },
+          { title: "BOT Configuration", url: "/bot-configuration" },
         ],
-      },
-      {
-        title: "Sign Out",
-        icon: Icons.Authentication,
-        action: () => signOut({ callbackUrl: "/auth/sign-in" }),
-        // onClick: () => signOut(),
-        items: [],
-      },
-    ],
-  },
-];
+      }
+    );
+  }else{
+      items.push({
+      title: "Service",
+      url: "/service",
+      icon: Icons.DigitalServiceIcon,
+      items: [],
+    });
+  }
 
+  items.push({
+    title: "Sign Out",
+    icon: Icons.Authentication,
+    action: () => signOut({ callbackUrl: "/auth/sign-in" }),
+    items: [],
+  });
+
+  return [
+    {
+      label: "MAIN MENU",
+      items,
+    },
+  ];
+};

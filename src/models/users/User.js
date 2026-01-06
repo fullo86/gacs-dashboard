@@ -41,9 +41,14 @@ const User = connectDB.define(
       type: DataTypes.SMALLINT,
       allowNull: false
     },
-    activation_token : {
+    activation_token: {
       type: DataTypes.STRING(255),
       allowNull: true
+    },
+    active_trx: {
+      type: DataTypes.SMALLINT,
+      allowNull: false,
+      defaultValue: 0
     },
     role_id: {
       type: DataTypes.BIGINT,

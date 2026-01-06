@@ -5,15 +5,19 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { NAV_DATA } from "./data";
+import { getNavData, NAV_DATA } from "./data";
 import { ArrowLeftIcon, ChevronUp } from "./icons";
 import { MenuItem } from "./menu-item";
 import { useSidebarContext } from "./sidebar-context";
+import { useSession } from "next-auth/react";
 
 export function Sidebar() {
+  const { data: session } = useSession(); 
   const pathname = usePathname();
   const { setIsOpen, isOpen, isMobile, toggleSidebar } = useSidebarContext();
   const [expandedItems, setExpandedItems] = useState([]);
+  const active_trx = session?.user?.active_trx;  
+  const NAV_DATA = getNavData(active_trx); 
 
   const toggleExpanded = (title) => {
     setExpandedItems((prev) =>
@@ -141,20 +145,6 @@ export function Sidebar() {
                                   item.title.toLowerCase().split(" ").join("-");
 
                             return (
-                                // <MenuItem
-                                //   className="flex items-center gap-3 py-3"
-                                //   as={item.onClick ? undefined : "link"}
-                                //   href={item.onClick ? undefined : href}
-                                //   onClick={item.onClick}
-                                //   isActive={pathname === href}
-                                // >
-                                //   <item.icon
-                                //     className="size-6 shrink-0"
-                                //     aria-hidden="true"
-                                //   />
-                                //   <span>{item.title}</span>
-                                // </MenuItem>
-
                               <MenuItem
                                 className="flex items-center gap-3 py-3"
                                 as={item.action ? undefined : "link"}
