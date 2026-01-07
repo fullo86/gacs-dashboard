@@ -12,7 +12,6 @@ export const getNavData = (active_trx) => {
   });
 
   if (active_trx === 1) {
-    // Menu tambahan hanya untuk active_trx = 1
     items.push(
       {
         title: "Devices",

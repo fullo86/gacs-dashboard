@@ -91,6 +91,37 @@ export const ConnectedDeviceIcon = ({ size = 20, className = "" }) => (
   </svg>
 );
 
+export function TransactionHistoryIcon({ size = 20, className = "" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      {/* List */}
+      <line x1="8" y1="6" x2="21" y2="6" />
+      <line x1="8" y1="12" x2="21" y2="12" />
+      <line x1="8" y1="18" x2="16" y2="18" />
+
+      {/* Bullet points */}
+      <circle cx="4" cy="6" r="1" />
+      <circle cx="4" cy="12" r="1" />
+      <circle cx="4" cy="18" r="1" />
+
+      {/* Clock */}
+      <circle cx="18" cy="18" r="3" />
+      <path d="M18 16.5v1.8l1.2.7" />
+    </svg>
+  );
+}
+
 export function LightningIcon({ size = 20, className = "" }) {
   return (
     <svg
@@ -110,19 +141,19 @@ export function LightningIcon({ size = 20, className = "" }) {
   );
 }
 
-export function EyeIcon({ size = 20, className = "" }) {
+export function EyeIcon(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={className}
+      {...props}
     >
       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
       <circle cx="12" cy="12" r="3" />
@@ -130,19 +161,19 @@ export function EyeIcon({ size = 20, className = "" }) {
   );
 }
 
-export function EyeOffIcon({ size = 20, className = "" }) {
+export function EyeOffIcon(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={className}
+      {...props}
     >
       <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-5 0-9.27-3-11-7a10.94 10.94 0 0 1 2.06-3.94" />
       <line x1="1" y1="1" x2="23" y2="23" />

@@ -1,10 +1,35 @@
 import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-export default withAuth({
-  pages: {
-    signIn: "/auth/sign-in",
+export default withAuth(
+  function middleware(req) {
+    const { token } = req.nextauth;
+    const pathname = req.nextUrl.pathname;
+
+    const restrictedRoutes = [
+      "/devices",
+      "/maps",
+      "/acs-configuration",
+      "/mikrotik-configuration",
+      "/bot-configuration",
+    ];
+
+    const isRestricted = restrictedRoutes.some((route) =>
+      pathname.startsWith(route)
+    );
+
+    if (isRestricted && token?.active_trx !== 1) {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
+
+    return NextResponse.next();
   },
-});
+  {
+    pages: {
+      signIn: "/auth/sign-in",
+    },
+  }
+);
 
 export const config = {
   matcher: [
@@ -12,7 +37,6 @@ export const config = {
     "/account-settings/:path*",
     "/devices/:path*",
     "/maps/:path*",
-    "/devices/:path*",
     "/acs-configuration/:path*",
     "/mikrotik-configuration/:path*",
     "/bot-configuration/:path*",

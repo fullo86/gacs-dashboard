@@ -17,11 +17,7 @@ export default function DeviceOverviewModal({
       size="xl"
     >
       <div className="space-y-6 text-sm">
-
-        {/* ===== TOP GRID ===== */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-
-          {/* ===== BASIC INFORMATION ===== */}
           <div className="rounded border border-stroke p-4 dark:border-dark-3">
             <h4 className="mb-3 font-semibold">ⓘ Basic Information</h4>
 

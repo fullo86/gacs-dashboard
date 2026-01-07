@@ -85,6 +85,20 @@ export async function POST(request, { params }) {
       redirect_url: midtransResponse.redirect_url || ""
     }, { transaction: trxDb });
 
+    if (!NewDetail) {
+      return NextResponse.json({ success: false, message: "Failed Create the detail Transaction" },
+        { status: 400 }
+      )
+    }
+
+    await Transaction.update(
+      { status: "pending" },
+      { where: { 
+          id: NewDetail.transaction_id,
+          order_id: NewDetail.order_id
+        } 
+      }
+    )
     await trxDb.commit();
 
     return NextResponse.json({

@@ -61,3 +61,36 @@ export async function POST(req) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    const session = await GetSessionFromServer();
+
+    if (!session) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+    const userId = await session?.user?.id
+    const trx = await Transaction.findAll({
+      where: { user_id: userId },
+      order: [['updated_at', 'DESC']] 
+    });
+
+    if (!trx || trx.length === 0) {
+      return NextResponse.json({ success: false, message: "No transactions found", data: [] },
+        { status: 404 }
+      )
+    }
+
+    return NextResponse.json({ success: true, message: "Get Transaction Success", data: trx },
+      { status: 200 }
+    )
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    return NextResponse.json({ success: false, message: "Failed to Get Transaction Data", error: error },
+      { status: 500 }
+    )
+  }
+}

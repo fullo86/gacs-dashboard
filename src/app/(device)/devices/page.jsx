@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useEffect, useState } from 'react';
 import Swal from "sweetalert2";
 import axios from 'axios';
@@ -19,7 +19,9 @@ import {
   WifiIcon, 
   RouterIcon, 
   TrashIcon, 
-  ConnectedDeviceIcon
+  ConnectedDeviceIcon,
+  EyeIcon,
+  EyeOffIcon
 } from '@/components/Icons/Icons';
 import DHCPServerModal from '@/components/Modals/modalDHCPServer';
 import DeviceOverviewModal from './modals/modalDeviceOverview';
@@ -51,7 +53,7 @@ const [openWiFi, setOpenWiFi] = useState(false);
 const [selectedDeviceWiFi, setSelectedDeviceWiFi] = useState(null);
 const [openConnectDevice, setConnectDevice] = useState(false);
 const [selectedDeviceConnect, setSelectedDeviceConnect] = useState(null);
-
+const [isTagsVisible, setIsTagsVisible] = useState(false);
 
   const fetchDevices = async () => {
     try {
@@ -142,6 +144,32 @@ const [selectedDeviceConnect, setSelectedDeviceConnect] = useState(null);
       });
     }
   };
+
+  const handleIconClick = () => {
+    setIsTagsVisible(!isTagsVisible);
+  };
+  
+  const handleTags = () => {
+    Swal.fire({
+      title: 'Pilih aksi',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Add',
+      denyButtonText: 'Remove',
+      cancelButtonText: 'Batal',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Tombol "Add" ditekan
+        console.log('Add dipilih');
+        Swal.fire('Ditambahkan!', '', 'success');
+      } else if (result.isDenied) {
+        // Tombol "Remove" ditekan
+        console.log('Remove dipilih');
+        Swal.fire('Dihapus!', '', 'warning');
+      }
+    });
+  };
+
   console.log(devices, 'asdd')
   return (
     <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
@@ -212,7 +240,15 @@ const [selectedDeviceConnect, setSelectedDeviceConnect] = useState(null);
                       {device.status || 'unknown'}
                     </div>
                   </TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    {isTagsVisible ? (
+                      Array.isArray(device.tags) && device.tags.length > 0
+                        ? device.tags.join(', ') 
+                        : 'N/A' 
+                    ) : (
+                      '-'
+                    )}
+                  </TableCell>
                   <TableCell className="xl:pr-7.5">
                     <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 place-items-center">
                       {[
@@ -245,7 +281,13 @@ const [selectedDeviceConnect, setSelectedDeviceConnect] = useState(null);
                             setOpenWiFi(true);
                           },
                         },
-                        { icon: TrashIcon, label: "Delete" },
+                        {
+                          icon: EyeOffIcon, 
+                          label: "Show/Hide Tags",
+                          onClick: () => {
+                            handleIconClick();
+                          }
+                        },
                         { icon: TrashIcon, label: "Delete" },
                         { icon: TrashIcon, label: "Delete" },
                         {

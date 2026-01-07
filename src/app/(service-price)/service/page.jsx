@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { plans } from "./fetch";
 
 export default function PricingPage() {
   const [loadingPlan, setLoadingPlan] = useState(null);
+  const router = useRouter();
 
   const handleChoosePlan = async (plan) => {
     try {
@@ -22,7 +24,7 @@ export default function PricingPage() {
       const data = await res.json();
 
       if (data.success) {
-        alert(`Transaction berhasil dibuat: ${data.data.order_id}`);
+         router.push(`/checkout/${data.data.id}`);
       } else {
         alert(`Gagal: ${data.message}`);
       }
