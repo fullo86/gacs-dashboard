@@ -36,7 +36,17 @@ export default function SignUpForm() {
         variant: "success",
         title: "Successfully Register",
         description: "Your account successfully created, please check mail to activate the account."
-      }]);
+      }]).then(() => {
+        setData({
+          username: "",
+          first_name: "",
+          last_name: "",
+          phone: "",
+          email: "",
+          password: "",
+          cfm_password: ""
+        });
+      });
      } catch (error) {
       let errorArray = [];
       if (error.response?.data?.error) {

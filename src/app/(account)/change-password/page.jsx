@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { ChangePasswordForm } from "../account-settings/_components/change-password";
+import { ZodError } from "zod";
 
 export default function ChangePasswordPage() {
   const { data: session, status } = useSession();
@@ -28,14 +29,13 @@ export default function ChangePasswordPage() {
       });
     }
 
-    try {
+    try {        
       setLoading(true);
-      const res = await axios.patch("/api/auth/change_password", {
+      const res = await axios.patch("/api/auth/change-password", {
         user_id: session.user.id,
         old_password,
-        new_password,
+        new_password        
       });
-
       if (res.status !== 200 || !res.data?.success) {
         throw new Error(res.data?.message || "Password change failed");
       }
@@ -44,12 +44,36 @@ export default function ChangePasswordPage() {
         icon: "success",
         title: "Password Changed Successfully",
         text: res.data.message,
-      });
+      }).then(() => {
+        setFormData({
+          old_password: "",
+          new_password: "",
+          confirm_password: "",
+        });
+      })
     } catch (error) {
+      let messages = [];
+      if (error instanceof ZodError) {
+        messages = error.issues.map(issue => `${issue.path.join(".")}: ${issue.message}`);
+      } else if (error.response?.data?.message) {
+        try {
+          const parsed = JSON.parse(error.response.data.message);
+          if (Array.isArray(parsed)) {
+            messages = parsed.map(issue => `${issue.message}`);
+          } else {
+            messages = [error.response.data.message];
+          }
+        } catch (parseErr) {
+          messages = [error.response.data.message];
+        }
+      } else {
+        messages = [error.message || "Something went wrong"];
+      }
+
       Swal.fire({
         icon: "error",
-        title: "Oops an error occurred.",
-        text: error.response?.data?.message || error.message || "Something went wrong.",
+        title: "Error",
+        html: messages.map(m => `• ${m}`).join("<br>") || "Something went wrong.",
       });
     } finally {
       setLoading(false);

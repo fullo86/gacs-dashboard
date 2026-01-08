@@ -1,22 +1,15 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/lib/db";
-import User from "@/models/users/User";
 import bcrypt from "bcrypt"; 
 import { z } from "zod";
+import connectDB from "@/lib/db";
+import User from "@/models/users/User";
 import { ChangePasswordSchema } from "@/lib/validation";
 
 export async function PATCH(req) {
   const transaction = await connectDB.transaction();
   try {
     const body = await req.json();
-    const { old_password, new_password, confirm_password } = ChangePasswordSchema.parse(body);
-
-    if (new_password !== confirm_password) {
-      return NextResponse.json(
-        { success: false, message: "New password and confirm password do not match" },
-        { status: 400 }
-      );
-    }
+    const { new_password } = ChangePasswordSchema.parse(body);
 
     const user_id = body.user_id;
     const user = await User.findOne({ where: { id: user_id } });
@@ -28,14 +21,14 @@ export async function PATCH(req) {
       );
     }
 
-    const isOldPasswordCorrect = await bcrypt.compare(old_password, user.password);
+    const isOldPasswordCorrect = await bcrypt.compare(body.old_password, user.password);
+    
     if (!isOldPasswordCorrect) {
       return NextResponse.json(
         { success: false, message: "Old password is incorrect" },
         { status: 400 }
       );
     }
-
     const hashedNewPassword = await bcrypt.hash(new_password, 12);
 
     await user.update(
@@ -52,7 +45,7 @@ export async function PATCH(req) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, message: error.errors },
+        { success: false, message: error.message },
         { status: 400 }
       );
     }

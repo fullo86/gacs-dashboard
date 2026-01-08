@@ -1,4 +1,4 @@
-import { PasswordIcon } from "@/assets/icons"; // Gantilah dengan path ikon yang sesuai
+import { PasswordIcon } from "@/assets/icons";
 import InputGroup from "@/components/FormElements/InputGroup";
 import { Button } from "@/components/ui-elements/button";
 import Link from "next/link";
@@ -57,7 +57,7 @@ export function ChangePasswordForm(props) {
 
         <div className="flex justify-end gap-3">
           <Link
-            href="/settings"
+            href="/dashboard"
             className="rounded-lg border border-stroke px-6 py-[7px] font-medium text-dark hover:shadow-1 dark:border-dark-3 dark:text-white"
           >
             Cancel

@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { PersonalInfoForm } from "./_components/personal-info";
 import { UploadPhotoForm } from "./_components/upload-photo";
@@ -92,7 +92,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[1080px]">
+    <>
       <Breadcrumb pageName="Settings" />
 
       <div className="grid grid-cols-5 gap-8">
@@ -107,6 +107,6 @@ export default function SettingsPage() {
           <UploadPhotoForm />
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -29,7 +29,5 @@ export const WifiSchema = z.object({
 });
 
 export const ChangePasswordSchema = z.object({
-  old_password: z.string().min(8, "Password must be at least 6 characters long"),
-  new_password: z.string().min(8, "Password must be at least 6 characters long"),
-  confirm_password: z.string().min(8, "Password must be at least 6 characters long"),
+  new_password: z.string().min(8, "Password must be at least 6 characters long")
 });

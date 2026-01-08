@@ -40,5 +40,6 @@ export const config = {
     "/acs-configuration/:path*",
     "/mikrotik-configuration/:path*",
     "/bot-configuration/:path*",
+    "/history-transaction/:path*"
   ],
 };
