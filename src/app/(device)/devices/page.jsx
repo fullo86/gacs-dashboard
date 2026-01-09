@@ -21,13 +21,15 @@ import {
   TrashIcon, 
   ConnectedDeviceIcon,
   EyeIcon,
-  EyeOffIcon
+  EyeOffIcon,
+  AddRemoveTagIcon
 } from '@/components/Icons/Icons';
 import DHCPServerModal from '@/components/Modals/modalDHCPServer';
 import DeviceOverviewModal from './modals/modalDeviceOverview';
 import WiFiConfigModal from './modals/modalWifiConfig';
 import ConnectedDeviceModal from './modals/modalDeviceConnected';
 import { Button } from '@/components/ui-elements/button';
+import DeviceTagsModal from './modals/ModalTagsAdd';
 
 export default function Devices() {
   const [devices, setDevices] = useState([]);
@@ -53,7 +55,8 @@ const [openWiFi, setOpenWiFi] = useState(false);
 const [selectedDeviceWiFi, setSelectedDeviceWiFi] = useState(null);
 const [openConnectDevice, setConnectDevice] = useState(false);
 const [selectedDeviceConnect, setSelectedDeviceConnect] = useState(null);
-const [isTagsVisible, setIsTagsVisible] = useState(false);
+const [visibleTags, setVisibleTags] = useState({});
+const [openDeviceTagsModal, setOpenDeviceTagsModal] = useState(false);
 
   const fetchDevices = async () => {
     try {
@@ -101,7 +104,7 @@ const [isTagsVisible, setIsTagsVisible] = useState(false);
         icon: "success",
         title: "Success",
         text: "Device Successfully Summoned",
-        timer: 1500,
+        timer: 3000,
         showConfirmButton: false,
       });
     } catch (err) {
@@ -133,7 +136,7 @@ const [isTagsVisible, setIsTagsVisible] = useState(false);
         icon: "success",
         title: "Success",
         text: "DHCP Server Updated",
-        timer: 1500,
+        timer: 3000,
         showConfirmButton: false,
       });
     } catch (err) {
@@ -141,33 +144,90 @@ const [isTagsVisible, setIsTagsVisible] = useState(false);
         icon: "error",
         title: "Error",
         text: err.response?.data?.message || err.message,
+        timer: 3000,
       });
     }
   };
 
-  const handleIconClick = () => {
-    setIsTagsVisible(!isTagsVisible);
+  const handleIconClick = (deviceId) => {
+    setVisibleTags((prev) => ({
+      ...prev,
+      [deviceId]: !prev[deviceId],
+    }));
   };
-  
-  const handleTags = () => {
-    Swal.fire({
-      title: 'Pilih aksi',
+
+  const handleTags = async (deviceId) => {
+    const result = await Swal.fire({
+      title: 'Add & Remove Tags',
       showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Add',
-      denyButtonText: 'Remove',
-      cancelButtonText: 'Batal',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Tombol "Add" ditekan
-        console.log('Add dipilih');
-        Swal.fire('Ditambahkan!', '', 'success');
-      } else if (result.isDenied) {
-        // Tombol "Remove" ditekan
-        console.log('Remove dipilih');
-        Swal.fire('Dihapus!', '', 'warning');
-      }
+      showCancelButton: false,
+      confirmButtonText: 'Manage Tags',
+      denyButtonText: 'Remove All Tags',
+      showCloseButton: true,
+      allowOutsideClick: true,
     });
+    if (result.isConfirmed) {
+      setSelectedDeviceConnect(deviceId.device_id);
+      setOpenDeviceTagsModal(true);      
+    } else if (result.isDenied) {
+      try {
+        const response = await axios.post("/api/tags", {
+          action: "remove", 
+          device_ids: [deviceId.device_id],
+          tag: "",
+        });
+        if (response.data.success) {
+          await Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "All Tags Successfully Delete.",
+            timer: 3000,
+            showConfirmButton: false,
+          }); 
+        } else {
+          console.log
+          await Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.response?.data?.message || error.message || "Tags Not Found",
+            timer: 3000,
+          });
+        }
+      } catch (err) {
+          await Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.message,
+            timer: 3000,
+          });
+      }
+      fetchDevices();      
+    }
+  };
+
+  const handleAddTag = async (deviceIds, action, tag) => {
+    try {
+      const response = await axios.post('/api/tags', { action, device_ids: deviceIds, tag });
+      if (!response.data.success) {
+        throw new Error(response.data.message || "Failed to add tag.");
+      }
+      setOpenDeviceTagsModal(false);
+      await Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "New Tags Successfully Added.",
+        timer: 3000,
+        showConfirmButton: false,
+      });      
+    } catch (error) {
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response?.data?.message || error.message,
+        timer: 3000,
+      });
+    }
+    fetchDevices();    
   };
 
   console.log(devices, 'asdd')
@@ -241,13 +301,11 @@ const [isTagsVisible, setIsTagsVisible] = useState(false);
                     </div>
                   </TableCell>
                   <TableCell>
-                    {isTagsVisible ? (
-                      Array.isArray(device.tags) && device.tags.length > 0
-                        ? device.tags.join(', ') 
-                        : 'N/A' 
-                    ) : (
-                      '-'
-                    )}
+                    {visibleTags[device.device_id]
+                    ? Array.isArray(device.tags) && device.tags.length > 0
+                      ? device.tags.join(', ')
+                      : 'N/A'
+                    : '-'}
                   </TableCell>
                   <TableCell className="xl:pr-7.5">
                     <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 place-items-center">
@@ -284,11 +342,15 @@ const [isTagsVisible, setIsTagsVisible] = useState(false);
                         {
                           icon: EyeOffIcon, 
                           label: "Show/Hide Tags",
+                          onClick: () => handleIconClick(device.device_id)
+                        },
+                        { 
+                          icon: AddRemoveTagIcon, 
+                          label: "Add/Remove Tags",
                           onClick: () => {
-                            handleIconClick();
+                            handleTags(device)
                           }
                         },
-                        { icon: TrashIcon, label: "Delete" },
                         { icon: TrashIcon, label: "Delete" },
                         {
                           icon: ConnectedDeviceIcon,
@@ -345,6 +407,13 @@ const [isTagsVisible, setIsTagsVisible] = useState(false);
         open={openConnectDevice}
         onClose={() => setConnectDevice(false)}
         device={selectedDeviceConnect}
+      />
+
+      <DeviceTagsModal 
+        open={openDeviceTagsModal} 
+        onClose={() => setOpenDeviceTagsModal(false)} 
+        device={selectedDeviceConnect} 
+        onAddTag={handleAddTag} 
       />
 
       <div className="mt-4 flex justify-end gap-2">

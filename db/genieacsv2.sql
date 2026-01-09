@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2026 at 09:37 AM
+-- Generation Time: Jan 09, 2026 at 10:28 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -107,12 +107,15 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('0236C1', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
 ('02370C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('023A58', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:11:20'),
+('023CC4', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('025452', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
 ('02844F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('04B167', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('04E598', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:19:33'),
 ('060477', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:11:22'),
+('061BA3', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 04:16:02'),
 ('067739', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:11:20'),
+('06AED4', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('06C587', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('06D8CB', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:11:20'),
 ('082802', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
@@ -172,6 +175,7 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('22DC84', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('22DFA0', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:43:59'),
 ('24B2B9', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:29'),
+('263979', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('264480', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
 ('265E43', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 04:41:14'),
 ('268549', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
@@ -188,6 +192,7 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('2A62EA', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('2A9E13', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('2AD945', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
+('2AE158', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 05:53:08'),
 ('2AFF65', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-31 00:48:23'),
 ('2C5D34', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'GUANGDONG OPPO MOBILE TELECOMMUNICATIONS CORP.,LTD', '2025-12-28 14:19:32'),
 ('2CD066', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
@@ -246,12 +251,14 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('4C6F9C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
 ('4E9E85', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
 ('503CEA', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
+('505A65', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'AzureWave Technology Inc.', '2026-01-07 02:44:16'),
 ('508F4C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('52381D', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
 ('524C33', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('5266DB', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:43:59'),
 ('52C143', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:19:33'),
 ('52CCE5', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 15:05:17'),
+('52DE26', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:22'),
 ('5419C8', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:53:27'),
 ('561528', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('564A9F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
@@ -265,7 +272,9 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('5A6983', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
 ('5A7D43', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 04:59:11'),
 ('5A982F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
+('5AB0D0', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 04:16:02'),
 ('5CD06E', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
+('5E3E40', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 06:21:19'),
 ('5E47EC', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('5E724F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('5E8C22', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
@@ -297,6 +306,8 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('6E5F41', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
 ('6E8FA3', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
 ('6EB799', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-31 00:48:22'),
+('700894', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-07 02:44:16'),
+('70B7AA', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 04:03:28'),
 ('70DDA8', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
 ('721E91', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('722F32', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
@@ -306,6 +317,7 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('72809C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:34:03'),
 ('72A049', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
 ('72A16F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
+('72D13F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('7412BB', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('765676', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('76691C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
@@ -321,6 +333,7 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('7C03AB', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('7C2ADB', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('7E1F34', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
+('7E304A', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('7E353C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('7E556C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-31 00:48:23'),
 ('7E9232', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
@@ -334,6 +347,7 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('863778', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('8687C7', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:53:27'),
 ('86BC76', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
+('86C710', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 03:25:57'),
 ('88D50C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'GUANGDONG OPPO MOBILE TELECOMMUNICATIONS CORP.,LTD', '2025-12-28 04:54:33'),
 ('8A541F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
 ('8A5E72', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
@@ -349,10 +363,12 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('924393', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('9254D7', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('92608D', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
+('9296A7', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('92A5B7', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('92A98A', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:34:03'),
 ('942DDC', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('948CD7', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
+('964ABF', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 09:09:32'),
 ('9664F9', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
 ('96B85C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('96BB8E', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
@@ -360,12 +376,14 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('96F801', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('98A5F9', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
 ('9A1B69', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
+('9A2AD3', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('9A46CE', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('9A5136', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
 ('9A54C3', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:41:54'),
 ('9A94A0', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:11:23'),
 ('9A9BE2', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:43:59'),
 ('9AA5FE', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-31 00:48:23'),
+('9AA7AE', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:22'),
 ('9AAF41', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('9AB337', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('9AB81F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
@@ -377,11 +395,13 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('9CE82B', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('9CF531', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
 ('9E0DD9', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
+('9E1231', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 07:48:54'),
 ('9E5CC3', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
 ('9E6EBF', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:31'),
 ('9E8D5B', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
 ('9E914B', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('9EAFEF', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
+('A2123D', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 06:23:35'),
 ('A22AF3', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('A26869', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
 ('A29B9D', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
@@ -435,8 +455,10 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('BE494D', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('BE5017', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 05:06:38'),
 ('BE8DF0', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
+('BEB47E', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:22'),
 ('BEB5AE', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
 ('BEB60C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
+('BEEF3B', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 05:53:07'),
 ('C087EB', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('C0DF69', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('C217BA', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
@@ -482,6 +504,7 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('D2B259', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
 ('D4BBC8', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('D60FE4', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:11:20'),
+('D632D9', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('D63341', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-31 00:48:22'),
 ('D64809', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
 ('D65ACC', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
@@ -497,6 +520,7 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('DA4F61', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('DA56A6', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:53:27'),
 ('DA5BDD', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
+('DA6D6D', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('DA6F12', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('DA73B6', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
 ('DA8D0A', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-31 00:48:23'),
@@ -510,8 +534,10 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('DEEADE', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:11:21'),
 ('DEF187', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:11:20'),
 ('E01F88', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
+('E2633F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:22'),
 ('E29027', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
 ('E2B91A', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:29'),
+('E2C183', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('E2CF58', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-05 01:17:02'),
 ('E2D43A', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('E2F123', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
@@ -525,6 +551,7 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('E6DEA4', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('E8F408', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
 ('EA0FE5', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
+('EA34FE', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-07 02:44:16'),
 ('EA51E8', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('EA9973', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
 ('EAADA8', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:43:59'),
@@ -535,8 +562,10 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('EE220F', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 05:34:06'),
 ('EE6780', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('EEAE37', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:00'),
+('EEAF28', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 06:21:19'),
 ('EEFDDD', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 14:19:34'),
 ('F20F41', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:31'),
+('F20FB7', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2026-01-09 02:26:21'),
 ('F21FC4', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-31 00:48:22'),
 ('F253B0', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30'),
 ('F282B6', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
@@ -561,6 +590,7 @@ INSERT INTO `mac_vendor_cache` (`oui`, `user_id`, `vendor_name`, `cached_at`) VA
 ('FAD938', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:04'),
 ('FADDEE', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 15:08:12'),
 ('FAF33A', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:01'),
+('FCE998', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Apple, Inc.', '2026-01-09 02:26:23'),
 ('FE0B88', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:03'),
 ('FE0CE6', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-28 03:44:02'),
 ('FEB29C', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'Unknown Device', '2025-12-29 13:04:30');
@@ -769,6 +799,20 @@ CREATE TABLE `server_pon_ports` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Server PON port output power configuration';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tags`
+--
+
+CREATE TABLE `tags` (
+  `id` char(36) NOT NULL,
+  `device_id` varchar(50) NOT NULL,
+  `tags` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -998,6 +1042,14 @@ CREATE TABLE `transactions` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `user_id`, `order_id`, `service`, `gross_amount`, `status`, `start_date`, `end_date`, `created_at`, `updated_at`) VALUES
+('45c51452-b3fc-41d0-86d3-a2378aa19cde', '6df562ce-9243-4d52-96bc-e725420fb61d', 'ORD-OQ1GYUZE', '6 Months Plan', 180000, 'inactive', '2026-01-07T08:3', '2026-07-07T08:3', '2026-01-07 08:38:53', '2026-01-07 08:38:53'),
+('9da1a106-5ec8-42b8-a680-96df9042939d', '1be06acd-6d8b-47cf-a2b2-41db67746260', 'ORD-NPYPXRBO', '1 Month Plan', 1, 'inactive', '2026-01-08T05:1', '2026-02-08T05:1', '2026-01-08 05:11:12', '2026-01-08 05:11:12');
+
 -- --------------------------------------------------------
 
 --
@@ -1047,8 +1099,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `phone`, `email`, `password`, `status`, `activation_token`, `active_trx`, `role_id`, `image`, `created_at`, `updated_at`) VALUES
-('1', 'user', 'User', '-', NULL, 'user@email.com', '$2y$12$KK8uA4gbevAlLyy.4COlWuM9OaRz9Cgw/PE17RDlYscL45E/Jxyxm', 1, '', 0, 1, 'default.png', '2025-11-22 04:44:45', '2025-11-30 06:54:27'),
-('1be06acd-6d8b-47cf-a2b2-41db67746260', 'fullo', 'M Taufikmm', 'Saefulloh', '08123456789', 'fullo@email.com', '$2b$12$3s5IFy6qs3joQii9BH41NORy6Jq3WnVRmEwjeO0.q/t8o286NFI3i', 1, '', 0, 2, 'default.png', '2025-12-05 07:34:40', '2025-12-25 21:13:18'),
+('1be06acd-6d8b-47cf-a2b2-41db67746260', 'fullo', 'M Taufik', 'Saefulloh', '08123456789', 'fullo@email.com', '$2b$12$4BIFbrIz0EZaT6qq63YFAezonx6OXDODcGsrc71YFopxucoNbdX3a', 1, '', 1, 2, 'default.png', '2025-12-05 07:34:40', '2026-01-09 02:22:18'),
+('6df562ce-9243-4d52-96bc-e725420fb61d', 'user', 'User', '', '08123456789', 'user@email.com', '$2b$12$unHrUZyKODwif0tMdoIMRuuVjoSl0ZRqJCHU.K1nIqUOdik.ooD3G', 1, '30a74eb36365061314c9a0ed0618ecf667d86bd5f899ed1831bc71b2ab76e404', 0, 2, 'default.png', '2026-01-07 07:01:50', '2026-01-07 07:02:23'),
 ('a30082d8-92a7-4c4f-9cd7-6d3fdedc293b', 'TESTTTT111', 'testtt', 'testttt', '0812345678', 'fulllo76@protonmail.com', '$2b$12$KKy7ztetQ1LJHPCE9FJYMeIess6aDs8Q03WbW5jmZMZbAav7lyTYG', 0, '1cd22c5d5b1257498810ae2598facac4248cd263799a8ff7f1806ee8aedd3258', 0, 2, 'default.png', '2026-01-05 02:17:51', '2026-01-05 02:17:51');
 
 -- --------------------------------------------------------
@@ -1173,6 +1225,12 @@ ALTER TABLE `roles`
 ALTER TABLE `server_pon_ports`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_server_port` (`map_item_id`,`port_number`);
+
+--
+-- Indexes for table `tags`
+--
+ALTER TABLE `tags`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `telegram_callback_cache`
