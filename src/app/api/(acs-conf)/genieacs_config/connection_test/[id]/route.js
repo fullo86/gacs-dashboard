@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { StatusCodes } from "http-status-codes";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer"
 import GenieacsCredential from "@/models/genieacs/GenieACSCredential"
 import axios from "axios"
@@ -9,7 +10,8 @@ export async function POST(req, { params }) {
   try {
     const session = await GetSessionFromServer()
     if (!session) {
-      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ success: false, status_code: StatusCodes.UNAUTHORIZED, message: 'Unauthorized' }, 
+        { status: StatusCodes.UNAUTHORIZED })
     }
 
     const resolvedParams = await params
@@ -18,7 +20,8 @@ export async function POST(req, { params }) {
     const data = await GenieacsCredential.findByPk(id, { transaction })
     if (!data) {
       await transaction.rollback()
-      return NextResponse.json({ success: false, message: 'Record not found' }, { status: 404 })        
+      return NextResponse.json({ success: false, status_code: StatusCodes.NOT_FOUND, message: 'Record not found' }, 
+        { status: StatusCodes.NOT_FOUND })        
     }
 
     const { host, port, username, password } = data
@@ -34,13 +37,25 @@ export async function POST(req, { params }) {
     try {
       res = await axios.get(url, { headers, timeout: 5000 })
     } catch (error) {
+      const isTimeout = error.code === 'ECONNABORTED'
       await transaction.rollback()
-      return NextResponse.json({ success: false, message: `Connection error: ${error.message}` }, { status: 400 })
+      return NextResponse.json(
+        { 
+          success: false, 
+          status_code: isTimeout ? StatusCodes.GATEWAY_TIMEOUT : StatusCodes.BAD_GATEWAY, 
+          message:  isTimeout ? 'Request timeout to external service' : `Connection error: ${error.message}` 
+        }, 
+        { status: isTimeout ? StatusCodes.GATEWAY_TIMEOUT : StatusCodes.BAD_GATEWAY })
     }
 
     if (res.status !== 200) {
       await transaction.rollback()
-      return NextResponse.json({ success: false, message: `HTTP Error ${res.status}` }, { status: 400 })
+      return NextResponse.json(
+        {
+          success: false, status_code: res.status, message: `HTTP Error ${res.status}`
+        },
+        { status: res.status }
+      )
     }
 
     let userRole = 'user'
@@ -66,24 +81,38 @@ export async function POST(req, { params }) {
       }
     }
 
-    const con = await data.update(
+    const [updatedRows] = await data.update(
                     { host, port, username, password, role: userRole, is_connected: true },
                     { transaction }
                 )
 
-    if (!con) {
-        await transaction.rollback()
-        return NextResponse.json({ success: false, message: `Update connection failed` }, { status: 500 })
-    }                
+    if (updatedRows === 0) {
+    await transaction.rollback()
+    return NextResponse.json({ success: false, status_code: StatusCodes.NOT_FOUND, message: `Update connection failed: data not found` },
+        { status: StatusCodes.NOT_FOUND })
+    }            
 
     await transaction.commit()
-    return NextResponse.json({ success: true, message: `Connected / Role [${userRole}]`, data: userRole }, 
-      { status: 200 }
+    return NextResponse.json({ success: true, status_code: StatusCodes.OK, message: `Connected / Role [${userRole}]`, data: userRole }, 
+      { status: StatusCodes.OK }
     )      
   } catch (err) {
     await transaction.rollback()
-    return NextResponse.json({ success: false, message: `Connection error: ${err.message}` }, 
-      { status: 500 }
-    )      
+    let stats = 500
+    let msg = 'Internal Server Error'
+    if (err.code === 'ECONNABORTED') {
+        stats = 504
+        msg = 'Request to external service timed out'
+    } else if (err.isAxiosError) {
+        stats = 502
+        msg = `External service connection failed: ${err.message}`
+    } else if (err.name === 'SequelizeValidationError') {
+        stats = 400
+        msg = err.errors.map(e => e.message).join(', ')
+    } else {
+        msg = `Error: ${err.message}`
+    }
+
+    return NextResponse.json({ success: false, status_code: stats, message }, { status: stats })    
   }
 }

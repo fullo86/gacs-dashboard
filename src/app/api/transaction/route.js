@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import randomstring from "randomstring";
+import { StatusCodes } from "http-status-codes";
 import { v4 as uuidv4 } from "uuid";
 import connectDB from "@/lib/db";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
@@ -7,13 +8,14 @@ import Transaction from "@/models/transaction/Transaction";
 
 export async function POST(req) {
   const transaction = await connectDB.transaction();    
+
   try {
     const session = await GetSessionFromServer()
 
     if (!session) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+        { success: false, status_code: StatusCodes.UNAUTHORIZED, message: "Unauthorized" },
+        { status: StatusCodes.UNAUTHORIZED }
       );
     }
     const userId = session?.user?.id
@@ -40,24 +42,23 @@ export async function POST(req) {
     if (!Newtransaction) {
       await transaction.rollback();
       return NextResponse.json(
-        { success: false, message: "Failed Create New Transaction" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "Failed Create New Transaction" },
+        { status: StatusCodes.BAD_REQUEST }
       );        
     }
 
     await transaction.commit();
-
     return NextResponse.json({
       success: true,
+      status_code: StatusCodes.CREATED,
       message: "New Transaction Successfully Created",
       data: Newtransaction,
-    }, { status: 201 });
+    }, { status: StatusCodes.CREATED });
   } catch (error) {
     await transaction.rollback();
-    console.log(error);
     return Response.json(
-      { success: false, message: "Failed create transaction", error },
-      { status: 500 }
+      { success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: "Failed create transaction", error },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }
@@ -68,8 +69,8 @@ export async function GET() {
 
     if (!session) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+        { success: false, status_code: StatusCodes.UNAUTHORIZED, message: "Unauthorized" },
+        { status: StatusCodes.UNAUTHORIZED }
       );
     }
     const userId = await session?.user?.id
@@ -79,18 +80,17 @@ export async function GET() {
     });
 
     if (!trx || trx.length === 0) {
-      return NextResponse.json({ success: false, message: "No transactions found", data: [] },
-        { status: 404 }
+      return NextResponse.json({ success: false, status_code: StatusCodes.NOT_FOUND, message: "No transactions found", data: [] },
+        { status: StatusCodes.NOT_FOUND }
       )
     }
 
-    return NextResponse.json({ success: true, message: "Get Transaction Success", data: trx },
-      { status: 200 }
+    return NextResponse.json({ success: true, status_code: StatusCodes.OK, message: "Get Transaction Success", data: trx },
+      { status: StatusCodes.OK }
     )
   } catch (error) {
-    console.error('Error fetching transactions:', error);
-    return NextResponse.json({ success: false, message: "Failed to Get Transaction Data", error: error },
-      { status: 500 }
+    return NextResponse.json({ success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: "Failed to Get Transaction Data", error: error },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     )
   }
 }

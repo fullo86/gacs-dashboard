@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt";
-import connectDB from "@/lib/db";
-import User from "@/models/users/User";
-import { userRegisterSchema } from "@/lib/validation";
 import { v4 as uuidv4 } from "uuid";
-import crypto from "crypto";
 import { ZodError } from "zod";
+import crypto from "crypto";
+import connectDB from "@/lib/db";
+import { userRegisterSchema } from "@/lib/validation";
 import { sendEmail } from "@/lib/mailer";
+import User from "@/models/users/User";
 import ActivationEmail from "@/components/Email/templates/ActivationEmail";
 
 export async function POST(request) {
@@ -24,8 +25,8 @@ export async function POST(request) {
     if (emailUser) {
       await transaction.rollback();
       return NextResponse.json(
-        { success: false, message: "Email already exists" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "Email already exists" },
+        { status: StatusCodes.BAD_REQUEST }
       );
     }
 
@@ -37,16 +38,16 @@ export async function POST(request) {
     if (userName) {
       await transaction.rollback();
       return NextResponse.json(
-        { success: false, message: "Username already exists" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "Username already exists" },
+        { status: StatusCodes.BAD_REQUEST }
       );
     }
 
     if (parsed.password !== parsed.cfm_password) {
       await transaction.rollback();
       return NextResponse.json(
-        { success: false, message: "Confirmation does not match" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "Confirmation does not match" },
+        { status: StatusCodes.BAD_REQUEST }
       );
     }
 
@@ -87,6 +88,7 @@ export async function POST(request) {
     return NextResponse.json(
       {
         success: true,
+        status_code: StatusCodes.CREATED,
         message: "Successfully Registered",
         data: {
           id: user.id,
@@ -100,7 +102,7 @@ export async function POST(request) {
           image: user.image,
         },
       },
-      { status: 201 }
+      { status: StatusCodes.CREATED }
     );
   } catch (error) {
     await transaction.rollback();
@@ -117,14 +119,14 @@ export async function POST(request) {
 //     );
 //     }
 
-    console.error("Register error:", error);
     return NextResponse.json(
       {
         success: false,
+        status_code: StatusCodes.INTERNAL_SERVER_ERROR,
         message: "Internal Server Error",
         error: error.message,
       },
-      { status: 500 }
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }

@@ -167,7 +167,7 @@ const [openDeviceTagsModal, setOpenDeviceTagsModal] = useState(false);
       allowOutsideClick: true,
     });
     if (result.isConfirmed) {
-      setSelectedDeviceConnect(deviceId.device_id);
+      setSelectedDeviceConnect(deviceId);
       setOpenDeviceTagsModal(true);      
     } else if (result.isDenied) {
       try {

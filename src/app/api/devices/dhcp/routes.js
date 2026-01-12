@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import GenieacsCredential from "@/models/genieacs/GenieACSCredential";
 import { genieacsRequest } from "@/lib/GenieACS";
@@ -10,8 +11,8 @@ export async function POST(request) {
 
     if (!session || !userId) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+        { success: false, status_code: StatusCodes.UNAUTHORIZED, message: "Unauthorized" },
+        { status: StatusCodes.UNAUTHORIZED }
       );
     }
 
@@ -20,15 +21,15 @@ export async function POST(request) {
 
     if (!device_id || !parameters) {
       return NextResponse.json(
-        { success: false, message: "Missing required fields: device_id, parameters" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "Missing required fields: device_id, parameters" },
+        { status: StatusCodes.BAD_REQUEST }
       );
     }
 
     if (Object.keys(parameters).length === 0) {
       return NextResponse.json(
-        { success: false, message: "No parameters provided for update" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "No parameters provided for update" },
+        { status: StatusCodes.BAD_REQUEST }
       );
     }
 
@@ -50,8 +51,8 @@ export async function POST(request) {
     for (const key of Object.keys(parameters)) {
       if (!allowedParams[key]) {
         return NextResponse.json(
-          { success: false, message: `Invalid parameter: ${key}` },
-          { status: 400 }
+          { success: false, status_code: StatusCodes.BAD_REQUEST, message: `Invalid parameter: ${key}` },
+          { status: StatusCodes.BAD_REQUEST }
         );
       }
 
@@ -68,19 +69,19 @@ export async function POST(request) {
     };
 
     if (parameters.MinAddress && !isValidIP(parameters.MinAddress)) {
-      return NextResponse.json({ success: false, message: "Invalid MinAddress IP format" }, { status: 400 });
+      return NextResponse.json({ success: false, status_code: StatusCodes.BAD_REQUEST, message: "Invalid MinAddress IP format" }, { status:  StatusCodes.BAD_REQUEST });
     }
 
     if (parameters.MaxAddress && !isValidIP(parameters.MaxAddress)) {
-      return NextResponse.json({ success: false, message: "Invalid MaxAddress IP format" }, { status: 400 });
+      return NextResponse.json({ success: false, status_code: StatusCodes.BAD_REQUEST, message: "Invalid MaxAddress IP format" }, { status:  StatusCodes.BAD_REQUEST });
     }
 
     if (parameters.SubnetMask && !isValidIP(parameters.SubnetMask)) {
-      return NextResponse.json({ success: false, message: "Invalid SubnetMask format" }, { status: 400 });
+      return NextResponse.json({ success: false, status_code: StatusCodes.BAD_REQUEST, message: "Invalid SubnetMask format" }, { status:  StatusCodes.BAD_REQUEST });
     }
 
     if (parameters.IPRouters && !isValidIP(parameters.IPRouters)) {
-      return NextResponse.json({ success: false, message: "Invalid IPRouters format" }, { status: 400 });
+      return NextResponse.json({ success: false, status_code: StatusCodes.BAD_REQUEST, message: "Invalid IPRouters format" }, { status:  StatusCodes.BAD_REQUEST });
     }
 
     if (parameters.DNSServers) {
@@ -88,8 +89,8 @@ export async function POST(request) {
       for (const dns of dnsList) {
         if (dns.trim() && !isValidIP(dns.trim())) {
           return NextResponse.json(
-            { success: false, message: `Invalid DNS server IP: ${dns}` },
-            { status: 400 }
+            { success: false, status_code: StatusCodes.BAD_REQUEST, message: `Invalid DNS server IP: ${dns}` },
+            { status:  StatusCodes.BAD_REQUEST }
           );
         }
       }
@@ -99,8 +100,8 @@ export async function POST(request) {
       const lease = Number(parameters.DHCPLeaseTime);
       if (lease < 60) {
         return NextResponse.json(
-          { success: false, message: "DHCPLeaseTime must be at least 60 seconds" },
-          { status: 400 }
+          { success: false, status_code: StatusCodes.BAD_REQUEST, message: "DHCPLeaseTime must be at least 60 seconds" },
+          { status: StatusCodes.BAD_REQUEST }
         );
       }
     }
@@ -111,8 +112,8 @@ export async function POST(request) {
 
       if (min >= max) {
         return NextResponse.json(
-          { success: false, message: "MinAddress must be less than MaxAddress" },
-          { status: 400 }
+          { success: false, status_code: StatusCodes.BAD_REQUEST, message: "MinAddress must be less than MaxAddress" },
+          { status: StatusCodes.BAD_REQUEST }
         );
       }
     }
@@ -123,8 +124,8 @@ export async function POST(request) {
 
     if (!credential) {
       return NextResponse.json(
-        { success: false, message: "GenieACS credentials not configured" },
-        { status: 404 }
+        { success: false, status_code: StatusCodes.NOT_FOUND, message: "GenieACS credentials not configured" },
+        { status: StatusCodes.NOT_FOUND }
       );
     }
 
@@ -141,26 +142,28 @@ export async function POST(request) {
     if (result.success) {
       return NextResponse.json({
         success: true,
+        status_code: StatusCodes.OK,
         message: "DHCP server configuration updated successfully",
         task_status: result.status === 200 ? "immediate" : "queued",
         parameters_updated: Object.keys(genieParams).length,
         dhcp_enabled: parameters.DHCPServerEnable ?? null,
-      }, { status : 200 });
+      }, { status : StatusCodes.OK });
     }
 
     return NextResponse.json(
       {
         success: false,
+        status_code:  StatusCodes.BAD_REQUEST,
         message: "Failed to update DHCP configuration",
         error: result.error,
       },
-      { status: 500 }
+      { status: StatusCodes.BAD_REQUEST }
     );
   } catch (err) {
     console.error(err);
     return NextResponse.json(
-      { success: false, message: err.message || "Server error" },
-      { status: 500 }
+      { success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: err.message || "Server error" },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }

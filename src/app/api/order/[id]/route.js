@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
+import midtransClient from "midtrans-client";
+import { StatusCodes } from "http-status-codes";
+import { v4 as uuidv4 } from "uuid";
 import connectDB from "@/lib/db";
+import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import Transaction from "@/models/transaction/Transaction";
 import Detail_Transaction from "@/models/detail_transaction/Detail_Transaction";
-import { v4 as uuidv4 } from "uuid";
-import midtransClient from "midtrans-client";
-import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import User from "@/models/users/User";
 
 export async function POST(request, { params }) {
@@ -13,8 +14,8 @@ export async function POST(request, { params }) {
   try {
     const session = await GetSessionFromServer();
     if (!session) {
-      return NextResponse.json({ success: false, message: "Unauthorized" }, 
-        { status: 401 }
+      return NextResponse.json({ success: false, status_code: StatusCodes.UNAUTHORIZED, message: "Unauthorized" }, 
+        { status: StatusCodes.UNAUTHORIZED }
     );
     }
 
@@ -23,15 +24,15 @@ export async function POST(request, { params }) {
     const resolvedParams = await params; 
     const { id: trxId } = resolvedParams;
     if (!trxId) {
-      return NextResponse.json({ success: false, message: "Transaction ID missing" }, 
-        { status: 400 }
+      return NextResponse.json({ success: false, status_code: StatusCodes.BAD_REQUEST, message: "Transaction ID missing" }, 
+        { status: StatusCodes.BAD_REQUEST }
     )}
 
     const body = await request.json();
     const { payment_method } = body;
     if (!["bca", "bri", "mandiri", "qris", "gopay"].includes(payment_method)) {
-      return NextResponse.json({ success: false, message: "Invalid payment method" }, 
-        { status: 400 }
+      return NextResponse.json({ success: false, status_code: StatusCodes.BAD_REQUEST, message: "Invalid payment method" }, 
+        { status: StatusCodes.BAD_REQUEST }
     )}
 
     const trx = await Transaction.findOne({
@@ -40,8 +41,8 @@ export async function POST(request, { params }) {
     });
 
     if (!trx) {
-      return NextResponse.json({ success: false, message: "Transaction Not Found" }, 
-        { status: 404 }
+      return NextResponse.json({ success: false, status_code: StatusCodes.NOT_FOUND, message: "Transaction Not Found" }, 
+        { status: StatusCodes.NOT_FOUND }
     )}
 
     // Setup Midtrans Core API
@@ -86,8 +87,8 @@ export async function POST(request, { params }) {
     }, { transaction: trxDb });
 
     if (!NewDetail) {
-      return NextResponse.json({ success: false, message: "Failed Create the detail Transaction" },
-        { status: 400 }
+      return NextResponse.json({ success: false, status_code: StatusCodes.BAD_REQUEST, message: "Failed Create the detail Transaction" },
+        { status: StatusCodes.BAD_REQUEST }
       )
     }
 
@@ -103,18 +104,19 @@ export async function POST(request, { params }) {
 
     return NextResponse.json({
       success: true,
+      status_code: StatusCodes.CREATED,
       message: "Detail Transaction Successfully Created",
       data: NewDetail,
       midtrans: midtransResponse
-    }, { status: 201 });
+    }, { status: StatusCodes.CREATED });
 
   } catch (error) {
     await trxDb.rollback();
     console.log(error);
     return NextResponse.json({
       success: false,
-      message: "Failed to create detail transaction",
+      status_code: StatusCodes.INTERNAL_SERVER_ERROR,
       error: error.message || error
-    }, { status: 500 });
+    }, { status: StatusCodes.INTERNAL_SERVER_ERROR });
   }
 }

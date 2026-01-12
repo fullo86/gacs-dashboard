@@ -1,17 +1,19 @@
+import { NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
 import connectDB from "@/lib/db";
 import Detail_Transaction from "@/models/detail_transaction/Detail_Transaction";
 import Transaction from "@/models/transaction/Transaction";
-import { NextResponse } from "next/server";
 
 export async function POST(request, { params }) {
-  const transaction = await connectDB.transaction();        
+  const transaction = await connectDB.transaction();    
+
   try {
     const session = await GetSessionFromServer()
 
     if (!session) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+        { success: false, status_code: StatusCodes.UNAUTHORIZED, message: "Unauthorized" },
+        { status: StatusCodes.UNAUTHORIZED }
       );
     }
     const userId = session?.user?.id
@@ -25,8 +27,8 @@ export async function POST(request, { params }) {
     })
 
     if (!trx) {
-        return NextResponse.json({ success: false, message: "Transaction Not Found" },
-            { status: 404 }
+        return NextResponse.json({ success: false, status_code: StatusCodes.NOT_FOUND, message: "Transaction Not Found" },
+            { status: StatusCodes.NOT_FOUND }
         )
     }
 
@@ -44,24 +46,23 @@ export async function POST(request, { params }) {
     if (!NewDetail) {
       await transaction.rollback();
       return NextResponse.json(
-        { success: false, message: "Failed Create New Transaction" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "Failed Create New Transaction" },
+        { status: StatusCodes.BAD_REQUEST }
       );        
     }
 
     await transaction.commit();
-
     return NextResponse.json({
       success: true,
+      status_code: StatusCodes.CREATED,
       message: "Detail Transaction Successfully Created",
       data: NewDetail,
-    }, { status: 201 });
+    }, { status: StatusCodes.CREATED });
   } catch (error) {
     await transaction.rollback();
-    console.log(error);
     return Response.json(
-      { success: false, message: "Failed create detail transaction", error },
-      { status: 500 }
+      { success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: "Failed create detail transaction", error },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }

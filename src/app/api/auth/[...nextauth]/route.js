@@ -1,7 +1,8 @@
-import User from '@/models/users/User'
-import { compare } from 'bcrypt'
 import NextAuth from 'next-auth'
+import { compare } from 'bcrypt'
+import { StatusCodes } from "http-status-codes";
 import CredentialsProvider from 'next-auth/providers/credentials'
+import User from '@/models/users/User'
 
 export const authOptions = {
     session: {
@@ -25,7 +26,7 @@ export const authOptions = {
 
                 if (!user) {
                     throw new Error(JSON.stringify({
-                        status: 404,
+                        status: StatusCodes.NOT_FOUND,
                         message: "Username not found."
                     }))                    
                 }
@@ -33,14 +34,14 @@ export const authOptions = {
                 const isValid = await compare(password, user.password)
                 if (!isValid) {
                     throw new Error(JSON.stringify({
-                        status: 400,
+                        status: StatusCodes.UNAUTHORIZED,
                         message: "Password is inccorrect"
                     }))
                 }
 
                 if (user.status === 0) {
                     throw new Error(JSON.stringify({
-                        status: 400,
+                        status: StatusCodes.BAD_REQUEST,
                         message: "Account is not active"
                     }))
                 }

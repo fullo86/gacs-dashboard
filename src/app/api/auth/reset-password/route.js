@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt";
-import { ResetPasswordSchema } from "@/lib/validation";
 import { Op } from "sequelize";
-import PasswordReset from "@/models/reset_password/ResetPassword";
 import connectDB from "@/lib/db";
+import { ResetPasswordSchema } from "@/lib/validation";
+import PasswordReset from "@/models/reset_password/ResetPassword";
 
 export async function POST(req) {
   const transaction = await connectDB.transaction();
@@ -21,8 +22,8 @@ export async function POST(req) {
 
     if (!reset) {
       await transaction.rollback();
-      return NextResponse.json({ success: false, mesage: "Token Expired Or Not Valid" }, 
-        { status: 400 }
+      return NextResponse.json({ success: false, status_code: StatusCodes.UNAUTHORIZED , message: "Token Expired Or Not Valid" }, 
+        { status: StatusCodes.UNAUTHORIZED }
       )      
     }
 
@@ -34,19 +35,19 @@ export async function POST(req) {
     await reset.save();
     await transaction.commit();
 
-    return NextResponse.json({ success: true, message: "Password Successfully Changed" }, 
-      { status: 200 }
+    return NextResponse.json({ success: true, status_code: StatusCodes.OK, message: "Password Successfully Changed" }, 
+      { status: StatusCodes.OK }
     )
   } catch (error) {
     await transaction.rollback();
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ success: false, message: error.errrors }, 
-        { status: 400 }
+      return NextResponse.json({ success: false, status_code: StatusCodes.BAD_REQUEST, message: error.errrors }, 
+        { status: StatusCodes.BAD_REQUEST }
       )
     }
     console.error(error);
-    return NextResponse.json({ success: false, message: "Internal Server Error" }, 
-      { status: 400 }
+    return NextResponse.json({ success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: "Internal Server Error" }, 
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     )      
   }
 }

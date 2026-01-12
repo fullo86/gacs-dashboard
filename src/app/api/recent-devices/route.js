@@ -1,16 +1,17 @@
-import GenieacsCredential from "@/models/genieacs/GenieACSCredential";
-import { getDevices } from "@/lib/GenieACS";
 import { NextResponse } from "next/server";
+import { getDevices } from "@/lib/GenieACS";
 import { parseDeviceDataFast } from "@/lib/GenieACSFast";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
+import GenieacsCredential from "@/models/genieacs/GenieACSCredential";
+import { StatusCodes } from "http-status-codes";
 
 export async function GET() {
   const session = await GetSessionFromServer();
 
   if (!session?.user?.id) {
     return NextResponse.json(
-      { success: false, message: "Unauthorized" },
-      { status: 401 }
+      { success: false, status_code: StatusCodes.UNAUTHORIZED, message: "Unauthorized" },
+      { status: StatusCodes.UNAUTHORIZED }
     );
   }
 
@@ -22,15 +23,15 @@ export async function GET() {
 
     if (!config) {
       return NextResponse.json(
-        { success: false, message: 'Configuraton not found.' },
-        { status: 404 }
+        { success: false, status_code: StatusCodes.NOT_FOUND, message: 'Configuraton not found.' },
+        { status: StatusCodes.NOT_FOUND }
       );
     }
 
     if (config.is_connected != 1) {
       return NextResponse.json(
-        { success: false, message: 'Configuration is not connected' },
-        { status: 404 }
+        { success: false, status_code: StatusCodes.CONFLICT, message: 'Configuration is not connected' },
+        { status: StatusCodes.CONFLICT }
       );
     }
 
@@ -39,8 +40,9 @@ export async function GET() {
     if (!result.success) {
       return NextResponse.json({
         success: false,
+        status_code: StatusCodes.BAD_GATEWAY,
         message: "Failed to fetch devices from GenieACS",
-      }, { status: 400 });
+      }, { status: StatusCodes.BAD_GATEWAY });
     }
 
     const recentDevices = result.data.map((device) => {
@@ -55,12 +57,12 @@ export async function GET() {
 
     const topDevices = recentDevices.slice(0, 5);
 
-    return NextResponse.json({ success: true, devices: topDevices }, 
-      { status: 200 }
+    return NextResponse.json({ success: true, status_code: StatusCodes.OK, devices: topDevices }, 
+      { status: StatusCodes.OK }
     );
   } catch (error) {
-    return NextResponse.json({ success: false, message: error.message }, 
-      { status: 500 }
+    return NextResponse.json({ success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: error.message }, 
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }

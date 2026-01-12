@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import GenieacsCredential from "@/models/genieacs/GenieACSCredential";
 import { summonAndFetchAdminCredentials } from "@/lib/GenieACS";
@@ -9,8 +10,8 @@ export async function POST(request) {
 
     if (!session) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+        { success: false, status_code: StatusCodes.UNAUTHORIZED, message: "Unauthorized" },
+        { status: StatusCodes.UNAUTHORIZED }
       );
     }
 
@@ -21,8 +22,8 @@ export async function POST(request) {
 
     if (!device_id) {
       return NextResponse.json(
-        { success: false, message: "device_id is required" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "device_id is required" },
+        { status: StatusCodes.BAD_REQUEST }
       );
     }
 
@@ -32,8 +33,8 @@ export async function POST(request) {
 
     if (!credential) {
       return NextResponse.json(
-        { success: false, message: "Configuration not found." },
-        { status: 404 }
+        { success: false, status_code: StatusCodes.NOT_FOUND, message: "Configuration not found." },
+        { status: StatusCodes.NOT_FOUND }
       );
     }
 
@@ -41,9 +42,10 @@ export async function POST(request) {
       return NextResponse.json(
         {
           success: false,
+          status_code: StatusCodes.CONFLICT,
           message: "Configuration is not connected",
         },
-        { status: 400 }
+        { status: StatusCodes.CONFLICT }
       );
     }
 
@@ -55,10 +57,11 @@ export async function POST(request) {
     if (result.success) {
       return NextResponse.json({
         success: true,
+        status_code: StatusCodes.OK,
         message:
           "Device Successfully Summoned",
         data: result
-      });
+      }, { status: StatusCodes.OK });
     }
 
     let errorMsg = "Failed when summoned device";
@@ -66,14 +69,14 @@ export async function POST(request) {
     if (result.status) {errorMsg += " (HTTP " + result.status + ")"}
 
     return NextResponse.json(
-      { success: false, message: errorMsg },
-      { status: 500 }
+      { success: false, status_code: StatusCodes.BAD_GATEWAY, message: errorMsg },
+      { status: StatusCodes.BAD_GATEWAY }
     )
   } catch (err) {
     console.log("SUMMON API ERROR:", err);
     return NextResponse.json(
-      { success: false, message: err.message },
-      { status: 500 }
+      { success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: err.message },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }

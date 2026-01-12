@@ -5,11 +5,15 @@ import { OverviewCardsSkeleton } from "./_components/overview-cards/skeleton";
 import RecentDevicesPage from "./recentdevices";
 import DeviceOverviewChart from "./_components/charts/DeviceOverviewChart";
 import UplinkStatsChart from "./_components/charts/UplinkStatsChart";
+import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 
 export default async function Home({ searchParams }) {
   const { selected_time_frame } = await searchParams;
   const extractTimeFrame = createTimeFrameExtractor(selected_time_frame);
-  return (
+  const session = await GetSessionFromServer()
+  const isPaymentActive = await session?.user?.active_trx
+
+  return isPaymentActive ? (
     <>
         <Suspense fallback={<OverviewCardsSkeleton />}>
           <OverviewCardsGroup />
@@ -35,5 +39,5 @@ export default async function Home({ searchParams }) {
           </div>
         </div>        
     </>
-  );
+  ) :  <DashboardInactive />;
 }

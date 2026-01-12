@@ -1,6 +1,6 @@
+import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import User from "@/models/users/User";
-import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
   const resolvedParams = await params;

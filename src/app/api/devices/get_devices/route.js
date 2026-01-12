@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import GenieacsCredential from '@/models/genieacs/GenieACSCredential';
 import { getDevices, parseDeviceData } from '@/lib/GenieACS';
 import { GetSessionFromServer } from '@/lib/GetSessionfromServer';
@@ -8,8 +9,8 @@ export async function GET() {
     const session = await GetSessionFromServer();
     if (!session) {
       return NextResponse.json(
-        { success: false, message: 'Unauthorized' },
-        { status: 401 }
+        { success: false, status_code: StatusCodes.UNAUTHORIZED, message: 'Unauthorized' },
+        { status: StatusCodes.UNAUTHORIZED }
       );
     }
 
@@ -20,15 +21,15 @@ export async function GET() {
 
     if (!credential) {
       return NextResponse.json(
-        { success: false, message: 'Configuration not found.' },
-        { status: 404 }
+        { success: false, status_code: StatusCodes.NOT_FOUND, message: 'Configuration not found.' },
+        { status: StatusCodes.NOT_FOUND }
       );
     }
 
     if (credential.is_connected != 1) {
       return NextResponse.json(
-        { success: false, message: 'Configuration is not connected' },
-        { status: 404 }
+        { success: false, status_code: StatusCodes.CONFLICT, message: 'Configuration is not connected' },
+        { status: StatusCodes.CONFLICT }
       );
     }
 
@@ -37,9 +38,10 @@ export async function GET() {
     if (!devicesResult.success) {
       return NextResponse.json({
         success: false,
+        status_code: StatusCodes.BAD_GATEWAY,
         message: 'Get devices failed',
         error: devicesResult.error || 'Unknown error'
-      });
+      }, { status: StatusCodes.BAD_GATEWAY });
     }
 
     const devices = (devicesResult.data || []).map(device =>
@@ -48,15 +50,16 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
+      status_code: StatusCodes.OK,
       message: " Get Devices Successfully ",
       devices,
       count: devices.length
-    }, { status: 200 });
+    }, { status: StatusCodes.OK });
 
   } catch (error) {
     return NextResponse.json(
-      { success: false, message: 'Error: ' + error.message },
-      { status: 500 }
+      { success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Error: ' + error.message },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }

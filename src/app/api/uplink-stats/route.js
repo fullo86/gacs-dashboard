@@ -1,10 +1,9 @@
-// src/app/api/dashboard/used-devices/route.js
 import { NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
 import { getDevices } from "@/lib/GenieACS";
 import { parseDeviceDataFast } from "@/lib/GenieACSFast";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 
-// Fungsi kategorisasi RX Power
 function categorizeRXPower(rxPower) {
   const rx = Number(rxPower);
   if (isNaN(rx)) return "no_signal";
@@ -16,15 +15,22 @@ function categorizeRXPower(rxPower) {
 }
 
 export async function GET() {
-  const session = await GetSessionFromServer();
-  const userId = await session?.user?.id;
-
   try {
+    const session = await GetSessionFromServer()
+
+    if (!session) {
+      return NextResponse.json(
+        { success: false, status_code: StatusCodes.UNAUTHORIZED, message: "Unauthorized" },
+        { status: StatusCodes.UNAUTHORIZED }
+      );
+    }
+
+    const userId = await session?.user?.id;    
     const devicesResult = await getDevices(userId, {});
     if (!devicesResult?.success) {
       return NextResponse.json(
-        { success: false, message: "Get Device Data failed." },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_GATEWAY, message: "Get Device Data failed." },
+        { status: StatusCodes.BAD_GATEWAY }
       );
     }
 
@@ -53,14 +59,13 @@ export async function GET() {
     ];
 
     return NextResponse.json(
-      { success: true, data: chartData, total },
-      { status: 200 }
+      { success: true, status_code: StatusCodes.OK, data: chartData, total },
+      { status: StatusCodes.OK }
     );
   } catch (error) {
-    console.error("Dashboard stats error:", error);
     return NextResponse.json(
-      { success: false, message: "Internal server error" },
-      { status: 500 }
+      { success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: "Internal server error" },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }

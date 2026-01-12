@@ -1,16 +1,18 @@
-import connectDB from "@/lib/db";
-import { sendEmail } from "@/lib/mailer";
-import crypto from "crypto";
-import { ForgotPasswordSchema } from "@/lib/validation";
-import User from "@/models/users/User";
+import { NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
+import crypto from "crypto";
+import connectDB from "@/lib/db";
+import { sendEmail } from "@/lib/mailer";
+import { ForgotPasswordSchema } from "@/lib/validation";
+import User from "@/models/users/User";
 import ResetPasswordEmail from "@/components/Email/templates/ResetPasswordEmail";
 import PasswordReset from "@/models/reset_password/ResetPassword";
-import { NextResponse } from "next/server";
 
 export async function POST(req) {
     const transaction = await connectDB.transaction();    
+
   try {
     const body = await req.json();
 
@@ -18,8 +20,8 @@ export async function POST(req) {
 
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return NextResponse.json({ success: false, message: "Email Isn't Registered" }, 
-        { status: 200 }
+      return NextResponse.json({ success: false, status_code: StatusCodes.NOT_FOUND, message: "Email Isn't Registered" }, 
+        { status: StatusCodes.NOT_FOUND }
       )    
     }
 
@@ -49,14 +51,16 @@ export async function POST(req) {
 
     await transaction.commit();
     
-    return NextResponse({ success: true, message: "Reset Link Successfully Send to Email" }, 
-      { status: 200 }
+    return NextResponse({ success: true, status_code: StatusCodes.OK, message: "Reset Link Successfully Send to Email" }, 
+      { status: StatusCodes.OK }
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse({ success:false, message: error.errrors }, { status: 400 }
+      return NextResponse({ success:false, status_code: StatusCodes.BAD_REQUEST, message: error.errrors }, 
+        { status: StatusCodes.BAD_REQUEST }
     )}
 
-    return NextResponse({ success: false, message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse({ success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Internal Server Error' }, 
+      { status: StatusCodes.INTERNAL_SERVER_ERROR })
   }
 }

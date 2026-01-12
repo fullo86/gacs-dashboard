@@ -77,7 +77,7 @@ export default function DeviceTagsModal({
                     <div key={tag} className="flex justify-between items-center">
                     <span className="font-medium">{tag}</span>
                     <button
-                        onClick={() => handleRemoveTag(tag)} // Memanggil handleRemoveTag dengan tag yang ingin dihapus
+                        onClick={() => handleRemoveTag(tag)}
                         className="text-red-600 hover:text-red-800"
                     >
                         Remove

@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
+import { v4 as uuidv4 } from "uuid";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import GenieacsCredential from "@/models/genieacs/GenieACSCredential";
 import DeviceTags from "@/models/tags/DeviceTags";
-import { v4 as uuidv4 } from "uuid";
 
 export async function POST(request) {
   try {
@@ -11,8 +12,8 @@ export async function POST(request) {
 
     if (!session || !userId) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+        { success: false, status_code: StatusCodes.UNAUTHORIZED, message: "Unauthorized" },
+        { status: StatusCodes.UNAUTHORIZED }
       );
     }
 
@@ -21,8 +22,8 @@ export async function POST(request) {
 
     if (!action || !Array.isArray(deviceIds) || deviceIds.length === 0) {
       return NextResponse.json(
-        { success: false, message: "Missing required fields: action, device_ids" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "Missing required fields: action, device_ids" },
+        { status: StatusCodes.BAD_REQUEST }
       );
     }
 
@@ -30,15 +31,15 @@ export async function POST(request) {
 
     if (action === "add" && !tagName) {
       return NextResponse.json(
-        { success: false, message: "Tag name cannot be empty for add action" },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: "Tag name cannot be empty for add action" },
+        { status: StatusCodes.BAD_REQUEST }
       );
     }
 
     if (!["add", "remove"].includes(action)) {
       return NextResponse.json(
-        { success: false, message: 'Invalid action. Use "add" or "remove"' },
-        { status: 400 }
+        { success: false, status_code: StatusCodes.BAD_REQUEST, message: 'Invalid action. Use "add" or "remove"' },
+        { status: StatusCodes.BAD_REQUEST }
       );
     }
 
@@ -48,8 +49,8 @@ export async function POST(request) {
 
     if (!credential) {
       return NextResponse.json(
-        { success: false, message: "GenieACS credentials not configured" },
-        { status: 404 }
+        { success: false, status_code: StatusCodes.CONFLICT, message: "GenieACS credentials not configured" },
+        { status: StatusCodes.CONFLICT }
       );
     }
 
@@ -196,19 +197,20 @@ export async function POST(request) {
     return NextResponse.json(
       {
         success: successCount > 0,
+        status_code: StatusCodes.OK,
         message: message + (failCount > 0 ? ` (${failCount} failed)` : ""),
         success_count: successCount,
         fail_count: failCount,
         errors,
         debug: debugInfo,
       },
-      { status: 200 }
+      { status: StatusCodes.OK }
     );
   } catch (err) {
     console.error(err);
     return NextResponse.json(
-      { success: false, message: err.message || "Server error" },
-      { status: 500 }
+      { success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: err.message || "Server error" },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR }
     );
   }
 }

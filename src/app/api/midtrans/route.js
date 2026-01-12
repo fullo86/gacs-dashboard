@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
+import { StatusCodes } from "http-status-codes";
 
 export async function POST(req) {
   try {
@@ -26,13 +27,13 @@ export async function POST(req) {
       }
     );
 
-    return NextResponse.json({ success: true, message: "Success", data: response.data}, 
-        { status: 200 }
+    return NextResponse.json({ success: true, status_code: StatusCodes. StatusCodes.OK, message: "Success", data: response.data}, 
+        { status: StatusCodes.OK }
     )
   } catch (error) {
     console.error(error.response?.data || error.message);
-    return NextResponse.json({ success: false, message: "Failed", error: error.message }, 
-        { status: 500 }
+    return NextResponse.json({ success: false, status_code: StatusCodes.INTERNAL_SERVER_ERROR, message: "Failed", error: error.message }, 
+        { status: StatusCodes.INTERNAL_SERVER_ERROR }
     )
   }
 }

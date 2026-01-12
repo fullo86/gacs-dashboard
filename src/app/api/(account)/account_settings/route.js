@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
 import User from "@/models/users/User";
 import { compare } from "bcrypt";
@@ -10,8 +11,15 @@ export async function PATCH(req) {
     const session = await GetSessionFromServer();
 
     if (!session?.user) {
-      return NextResponse.json({ success: false, message: "Unauthorized" }, 
-        { status: 401 }
+      return NextResponse.json(
+        { 
+          success: false, 
+          status_code: StatusCodes.UNAUTHORIZED, 
+          message: "Unauthorized" 
+        }, 
+        { 
+          status: StatusCodes.UNAUTHORIZED
+        }
       ) 
     }
 
@@ -22,15 +30,29 @@ export async function PATCH(req) {
 
     if (!user) {
       await transaction.rollback();
-      return NextResponse.json({ success: false, message: "User not found"}, 
-        { status: 404 }
+      return NextResponse.json(
+        { 
+          success: false, 
+          status_code: StatusCodes.NOT_FOUND, 
+          message: "User not found"
+        }, 
+        { 
+          status: StatusCodes.NOT_FOUND
+        }
       ) 
     }
 
     const cmprepswd = await compare(password, user.password)
       if (!password || !cmprepswd) {
-        return NextResponse.json({ success: false, message: "Wrong Password" }, 
-          { status: 404 }
+        return NextResponse.json(
+          { 
+            success: false, 
+            status_code: StatusCodes.UNAUTHORIZED,
+            message: "Wrong Password" 
+          }, 
+          { 
+            status: StatusCodes.UNAUTHORIZED,
+          }
         )      
     }
 
@@ -42,12 +64,26 @@ export async function PATCH(req) {
     }, { transaction });
 
     await transaction.commit();
-    return NextResponse.json({ success: true, message: "Account Successfully Updated", data: user }, { status: 200 })    
+    return NextResponse.json(
+      { 
+        success: true, 
+        status_code: StatusCodes.OK,
+        message: "Account Successfully Updated", 
+        data: user 
+      }, 
+      { 
+        status: StatusCodes.OK
+      })    
   } catch (error) {
     await transaction.rollback();
-    console.log(error);
-    return NextResponse.json({ success: false, message: error || "Internal Server Error" }, 
-      { status: 500 }
+    return NextResponse.json(
+      { success: false, 
+        status_code: StatusCodes.INTERNAL_SERVER_ERROR,
+        message: error || "Internal Server Error" 
+      }, 
+      { 
+        status: INTERNAL_SERVER_ERROR
+      }
     )    
   }
 }
