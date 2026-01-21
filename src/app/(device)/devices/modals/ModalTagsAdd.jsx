@@ -1,94 +1,66 @@
-"use client"
-import InputGroup from "@/components/FormElements/InputGroup";
+"use client";
 import Modal from "@/components/Modals/modal";
+import InputGroup from "@/components/FormElements/InputGroup";
 import { Button } from "@/components/ui-elements/button";
-import { useState } from "react";
+import { useModalForm } from "@/hooks/useModalForm";
 
-export default function DeviceTagsModal({
-  open,
-  onClose,
-  device,
-  onAddTag,
-}) {
-  const [newTag, setNewTag] = useState("");
-  const [loading, setLoading] = useState(false);
+export default function DeviceTagsModal({ open, onClose, device, onAddTag, showAlert }) {
+  const { form, setForm, loading, handleChange, handleSubmit } = useModalForm({ tag: "" }, async ({ tag }) => {
+    if (!tag) return;
 
-  if (!device) return null;
+    try {
+      await onAddTag([device.device_id], "add", tag);
+      setForm({ tag: "" });
+      showAlert?.("success", "Success", `Tag "${tag}" berhasil ditambahkan`);
+    } catch (err) {
+      console.error(err);
+      showAlert?.("error", "Error", `Gagal menambahkan tag: ${err.message}`);
+    }
+  });
 
-  const handleAddTag = async () => {
-    if (newTag) {
-      try {
-        setLoading(true);
-        const deviceIds = [device.device_id];
-        const tag = newTag;
-        const action = "add";
-
-        await onAddTag(deviceIds, action, tag);
-
-        setNewTag("");
-        onClose();
-      } catch (err) {
-        console.error(err);
-        alert("Terjadi kesalahan saat menambahkan tag.");
-      } finally {
-        setLoading(false);
-      }
+  const handleRemove = async (tag) => {
+    try {
+      await onAddTag([device.device_id], "remove", tag);
+      showAlert?.("success", "Success", `Tag "${tag}" berhasil dihapus`);
+    } catch (err) {
+      console.error(err);
+      showAlert?.("error", "Error", `Gagal menghapus tag: ${err.message}`);
     }
   };
 
-    const handleRemoveTag = async (tag) => {
-        try {
-            setLoading(true);
-            const deviceIds = [device.device_id];
-            const action = "remove";
-            
-            await onAddTag(deviceIds, action, tag);
+  if (!device) return null;
 
-        } catch (err) {
-            console.error(err);
-            alert("Terjadi kesalahan saat menghapus tag.");
-        } finally {
-            setLoading(false);
-        }
-    };  
   return (
     <Modal isOpen={open} onClose={onClose} title="Manage Tags" size="md">
       <div className="space-y-6 text-sm">
         <div className="flex items-center space-x-2">
           <InputGroup
             type="text"
-            className="w-full rounded p-2"
             placeholder="Enter tag name"
-            value={newTag}
-            onChange={(e) => setNewTag(e.target.value)}
+            value={form.tag}
+            onChange={handleChange}
+            name="tag"
+            className="w-full rounded p-2"
           />
           <Button
             label={loading ? "Adding..." : "Add Tags"}
-            onClick={handleAddTag}
+            onClick={handleSubmit}
             className="bg-blue-600 text-white rounded"
-            disabled={!newTag.trim() || loading}
+            disabled={!form.tag.trim() || loading}
           />
         </div>
+
         <div className="mt-4">
-            <h4 className="font-semibold">Current Tags</h4>
-            <div className="space-y-2">
-                {device.tags && device.tags.length > 0 ? (
-                device.tags.map((tag) => (
-                    <div key={tag} className="flex justify-between items-center">
-                    <span className="font-medium">{tag}</span>
-                    <button
-                        onClick={() => handleRemoveTag(tag)}
-                        className="text-red-600 hover:text-red-800"
-                    >
-                        Remove
-                    </button>
-                    </div>
-                ))
-                ) : (
-                <p className="text-gray-500">No tags added yet.</p>
-                )}
-            </div>
-        </div>        
+          <h4 className="font-semibold">Current Tags</h4>
+          <div className="space-y-2">
+            {device.tags?.length ? device.tags.map(t => (
+              <div key={t} className="flex justify-between items-center">
+                <span className="font-medium">{t}</span>
+                <button onClick={() => handleRemove(t)} className="text-red-600 hover:text-red-800">Remove</button>
+              </div>
+            )) : <p className="text-gray-500">No tags added yet.</p>}
+          </div>
+        </div>
       </div>
     </Modal>
   );
