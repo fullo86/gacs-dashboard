@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import connectDB from "@/lib/db";
 import User from '../users/User';
+import Detail_Transaction from '../detail_transaction/Detail_Transaction';
 
 const Transaction = connectDB.define(
   "Transaction",
@@ -29,11 +30,11 @@ const Transaction = connectDB.define(
       allowNull: false
     },
     start_date: {
-        type: DataTypes.STRING(15),
+        type: DataTypes.DATE,
         allowNull: false
     },
     end_date: {
-        type: DataTypes.STRING(15),
+        type: DataTypes.DATE,
         allowNull: false
     }
   },
@@ -52,6 +53,11 @@ Transaction.belongsTo(User, {
   targetKey: "id",
   onDelete: "RESTRICT",
   onUpdate: "RESTRICT",
+});
+
+Transaction.hasOne(Detail_Transaction, {
+  foreignKey: "transaction_id",
+  sourceKey: "id",
 });
 
 export default Transaction;

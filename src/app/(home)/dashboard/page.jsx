@@ -6,6 +6,7 @@ import RecentDevicesPage from "./recentdevices";
 import DeviceOverviewChart from "./_components/charts/DeviceOverviewChart";
 import UplinkStatsChart from "./_components/charts/UplinkStatsChart";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
+import DashboardInactive from "./DashboardInactive";
 
 export default async function Home({ searchParams }) {
   const { selected_time_frame } = await searchParams;

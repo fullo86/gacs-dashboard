@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation"; 
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Button } from "@/components/ui-elements/button";
 
 export default function CheckoutPage() {
   const { id } = useParams(); 
   const [paymentMethod, setPaymentMethod] = useState("");
   const [transaction, setTransaction] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [paying, setPaying] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter()
 
@@ -44,27 +46,29 @@ export default function CheckoutPage() {
           timer: 3000,
           showConfirmButton: false,
         });
-        return
+        return;
       }
 
       try {
+        setPaying(true);
         const res = await axios.post(`/api/order/${id}`, { payment_method: paymentMethod });
-        console.log(res.data);
-
+        
         if (res.data.success) {
-          if (res.data.data.pdf_url) {
-            window.open(res.data.data.pdf_url, "_blank"); 
-          } else if (res.data.data.redirect_url) {
-            window.location.href = res.data.data.redirect_url; 
-          }
+          router.push(`/checkout/status/${id}`);
         }
       } catch (err) {
         console.error(err);
-        alert(err.response?.data?.message || err.message);
+        Swal.fire({
+          icon: "error",
+          title: "Payment Failed",
+          text: err.response?.data?.message || err.message,
+        });
+      } finally {
+        setPaying(false);
       }
     };
 
-  if (loading) return <p>Loading transaksi...</p>;
+  if (loading || !transaction || !transaction.User) return <p>Loading transaksi...</p>;
   const tax = transaction.gross_amount * 0.11
   const total = transaction.gross_amount + tax
   return (
@@ -190,9 +194,15 @@ export default function CheckoutPage() {
             <span>Rp {total.toLocaleString("id-ID")}</span>
           </div>
 
-          <button onClick={handlePay} className="mt-6 w-full rounded-xl bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
-            Pay Now
-          </button>
+          <Button
+            label={paying ? "Processing..." : "Pay Now"}
+            variant="primary"
+            size="lg"
+            shape="rounded"
+            onClick={handlePay}
+            disabled={paying}
+            className={paying ? "opacity-70 cursor-not-allowed" : ""}
+          />
         </div>
       </div>
     </div>

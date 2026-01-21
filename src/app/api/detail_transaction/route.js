@@ -52,6 +52,7 @@ export async function POST(request, { params }) {
     }
 
     await transaction.commit();
+
     return NextResponse.json({
       success: true,
       status_code: StatusCodes.CREATED,

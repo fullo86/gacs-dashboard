@@ -81,16 +81,10 @@ export async function POST(req, { params }) {
       }
     }
 
-    const [updatedRows] = await data.update(
-                    { host, port, username, password, role: userRole, is_connected: true },
-                    { transaction }
-                )
-
-    if (updatedRows === 0) {
-    await transaction.rollback()
-    return NextResponse.json({ success: false, status_code: StatusCodes.NOT_FOUND, message: `Update connection failed: data not found` },
-        { status: StatusCodes.NOT_FOUND })
-    }            
+    await data.update(
+      { host, port, username, password, role: userRole, is_connected: true },
+      { transaction }
+    )
 
     await transaction.commit()
     return NextResponse.json({ success: true, status_code: StatusCodes.OK, message: `Connected / Role [${userRole}]`, data: userRole }, 
@@ -113,6 +107,6 @@ export async function POST(req, { params }) {
         msg = `Error: ${err.message}`
     }
 
-    return NextResponse.json({ success: false, status_code: stats, message }, { status: stats })    
+    return NextResponse.json({ success: false, status_code: stats, message: msg }, { status: stats })    
   }
 }

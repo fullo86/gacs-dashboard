@@ -11,20 +11,24 @@ export default function DeviceTagsModal({ open, onClose, device, onAddTag, showA
     try {
       await onAddTag([device.device_id], "add", tag);
       setForm({ tag: "" });
-      showAlert?.("success", "Success", `Tag "${tag}" berhasil ditambahkan`);
+      showAlert?.("success", "Success", `Tag "${tag}" Successfully Added`);
+      onClose();
     } catch (err) {
       console.error(err);
-      showAlert?.("error", "Error", `Gagal menambahkan tag: ${err.message}`);
+      showAlert?.("error", "Error", `Failed to Add Tag: ${err.message}`);
+      onClose();
     }
   });
 
   const handleRemove = async (tag) => {
     try {
       await onAddTag([device.device_id], "remove", tag);
-      showAlert?.("success", "Success", `Tag "${tag}" berhasil dihapus`);
+      showAlert?.("success", "Success", `Tag "${tag}" Successfully Deleted`);
+      onClose();
     } catch (err) {
       console.error(err);
-      showAlert?.("error", "Error", `Gagal menghapus tag: ${err.message}`);
+      showAlert?.("error", "Error", `Failed to Delete Tag: ${err.message}`);
+      onClose();
     }
   };
 
