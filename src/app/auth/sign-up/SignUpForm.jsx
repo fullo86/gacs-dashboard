@@ -4,6 +4,7 @@ import axios from "axios";
 import { Alert } from "@/components/ui-elements/alert";
 import InputGroup from "@/components/FormElements/InputGroup";
 import Link from "next/link";
+import { Button } from "@/components/ui-elements/button";
 
 export default function SignUpForm() {
   const [data, setData] = useState({
@@ -167,15 +168,19 @@ export default function SignUpForm() {
         </div>
 
         <div className="mt-10 mb-4.5">
-          <button
+          <Button
             type="submit"
-            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
+            variant="primary"
+            shape="rounded"
+            size="default"
+            className="flex w-full gap-2 p-4 justify-center items-center"
+            disabled={loading}
           >
             Sign Up
             {loading && (
               <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent" />
             )}
-          </button>
+          </Button>
         </div>
       </form> 
         <p className="text-center">

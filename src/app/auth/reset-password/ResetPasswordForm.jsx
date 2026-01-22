@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Swal from "sweetalert2";
 import axios from "axios";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui-elements/button";
 import InputGroup from "@/components/FormElements/InputGroup";
 import Image from "next/image";
 import Link from "next/link";
+import Alert from "@/lib/Alert";
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
@@ -31,11 +31,7 @@ export default function ResetPasswordPage() {
     e.preventDefault();
 
     if (password !== confirm) {
-      Swal.fire({
-        icon: "warning",
-        title: "Password Mismatch",
-        text: "Confirmation password does not match.",
-      });
+      Alert.warning("Error", "Confirmation password does not match.")
       return;
     }
 
@@ -47,21 +43,10 @@ export default function ResetPasswordPage() {
         newPassword: password,
       });
 
-      await Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Password successfully changed.",
-        timer: 3000,
-        showConfirmButton: false,
-      });
-
+      Alert.success("Success", "Password successfully changed.")
       router.push("/auth/sign-in");
     } catch (err) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: err.response?.data?.message || "Something went wrong",
-      });
+      Alert.error("Error", err.response?.data?.message || "Something went wrong")
     } finally {
       setLoading(false);
     }
@@ -69,17 +54,17 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="relative flex h-screen w-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <Button
+      onClick={toggleDarkMode}
+      variant="icon"
+      size="icon"
+      shape="full"
+      className="fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center bg-gray-300 dark:bg-gray-700 shadow-lg transition hover:scale-105"
+      title="Toggle dark mode"
+    >
+      {darkMode ? "🌞" : "🌙"}
+    </Button>
 
-      {/* Dark Mode Toggle */}
-      <button
-        onClick={toggleDarkMode}
-        className="fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-700 shadow-lg transition hover:scale-105"
-        aria-label="Toggle dark mode"
-      >
-        {darkMode ? "🌞" : "🌙"}
-      </button>
-
-      {/* Left Side: Form */}
       <div className="flex w-full xl:w-1/2 items-center justify-center p-8 sm:p-12.5 xl:p-15">
         <div className="w-full max-w-[500px]">
           <form
@@ -123,7 +108,6 @@ export default function ResetPasswordPage() {
         </div>
       </div>
 
-      {/* Right Side: Illustration */}
       <div className="hidden xl:flex w-full xl:w-1/2">
         <div className="flex h-full w-full flex-col justify-between px-12.5 pt-12.5 pb-8 bg-gradient-to-br from-indigo-50 to-purple-100 dark:from-gray-900 dark:to-gray-800">
           

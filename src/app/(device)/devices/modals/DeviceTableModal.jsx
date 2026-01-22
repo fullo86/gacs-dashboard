@@ -2,7 +2,6 @@
 
 import Modal from "@/components/Modals/modal";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 
 export function safeValue(val) {
   if (val === null || val === undefined) return "-";

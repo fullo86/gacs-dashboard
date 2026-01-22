@@ -9,7 +9,6 @@ export default function PaymentStatusPage() {
   const { trxId } = useParams();
   const router = useRouter();
 
-  // ❌ TANPA TypeScript
   const [status, setStatus] = useState("loading");
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,7 +18,6 @@ export default function PaymentStatusPage() {
     try {
       const res = await axios.get(`/api/transaction/${trxId}`);
       const data = res.data.data;
-console.log(data,'xx')
       if (data && data.success) {
         setStatus(data.status);
         setDetail(data);

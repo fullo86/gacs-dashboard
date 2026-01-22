@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation"; 
 import axios from "axios";
-import Swal from "sweetalert2";
 import { Button } from "@/components/ui-elements/button";
+import Alert from "@/lib/Alert";
 
 export default function CheckoutPage() {
   const { id } = useParams(); 
@@ -39,13 +39,7 @@ export default function CheckoutPage() {
 
     const handlePay = async () => {
       if (!paymentMethod) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Please Choose Payment Method First",
-          timer: 3000,
-          showConfirmButton: false,
-        });
+        Alert.error("Error", "Please Choose Payment Method First")
         return;
       }
 
@@ -58,11 +52,7 @@ export default function CheckoutPage() {
         }
       } catch (err) {
         console.error(err);
-        Swal.fire({
-          icon: "error",
-          title: "Payment Failed",
-          text: err.response?.data?.message || err.message,
-        });
+        Alert.error("Error", err.response?.data?.message || err.message)
       } finally {
         setPaying(false);
       }

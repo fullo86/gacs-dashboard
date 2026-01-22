@@ -2,9 +2,9 @@
 import InputGroup from "@/components/FormElements/InputGroup";
 import Modal from "@/components/Modals/modal";
 import { Button } from "@/components/ui-elements/button";
-import Swal from "sweetalert2";
 import { useRef, useState } from "react";
 import axios from "axios";
+import Alert from "@/lib/Alert";
 
 export default function ForgotPasswordForm({ open, onClose }) {
   const [email, setEmail] = useState("");
@@ -23,14 +23,7 @@ export default function ForgotPasswordForm({ open, onClose }) {
         setEmail("");
         onClose();
 
-        await Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Please check your email to reset your password.",
-          timer: 3000,
-          showConfirmButton: false,
-          timerProgressBar: true,
-        });
+        Alert.success("Success", "Please check your email to reset your password.")
         setLoading(false);
       });
   };

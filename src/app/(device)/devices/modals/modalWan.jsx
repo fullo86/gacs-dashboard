@@ -1,31 +1,75 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui-elements/button";
 import Modal from "@/components/Modals/modal";
-import InputGroup from "@/components/FormElements/InputGroup";
-import { useModalForm } from "@/hooks/useModalForm";
+import AddWANModal from "./ModalAddWan";
+import ViewWanModal from "./ModalViewWan";
 
-export default function DeviceWanModal({ open, onClose, device, onSubmit }) {
-  const { form, handleChange, resetForm } = useModalForm({ wanName: "" }, open, [device]);
+export default function DeviceWanModal({ open, onClose, device, onView, onRemoveAll }) {
+  const [isAddWANOpen, setIsAddWANOpen] = useState(false);
+  const [isViewOpen, setIsViewOpen] = useState(false);
 
+  useEffect(() => {
+    if (open || isAddWANOpen || isViewOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open, isAddWANOpen, isViewOpen]);
   if (!device) return null;
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!form.wanName.trim()) return;
-
-    await onSubmit?.({ device_id: device.device_id, wanName: form.wanName });
-    resetForm();
-    onClose();
-  };
-
   return (
+    <>
     <Modal isOpen={open} onClose={onClose} title="Manage WAN" size="md">
-      <form onSubmit={handleSubmit} className="space-y-6 text-sm">
-        <InputGroup type="text" name="wanName" value={form.wanName} onChange={handleChange} placeholder="Enter WAN name" />
-        <div className="flex justify-end">
-          <Button type="submit" label="Add WAN" className="bg-blue-600 text-white rounded" disabled={!form.wanName?.trim()} />
+      <div className="space-y-4">
+        <div className="flex justify-between gap-2">
+          <Button
+            type="button"
+            label="View WAN"
+            variant="outlineDark"
+            size="small"
+            className="flex-1"
+            onClick={() => setIsViewOpen(true)}
+          />
+          <Button
+            type="button"
+            label="Add WAN"
+            variant="primary"
+            size="small"
+            className="flex-1"
+            onClick={() => setIsAddWANOpen(true)} 
+          />
+          <Button
+            type="button"
+            label="Remove All WAN"
+            variant="outlineDark"
+            size="small"
+            className="flex-1 text-red-600 border-red-600 hover:bg-red-600/10 hover:text-red-800"
+            onClick={onRemoveAll}
+          />
         </div>
-      </form>
+      </div>
     </Modal>
+
+
+    <ViewWanModal
+      open={isViewOpen}
+      onClose={() => setIsViewOpen(false)}
+      wans={device.wan_details || []}
+    />
+
+    <AddWANModal
+        open={isAddWANOpen}
+        onClose={() => setIsAddWANOpen(false)}
+        device={device}
+        onSubmit={(data) => {
+          console.log("Submit WAN", data);
+          setIsAddWANOpen(false);
+        }}
+        className="z-40"
+    />
+  </>    
   );
 }

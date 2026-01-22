@@ -56,6 +56,35 @@ export async function testConnection(userId) {
   return await genieacsRequest(userId, '/devices?limit=1');
 }
 
+/**
+ * Set parameter values di GenieACS
+ * @param {*} genie object { host, port, username, password }
+ * @param {*} deviceId string
+ * @param {*} parameters object { paramPath: value }
+ */
+export async function setParameterValues(userId, deviceId, parameters = {}, timeout = 3000) {
+  if (!parameters || typeof parameters !== "object") {
+    throw new Error("parameters must be an object");
+  }
+
+  const parameterValues = Object.entries(parameters).map(([path, value]) => ({
+    name: path,
+    value,
+    type: typeof value === "number" ? "xsd:int" : "xsd:string",
+  }));
+
+  const endpoint = `/devices/${encodeURIComponent(deviceId)}/tasks?timeout=${timeout}&connection_request=true`;
+
+  const data = {
+    name: "setParameterValues",
+    parameterValues,
+  };
+
+  return await genieacsRequest(userId, endpoint, 'POST', data);
+}
+
+
+
 export async function getDevices(userId, query = {}, limit = 0, skip = 0) {
   let params = [];
   if (Object.keys(query).length > 0) params.push('query=' + encodeURIComponent(JSON.stringify(query)));

@@ -1,5 +1,6 @@
 "use client";
 import Modal from "@/components/Modals/modal";
+import { Button } from "@/components/ui-elements/button";
 import { useState } from "react";
 
 export default function DeviceOverviewModal({ open, onClose, device }) {
@@ -101,10 +102,17 @@ function InfoRow({ label, value, isPassword }) {
     <div className="grid grid-cols-3 gap-2 border-b py-1 last:border-none items-center">
       <div className="text-gray-500">{label}</div>
       <div className="col-span-2 flex items-center font-medium">
-        <span className="mr-2">{show ? value : "•".repeat(value?.length || 8)}</span>
-        <button onClick={() => setShow(!show)} className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
+        <span className="mr-2">{show ? value : "•".repeat(value?.length || 8)}</span>        
+        <Button
+          onClick={() => setShow(!show)}
+          variant="icon"
+          size="icon"
+          shape="rounded"
+          className="hover:bg-gray-200 dark:hover:bg-gray-700"
+          title={show ? "Hide" : "Show"}
+        >
           {show ? "🙈" : "👁️"}
-        </button>
+        </Button>
       </div>
     </div>
   );

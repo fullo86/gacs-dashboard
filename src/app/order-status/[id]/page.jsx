@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
+import { Button } from "@/components/ui-elements/button";
 
 export default function PaymentStatusPage() {
   const { id } = useParams();
@@ -114,12 +115,15 @@ export default function PaymentStatusPage() {
 
         <div className="mt-10 flex justify-end gap-3">
           {data?.transaction_status === "paid" && (
-            <button
+            <Button
               onClick={() => router.push("/dashboard")}
-              className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700"
+              variant="primary"
+              shape="rounded"
+              size="small"
+              className="px-6 py-3 text-sm font-semibold"
             >
               Go to Dashboard
-            </button>
+            </Button>
           )}
         </div>
       </div>

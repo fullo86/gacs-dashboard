@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Swal from "sweetalert2";
 import InputGroup from "@/components/FormElements/InputGroup";
 import { ShowcaseSection } from "@/components/Layouts/showcase-section";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Button } from "@/components/ui-elements/button";
+import Alert from "@/lib/Alert";
 
 export default function ACSConfig() {
   const [configId, setConfigId] = useState(null);
@@ -35,10 +35,7 @@ export default function ACSConfig() {
           });
         }
       } catch (err) {
-        Swal.fire({
-          icon: "error",
-          title: err.response?.data?.message || err.message,
-        });
+        Alert.error("Error", err.response?.data?.message || err.message)
       }
     };
 
@@ -65,15 +62,9 @@ export default function ACSConfig() {
         setConfigId(res.data.data.id);
       }
 
-      Swal.fire({
-        icon: "success",
-        title: res.data.message,
-      });
+      Alert.success("Success", res.data.message)
     } catch (err) {
-      Swal.fire({
-        icon: "error",
-        title: err.response?.data?.message || err.message,
-      });
+      Alert.error("Error", err.response?.data?.message || err.message)
     } finally {
       setLoadingSave(false);
     }
@@ -89,15 +80,9 @@ export default function ACSConfig() {
         {}
       );
 
-      Swal.fire({
-        icon: res.data?.success ? "success" : "error",
-        title: res.data.message,
-      });
+      res.data?.success ? Alert.success("Success", res.data.message) : Alert.error("Error", res.data.message)
     } catch (err) {
-      Swal.fire({
-        icon: "error",
-        title: err.response?.data?.message || err.message,
-      });
+      Alert.error("Error", err.response?.data?.message || err.message)
     } finally {
       setLoadingTest(false);
     }

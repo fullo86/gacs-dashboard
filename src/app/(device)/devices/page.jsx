@@ -2,9 +2,8 @@
 import { useState, useEffect } from "react";
 import { Table, TableBody, TableHeader, TableRow, TableHead as TH } from "@/components/ui/table";
 import { Button } from "@/components/ui-elements/button";
-import Swal from "sweetalert2";
-import DHCPServerModal from "@/components/Modals/modalDHCPServer";
 import DeviceOverviewModal from "./modals/modalDeviceOverview";
+import DHCPServerModal from "./modals/ModalDHCPServer";
 import WiFiConfigModal from "./modals/modalWifiConfig";
 import ConnectedDeviceModal from "./modals/modalDeviceConnected";
 import DeviceTagsModal from "./modals/ModalTagsAdd";
@@ -27,19 +26,17 @@ export default function Devices() {
     connected: false,
     tags: false,
     wan: false,
+    addWan: false,    
   });
 
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [visibleTags, setVisibleTags] = useState({});
 
-  const showAlert = (type, title, text, timer = 3000) =>
-    Swal.fire({ icon: type, title, text, timer, showConfirmButton: false });
-
   const toggleTags = (deviceId) => {
     setVisibleTags(prev => ({ ...prev, [deviceId]: !prev[deviceId] }));
   };
 
-  const handleSelectDevice = (device, modalType, alertFunc = null) => {
+  const handleSelectDevice = (device, modalType) => {
     setSelectedDevice(device);
     setModals(prev => ({ ...prev, [modalType]: true }));
   };
@@ -89,7 +86,6 @@ export default function Devices() {
                   visibleTags={visibleTags} 
                   toggleTags={toggleTags} 
                   onSelectDevice={handleSelectDevice} 
-                  showAlert={showAlert} 
                 />
               ))
           }
@@ -103,7 +99,6 @@ export default function Devices() {
           onClose={() => setModals(p => ({ ...p, [key]: false }))}
           device={selectedDevice}
           onAddTag={key === "tags" ? handleAddTag : undefined}
-          showAlert={showAlert}
         />
       ))}
 

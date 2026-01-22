@@ -4,8 +4,8 @@ import { PersonalInfoForm } from "./_components/personal-info";
 import { UploadPhotoForm } from "./_components/upload-photo";
 import { useSession, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import axios from "axios";
+import Alert from "@/lib/Alert";
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
@@ -53,23 +53,13 @@ export default function SettingsPage() {
         password: "",
       });
 
-      Swal.fire({
-        icon: "success",
-        title: "Successfully Updated!",
-        text: res.data.message,
-      });
-
+      Alert.success("Success", "Account Successfully Updated.")
     } catch (error) {
       const message =
         error.response?.data?.message ||
         error.message ||
         "Something went wrong";
-
-      Swal.fire({
-        icon: "error",
-        title: "Oops an error occurred.",
-        text: message,
-      });
+      Alert.error("Error", message)
     }
   };
 

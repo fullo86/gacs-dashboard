@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { plans } from "./fetch";
+import { Button } from "@/components/ui-elements/button";
 
 export default function PricingPage() {
   const [loadingPlan, setLoadingPlan] = useState(null);
@@ -68,7 +69,24 @@ export default function PricingPage() {
                 ))}
               </ul>
             </div>
-            <button
+            <Button
+              onClick={() => handleChoosePlan(plan)}
+              disabled={loadingPlan === plan.name}
+              variant={plan.highlight ? "primary" : "outlineDark"}
+              shape="rounded"
+              className="mt-auto w-full"
+            >
+              {loadingPlan === plan.name ? (
+                <span className="flex items-center gap-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  Processing...
+                </span>
+              ) : (
+                "Choose Plan"
+              )}
+            </Button>
+
+            {/* <button
               onClick={() => handleChoosePlan(plan)}
               disabled={loadingPlan === plan.name}
               className={`mt-auto w-full rounded-lg py-3 font-medium ${
@@ -78,7 +96,7 @@ export default function PricingPage() {
               } transition`}
             >
               {loadingPlan === plan.name ? "Processing..." : "Choose Plan"}
-            </button>
+            </button> */}
           </div>
         ))}
       </div>

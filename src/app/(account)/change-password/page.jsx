@@ -1,11 +1,11 @@
 "use client"
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import Swal from "sweetalert2";
 import axios from "axios";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { ChangePasswordForm } from "../account-settings/_components/change-password";
 import { ZodError } from "zod";
+import Alert from "@/lib/Alert";
 
 export default function ChangePasswordPage() {
   const { data: session, status } = useSession();
@@ -22,11 +22,7 @@ export default function ChangePasswordPage() {
     const { old_password, new_password, confirm_password } = formData;
 
     if (new_password !== confirm_password) {
-      return Swal.fire({
-        icon: "error",
-        title: "Password mismatch",
-        text: "New password and confirm password do not match.",
-      });
+      Alert.error("Error", "New password and confirm password do not match.")      
     }
 
     try {        
@@ -40,11 +36,8 @@ export default function ChangePasswordPage() {
         throw new Error(res.data?.message || "Password change failed");
       }
 
-      Swal.fire({
-        icon: "success",
-        title: "Password Changed Successfully",
-        text: res.data.message,
-      }).then(() => {
+      Alert.success("Success", res.data.message
+      ).then(() => {
         setFormData({
           old_password: "",
           new_password: "",
@@ -70,11 +63,8 @@ export default function ChangePasswordPage() {
         messages = [error.message || "Something went wrong"];
       }
 
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        html: messages.map(m => `• ${m}`).join("<br>") || "Something went wrong.",
-      });
+      const msg = messages.map(m => `• ${m}`).join("<br>") || "Something went wrong."
+      Alert.error("Error", msg)
     } finally {
       setLoading(false);
     }

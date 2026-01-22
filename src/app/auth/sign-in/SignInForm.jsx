@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import Swal from "sweetalert2";
 import { Button } from "@/components/ui-elements/button";
 import ForgotPasswordForm from "../forgot-password/ForgotPasswordForm";
 import InputGroup from "@/components/FormElements/InputGroup";
+import Alert from "@/lib/Alert";
 
 export default function SignInForm() {
   const [openForgot, setOpenForgot] = useState(false);
@@ -22,23 +22,11 @@ export default function SignInForm() {
 
   useEffect(() => {
     if (activated === "true") {
-      Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Account is activated, please login.",
-        timer: 3000,
-        showConfirmButton: false,
-      });
+      Alert.success("Success", "Account is activated, please login")
     }
     
     if (activated === "false") {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "An error have been occurred",
-        timer: 3000,
-        showConfirmButton: false,
-      });
+      Alert.error("Error", "n error have been occurred")
     }
   }, [activated]);
 
@@ -64,18 +52,10 @@ export default function SignInForm() {
           router.push(res.url);
         } else {
           const parsed = JSON.parse(res?.error);
-            Swal.fire({
-              icon: "error",
-              title: "Login Failed",
-              text: parsed.message,
-            });        
+            Alert.error("Error", parsed.message)
         }
       } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops an error occured.",
-        text: error.message,
-      });
+        Alert.error("Error", error.message)
     } finally {
       setLoading(false);
     }
