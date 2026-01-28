@@ -22,17 +22,17 @@ export async function GET() {
       where: { user_id: userId },
     });
 
-    if (!config) {
-      return NextResponse.json(
-        {
-          success: false,
-          status_code: StatusCodes.NOT_FOUND,
-          message: "No configuration found",
-          data: [],
-        },
-        { status: StatusCodes.NOT_FOUND }
-      );
-    }
+    // if (!config) {
+    //   return NextResponse.json(
+    //     {
+    //       success: false,
+    //       status_code: StatusCodes.NOT_FOUND,
+    //       message: "No configuration found",
+    //       data: [],
+    //     },
+    //     { status: StatusCodes.NOT_FOUND }
+    //   );
+    // }
 
     return NextResponse.json(
       {

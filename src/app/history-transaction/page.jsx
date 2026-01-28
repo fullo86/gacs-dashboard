@@ -3,11 +3,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui-elements/button';
+import { useRouter } from 'next/navigation';
 
 export default function TransactionHistory() {
+  const router = useRouter();
   const [transactions, setTransactions] = useState([]); 
   const [loading, setLoading] = useState(true);        
-  const [error, setError] = useState('');         
+  const [error, setError] = useState('');
 
   const fetchTransactions = async () => {
     try {
@@ -16,6 +19,7 @@ export default function TransactionHistory() {
       
       const response = await axios.get('/api/transaction');
       setTransactions(response?.data);
+      console.log(response.data,'sss')
     } catch (err) {
       setError('Failed to load transactions');
     } finally {
@@ -41,7 +45,7 @@ export default function TransactionHistory() {
               <TableHead>Amount</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Status</TableHead>
-              {/* <TableHead>Actions</TableHead> */}
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -66,22 +70,23 @@ export default function TransactionHistory() {
                         {
                           'bg-[#219653]/[0.08] text-[#219653]': transaction.status === 'active',
                           'bg-[#D34053]/[0.08] text-[#D34053]': transaction.status === 'inactive',
-                          'bg-[#FFA70B]/[0.08] text-[#FFA70B]': transaction.status === 'Pending',
+                          'bg-[#FFA70B]/[0.08] text-[#FFA70B]': transaction.status === 'pending',
                         }
                       )}
                     >
                       {transaction.status}
                     </div>
                   </TableCell>
-                  {/* <TableCell className="xl:pr-7.5">
+                  <TableCell className="xl:pr-7.5">
                       <Button
-                        label="View Details"
+                        label="Detail"
+                        disabled={transaction.status == 'active'}
                         variant="outlineDark"
                         shape="rounded"
                         size="small"
-                        onClick={() => alert(`View details for transaction ${transaction.id}`)}
+                        onClick={ transaction.status != 'pending' ? () => router.push(`/checkout/${transaction.id}`) : () => router.push(`/checkout/status/${transaction.id}`)}
                       />
-                  </TableCell> */}
+                  </TableCell>
                 </TableRow>
               ))
             )}

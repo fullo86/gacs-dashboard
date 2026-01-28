@@ -58,6 +58,7 @@ Transaction.belongsTo(User, {
 Transaction.hasOne(Detail_Transaction, {
   foreignKey: "transaction_id",
   sourceKey: "id",
-});
+  as: "detail",
+})
 
 export default Transaction;

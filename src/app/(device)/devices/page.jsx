@@ -77,15 +77,29 @@ export default function Devices() {
         <TableBody>
           {loading
             ? [...Array(20)].map((_, idx) => (
-                <DeviceRow key={idx} device={{}} visibleTags={{}} toggleTags={() => {}} onSelectDevice={() => {}} />
+                <DeviceRow
+                  key={idx}
+                  device={{}}
+                  visibleTags={{}}
+                  toggleTags={() => {}}
+                  onSelectDevice={() => {}}
+                />
               ))
+            : devices.length === 0
+            ? (
+              <TableRow>
+                <TH colSpan={8} className="text-center py-4 text-gray-500">
+                  No device found
+                </TH>
+              </TableRow>
+            )
             : devices.map(device => (
-                <DeviceRow 
-                  key={device.id || device.device_id} 
-                  device={device} 
-                  visibleTags={visibleTags} 
-                  toggleTags={toggleTags} 
-                  onSelectDevice={handleSelectDevice} 
+                <DeviceRow
+                  key={device.id || device.device_id}
+                  device={device}
+                  visibleTags={visibleTags}
+                  toggleTags={toggleTags}
+                  onSelectDevice={handleSelectDevice}
                 />
               ))
           }
@@ -102,24 +116,26 @@ export default function Devices() {
         />
       ))}
 
-      <div className="mt-4 flex justify-end gap-2">
-        <Button
-          onClick={() => setSkip(Math.max(skip - 20, 0))}
-          disabled={skip === 0}
-          label="Prev"
-          variant="outlineDark"
-          shape="rounded"
-          size="small"
-        />
-        <Button
-          onClick={() => setSkip(skip + 20)}
-          disabled={!hasMore}
-          label="Next"
-          variant="outlineDark"
-          shape="rounded"
-          size="small"
-        />
-      </div>
+      {devices.length > 0 && (
+        <div className="mt-4 flex justify-end gap-2">
+          <Button
+            onClick={() => setSkip(Math.max(skip - 20, 0))}
+            disabled={skip === 0}
+            label="Prev"
+            variant="outlineDark"
+            shape="rounded"
+            size="small"
+          />
+          <Button
+            onClick={() => setSkip(skip + 20)}
+            disabled={!hasMore}
+            label="Next"
+            variant="outlineDark"
+            shape="rounded"
+            size="small"
+          />
+        </div>
+      )}
     </div>
   );
 }

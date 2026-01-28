@@ -59,8 +59,9 @@ export default function CheckoutPage() {
     };
 
   if (loading || !transaction || !transaction.User) return <p>Loading transaksi...</p>;
-  const tax = transaction.gross_amount * 0.11
-  const total = transaction.gross_amount + tax
+  const taxRate = 0.11; 
+  const oriprice = transaction.gross_amount / (1 + taxRate);
+  const tax = transaction.gross_amount - oriprice
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-100 to-slate-50 p-6 dark:from-slate-900 dark:to-slate-800">
       <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">Checkout</h1>
@@ -75,7 +76,7 @@ export default function CheckoutPage() {
             <div>
               <p className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">Transfer Bank</p>
               <div className="space-y-3">
-                {["bca", "bri", "mandiri"].map((bank) => (
+                {["bca", "bni", "permata", "otherbank"].map((bank) => (
                   <label
                     key={bank}
                     className="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 p-4 transition hover:bg-gray-50 dark:border-slate-700 dark:hover:bg-slate-800"
@@ -171,7 +172,7 @@ export default function CheckoutPage() {
             <p className="font-semibold text-gray-700 dark:text-gray-300">Service</p>
             <div className="flex justify-between">
               <span>{transaction.service}</span>
-              <span>Rp {transaction.gross_amount.toLocaleString("id-ID")}</span>
+              <span>Rp {oriprice.toLocaleString("id-ID")}</span>
             </div>
             <div className="flex justify-between text-sm text-gray-600">
               <span>Tax 11%</span>
@@ -181,7 +182,7 @@ export default function CheckoutPage() {
 
           <div className="mt-4 flex justify-between text-lg font-bold">
             <span>Total</span>
-            <span>Rp {total.toLocaleString("id-ID")}</span>
+            <span>Rp {transaction.gross_amount.toLocaleString("id-ID")}</span>
           </div>
 
           <Button

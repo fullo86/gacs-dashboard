@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import connectDB from "@/lib/db";
 import Transaction from "@/models/transaction/Transaction";
 import { GetSessionFromServer } from "@/lib/GetSessionfromServer";
+import Detail_Transaction from "@/models/detail_transaction/Detail_Transaction";
 
 export async function POST(req) {
   try {
@@ -22,12 +23,12 @@ export async function POST(req) {
     const order_id = "ORD-" + randomstring.generate(8).toUpperCase();
     const startDate = new Date();
 
-    // Hitung end date sesuai UTC +7 (Jakarta)
+    const tax = gross_amount * 0.11;
+    let totamt = Number(gross_amount) + Number(tax);
     const endDate = new Date(startDate);
     endDate.setMonth(endDate.getMonth() + duration);
-    endDate.setHours(0, 0, 0, 0); // set ke jam 00:00:00
+    endDate.setHours(0, 0, 0, 0);
 
-    // Gunakan transaction callback otomatis
     const Newtransaction = await connectDB.transaction(async (trx) => {
       return await Transaction.create(
         {
@@ -35,7 +36,7 @@ export async function POST(req) {
           user_id: userId,
           order_id,
           service,
-          gross_amount,
+          gross_amount: totamt,
           status: "inactive",
           start_date: startDate,
           end_date: endDate,
@@ -79,7 +80,10 @@ export async function GET() {
 
     const trx = await Transaction.findAll({
       where: { user_id: userId },
-      order: [['updated_at', 'DESC']]
+      order: [['updated_at', 'DESC']],
+       include: [
+        { model: Detail_Transaction, as: "detail" },
+      ],
     });
 
     return NextResponse.json(

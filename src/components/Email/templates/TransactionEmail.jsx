@@ -18,8 +18,9 @@ export default function TransactionEmail({ transaction }) {
 
   const bankLogos = {
     bca: "/bankbca.png",
-    mandiri: "/mandiri.png",
-    bri: "/bankbri.png",
+    permata: "/permata.png",
+    bni: "/bankbni.png",
+    otherbank: "/otherbank"
   };
 
   const bankLogoUrl = bank_name ? bankLogos[bank_name.toLowerCase()] : null;

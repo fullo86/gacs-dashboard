@@ -36,7 +36,7 @@ export async function POST(request, { params }) {
     const body = await request.json();
     const { payment_method } = body;
 
-    if (!["bca", "bri", "mandiri", "qris", "gopay"].includes(payment_method)) {
+    if (!["bca", "bni", "permata", "otherbank", "qris", "gopay"].includes(payment_method)) {
       return NextResponse.json(
         { success: false, status_code: StatusCodes.BAD_REQUEST, message: "Invalid payment method" },
         { status: StatusCodes.BAD_REQUEST }
@@ -71,11 +71,12 @@ export async function POST(request, { params }) {
       },
     };
 
-    if (["bca", "bri", "mandiri"].includes(payment_method)) {
+    if (["bca", "bni", "permata", "otherbank"].includes(payment_method)) {
       parameter.payment_type = "bank_transfer";
       parameter.bank_transfer = { bank: payment_method };
     } else if (payment_method === "qris") {
       parameter.payment_type = "qris";
+      parameter.qris = { qr_pay_mode: "dynamic" };
     } else if (payment_method === "gopay") {
       parameter.payment_type = "gopay";
     }
@@ -105,9 +106,9 @@ export async function POST(request, { params }) {
         order_id: trx.order_id,
         payment_type: payment_method,
         transaction_time: midtransResponse.transaction_time || "",
-        bank: midtransResponse.va_numbers?.[0]?.bank || "",
-        va_number: midtransResponse.va_numbers?.[0]?.va_number || "",
-        pdf_url: midtransResponse.pdf_url || "",
+        bank: midtransResponse.va_numbers?.[0]?.bank || payment_method || "",
+        va_number: midtransResponse.va_numbers?.[0]?.va_number || midtransResponse.permata_va_number || "",
+        pdf_url: midtransResponse.pdf_url || midtransResponse.actions?.find(a => a.name === "generate-qr-code")?.url || "",
         redirect_url: midtransResponse.redirect_url || "",
       },
       { transaction: trxDb }
