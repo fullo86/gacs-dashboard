@@ -76,7 +76,9 @@ export async function POST(request, { params }) {
       parameter.bank_transfer = { bank: payment_method };
     } else if (payment_method === "qris") {
       parameter.payment_type = "qris";
-      parameter.qris = { qr_pay_mode: "dynamic" };
+      parameter.qris = {
+        acquirer: "gopay",
+      };
     } else if (payment_method === "gopay") {
       parameter.payment_type = "gopay";
     }
@@ -99,6 +101,22 @@ export async function POST(request, { params }) {
       );
     }
 
+    let url;
+    switch (payment_method) {
+      case 'bank_transfer':
+            url = midtransResponse.pdf_url;
+            break;
+      case 'qris':
+            url = midtransResponse.actions?.find(a => a.name === "generate-qr-code")?.url;
+            break;
+      case 'gopay':
+            url = midtransResponse.actions?.find(a => a.name === "deeplink-redirect")?.url
+            break;
+      default:
+          url = ''
+          break;
+    }
+    console.log(midtransResponse, 'ini response')
     const NewDetail = await Detail_Transaction.create(
       {
         id: uuidv4(),
@@ -108,7 +126,7 @@ export async function POST(request, { params }) {
         transaction_time: midtransResponse.transaction_time || "",
         bank: midtransResponse.va_numbers?.[0]?.bank || payment_method || "",
         va_number: midtransResponse.va_numbers?.[0]?.va_number || midtransResponse.permata_va_number || "",
-        pdf_url: midtransResponse.pdf_url || midtransResponse.actions?.find(a => a.name === "generate-qr-code")?.url || "",
+        pdf_url: url,
         redirect_url: midtransResponse.redirect_url || "",
       },
       { transaction: trxDb }

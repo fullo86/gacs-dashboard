@@ -94,7 +94,7 @@ export default function PaymentStatusPage() {
         return (
           <div className={baseClasses}>
             <p className="text-lg text-gray-500 dark:text-gray-400 mb-4">Pay with GoPay</p>
-            <img src={detail.gopay_url} alt="GoPay" className="mx-auto max-w-[300px] rounded-md shadow-lg" />
+            <img src={detail.pdf_url} alt="GoPay" className="mx-auto max-w-[300px] rounded-md shadow-lg" />
           </div>
         );
       default:
