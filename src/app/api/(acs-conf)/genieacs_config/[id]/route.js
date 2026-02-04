@@ -14,7 +14,7 @@ export async function PATCH(request, { params }) {
     const id = resolvedParams.id;
 
     const data = await request.json();
-    const { host, port, username, password } = data;
+    const { host, port, username, password, sec_key } = data;
 
     const record = await GenieacsCredential.findOne({
       where: { id, user_id: userId }
@@ -40,6 +40,7 @@ export async function PATCH(request, { params }) {
         port,
         ...(username && { username }),
         ...(password && { password }),
+        sec_key,
         updated_at: new Date(),
       },
       { transaction }

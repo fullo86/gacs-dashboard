@@ -6,6 +6,7 @@ import { ShowcaseSection } from "@/components/Layouts/showcase-section";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Button } from "@/components/ui-elements/button";
 import Alert from "@/lib/Alert";
+import { RandomString } from "@/lib/RandomString";
 
 export default function ACSConfig() {
   const [configId, setConfigId] = useState(null);
@@ -18,6 +19,7 @@ export default function ACSConfig() {
     port: "",
     username: "",
     password: "",
+    sec_key: "",
   });
 
   useEffect(() => {
@@ -32,6 +34,7 @@ export default function ACSConfig() {
             port: res.data.data.port || "",
             username: res.data.data.username || "",
             password: res.data.data.password || "",
+            sec_key: res.data.data.sec_key || ""
           });
         }
       } catch (err) {
@@ -131,7 +134,35 @@ export default function ACSConfig() {
             placeholder="Enter your password"
             value={form.password}
             onChange={handleChange}
+            className="mb-4.5"            
           />
+
+          <div className="mb-4.5 flex items-end gap-2">
+            <div className="flex-1">
+              <InputGroup
+                label="Security Key"
+                type="text"
+                name="sec_key"
+                placeholder="Security Key"
+                value={form.sec_key}
+                readOnly
+              />
+            </div>
+
+            <Button
+              type="button"
+              variant="outlineDark"
+              shape="rounded"
+              className="h-[46px]"
+              onClick={() =>
+                setForm(prev => ({
+                  ...prev,
+                  sec_key: RandomString(8),
+                }))
+              }
+              label="Generate"
+            />
+          </div>
 
           <div className="mt-7 flex gap-3">
             <Button

@@ -131,17 +131,18 @@ export async function getMACVendor(macAddress, fallbackName = 'Unknown Device') 
   if (!macAddress || macAddress === 'N/A') return fallbackName;
 
   const session = await GetSessionFromServer();
-  const userId = session?.user?.id;
+  const userId = await session?.user?.id;
 
+  if(!userId) {
+    return
+  }
   const cleaned = macAddress.replace(/[^a-fA-F0-9]/g, '').toUpperCase();
   if (cleaned.length < 6) return fallbackName;
   const oui = cleaned.substring(0, 6);
 
-  // Cek cache
   const cached = await MacVendorCache.findOne({ where: { oui, user_id: userId } });
   if (cached) return cached.vendor_name;
 
-  // Fetch API
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);

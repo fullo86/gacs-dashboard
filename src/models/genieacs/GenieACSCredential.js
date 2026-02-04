@@ -39,6 +39,9 @@ const GenieacsCredential = connectDB.define(
       type: DataTypes.BOOLEAN,
       defaultValue: 0,
     },
+    sec_key: {
+      type: DataTypes.STRING(8),
+    },
     last_test: {
       type: DataTypes.DATE,
       allowNull: true,

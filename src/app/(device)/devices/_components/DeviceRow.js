@@ -15,6 +15,7 @@ import {
   AddRemoveTagIcon,
   WanIcon,
 } from "@/components/Icons/Icons";
+import Cookies from "js-cookie";
 
 export default function DeviceRow({
   device,
@@ -22,26 +23,36 @@ export default function DeviceRow({
   toggleTags,
   onSelectDevice,
 }) {
+  const sec_key = Cookies.get("sec_key");
   const actions = [
     { icon: PreviewIcon, label: "Preview", onClick: () => onSelectDevice(device, "preview") },
     { icon: LightningIcon, label: "Summon Device", onClick: async () => {
         try {
-          const res = await axios.post(
-            "/api/devices/summon",
-            { device_id: device.device_id },
-            { withCredentials: true }
-          );
+          let res;
+          try {
+            res = await axios.post(
+              "/api/devices/summon",
+              { device_id: device.device_id },
+              { withCredentials: true }
+            );
 
-          if (!res.data.success) {
-            throw new Error(res.data.message);
+            if (!res.data.success) {
+              throw new Error(res.data.message || "Summon failed");
+            }
+          } catch (err) {
+            const resUser = await axios.post(
+              "/api/devices/user_summon",
+              { device_id: device.device_id, sec_key },
+            );
+
+            if (!resUser.data.success) {
+              throw new Error(resUser.data.message || "User summon failed");
+            }
           }
 
           Alert.success("Success", "Device Successfully Summoned");
         } catch (err) {
-          Alert.error(
-            "Error",
-            err.response?.data?.message || err.message
-          );
+          Alert.error("Error", err.response?.data?.message || err.message);
         }
       },
     },

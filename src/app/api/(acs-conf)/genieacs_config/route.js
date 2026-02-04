@@ -82,6 +82,7 @@ export async function POST(request) {
     const port = data.port
     const username = data.username
     const password = data.password 
+    const sec_key = data.sec_key 
 
     if (!host || !port ) {
       await transaction.rollback();
@@ -92,7 +93,7 @@ export async function POST(request) {
     }
 
     const newRecord = await GenieacsCredential.create(
-      { id, user_id, host, port, username, password, is_connected: 0 },
+      { id, user_id, host, port, username, password, is_connected: 0, sec_key },
       { transaction }
     );
 
@@ -148,7 +149,8 @@ export async function PATCH(request) {
       host,
       port,
       username,
-      password
+      password,
+      sec_key
     } = data;
 
     if (!host || !port) {
@@ -165,6 +167,7 @@ export async function PATCH(request) {
         port,
         username,
         password,
+        sec_key,
       },
       { transaction }
     );

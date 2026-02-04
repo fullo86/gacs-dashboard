@@ -26,6 +26,8 @@ export default function RootLayout({ children }) {
     /^\/auth\/sign-in/,
     /^\/auth\/sign-up/,
     /^\/auth\/reset-password/,
+    /^\/auth-customer/,
+    /^\/user-device/,
   ];  
   // const excludedPaths = ["/auth/sign-in", "/auth/sign-up"];
   const isExcluded = excludedPatterns.some((pattern) => pattern.test(pathname)) || children.type.name === "NotFoundPage";
